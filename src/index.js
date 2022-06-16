@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-//import GuestPlayer from './components/guest/GuestPlayer';
-import UsersPlayer from './components/users/UsersPlayer';
+import Home from './components/Home';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <UsersPlayer />
+    <Home />
   </React.StrictMode>
 );
 

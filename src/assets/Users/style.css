@@ -1,4 +1,41 @@
 @import url("https://fonts.googleapis.com/css?family=Oswald:300,400,700");
+
+/*--------------------------------------------------------------
+# Dark and Ligh and custom color Scheme Selection
+--------------------------------------------------------------*/
+
+:root{
+  --primary-background-main: #F2D7D3;
+  --primary-background-nav: #8f8f8f;
+  --primary-nav-box-shadow: rgba(97, 45, 45, 0.25);
+  --primary-nav-a: #444444;
+  --primary-nav-a-hover: #386BB6;
+  --primary-nav-a-active: #942929;
+  --primary-player-background: #F2D7D3;
+  --primary-player-background-b: #fff9e1;
+  --primary-player-title-artist: #252120;
+  --primary-player-playback-icons: #E3605C;
+  --primary-player-extras-icon: #383232; 
+  --primary-player-seek-timeline: #E3605C;
+  --primary-player-list-title: #252120;
+  --primary-player-list-artist: rgba(37, 33, 32, 0.7);
+  --primary-player-list-hover-background: ;
+  --primary-player-selected-item-background: ;
+  --primary-player-playback-timeline: #131111;
+  --primary-mini-player-playback-icons-playlist: #4E4644;
+  --primary-mini-player-artist-info: rgba(37, 33, 32, 0.7);
+  --primary-mini-player-title-info: #222222;
+  --primary-mini-player-thumb: #D3D6DA;;
+  --primary-main-text-span: #fff;
+  --primary-header-text: #252120;
+  --primary-header-back: rgba(37, 33, 32, 0.4);
+  --primary-waves-one: #18DFAD;
+  --primary-waves-two: #33476a;
+  --primary-waves-three: #F12645;;
+  --primary-listners-title-span: #252120;;
+  --primary-listners-users-title: #f1dfdd;;
+}
+
 i[class^=btn] {
   font-size: 20px;
   margin-right: 30px;
@@ -21,7 +58,7 @@ a {
 
 body {
   margin: 0;
-  background-color: #F2D7D3;
+  background-color: var(--primary-background-main);
   font-family: "Oswald", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -43,7 +80,7 @@ body {
   position: absolute;
   top: 60%;
   left: -28%;
-  background: #18DFAD;
+  background: var(--primary-waves-one);
   width: 100%;
   height: 300vw;
   transform-origin: 50% 49%;
@@ -56,7 +93,7 @@ body {
 .wave.-two {
   animation: drift 9000ms infinite linear;
   opacity: 1;
-  background: #33476a;
+  background: var(--primary-waves-two);
   top: 60%;
   left: -32%;
 }
@@ -64,7 +101,7 @@ body {
 .wave.-three {
   animation: drift 4000ms infinite linear;
   opacity: 1;
-  background: #F12645;
+  background: var(--primary-waves-three);
   top: 60%;
   left: -36%;
   z-index: -2;
@@ -78,14 +115,15 @@ body {
     transform: rotate(360deg);
   }
 }
-.bg {
+
+/* .bg {
   position: fixed;
   bottom: 0;
   width: 100vw;
   height: 50%;
   background-color: #33476a;
   z-index: -1;
-}
+} */
 
 .line {
   position: fixed;
@@ -93,7 +131,7 @@ body {
   width: 2px;
   height: 80px;
   top: 24vh;
-  background-color: white;
+  background-color: var(--primary-main-text-span);
 }
 
 .text-wrap {
@@ -104,12 +142,14 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .text-wrap .text {
   cursor: pointer;
   position: relative;
 }
+
 .text-wrap span {
-  color: #fff9e1;
+  color: var(--primary-main-text-span);
   font-size: 100px;
   font-weight: 300;
   padding: 0 2%;
@@ -121,7 +161,7 @@ body {
   top: calc(50% - 18px);
   width: 36px;
   height: 36px;
-  background-color: #fff9e1;
+  background-color: var(--primary-main-text-span);
   border-radius: 50%;
   text-align: center;
   display: none;
@@ -129,6 +169,7 @@ body {
   transform: scale(0);
   transform-origin: bottom;
 }
+
 .main-btn_wrapper .main-btn {
   line-height: 36px;
 }
@@ -163,34 +204,38 @@ body {
   content: "";
   width: 20px;
   height: 3px;
-  background-color: #252120;
+  background-color: var(--primary-header-text);
   position: absolute;
   left: 0;
 }
+
 .header .burger:before {
   top: -6px;
 }
+
 .header .burger:after {
   top: 6px;
   width: 14px;
 }
+
 .header .logo-text {
   font-size: 20px;
-  color: #252120;
+  color: var(--primary-header-text);
 }
 
 .back_btn {
   cursor: pointer;
   position: relative;
-  color: rgba(37, 33, 32, 0.4);
+  color: var(--primary-header-back);
   font-size: 18px;
   display: flex;
   align-items: center;
   display: none;
   opacity: 0;
 }
+
 .back_btn .circle {
-  background-color: rgba(37, 33, 32, 0.3);
+  background-color: var(--primary-header-back);
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -200,23 +245,27 @@ body {
 .nav {
   will-change: transform;
   position: fixed;
-  background-color: rgb(143, 143, 143);
+  background-color: var(--primary-background-nav);
   width: 40vw;
   min-width: 400px;
   height: 100vh;
   z-index: 10;
-  box-shadow: 0 30px 80px 0 rgba(97, 45, 45, 0.25);
+  box-shadow: 0 30px 80px 0 var(--primary-nav-box-shadow);
   display: none;
 }
+
 .nav ul {
-  color: #444444;
+  color: var(--primary-nav-a);
 }
+
 .nav ul.nav_main {
   margin-top: 20vh;
 }
+
 .nav ul.nav_sub {
   margin-top: 3vh;
 }
+
 .nav ul.nav_sub a {
   font-size: 2.4vw;
 }
@@ -230,12 +279,13 @@ body {
   font-size: 3.8vw;
   cursor: pointer;
 }
+
 .nav_link:before {
   content: "";
   position: absolute;
   width: 4vw;
   height: 2px;
-  background-color: #444444;
+  background-color: var(--primary-nav-a);
   left: -12vw;
   top: 50%;
   transition: 0.4s;
@@ -244,7 +294,7 @@ body {
 .nav_divider {
   width: 3vw;
   height: 1px;
-  background-color: rgba(37, 33, 32, 0.12);
+  background-color: var(--primary-header-back);
   margin: 4vh 6vw;
 }
 
@@ -253,7 +303,7 @@ body {
 }
 
 .mini-player {
-  color: #252120;
+  color: var(--primary-mini-player-artist-info);
   position: fixed;
   height: 32px;
   right: 2.2vw;
@@ -274,27 +324,30 @@ body {
   cursor: pointer;
   opacity: 1;
 }
+
 .track_info_wrapper .track_info .thumb {
   width: 32px;
   height: 32px;
   margin-right: 10px;
-  background-color: #D3D6DA;
+  background-color: var(--primary-mini-player-thumb);
   border-radius: 2px;
   background-size: cover;
   background-image: url(https://i1.sndcdn.com/artworks-000167527289-p3zpfg-large.jpg);
 }
+
 .track_info_wrapper .track_info .title {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
 }
+
 .track_info_wrapper .track_info .artist {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 12px;
-  color: rgba(37, 33, 32, 0.7);
+  color: var(--primary-header-back);
 }
 
 .mini-player_btn_wrapper {
@@ -332,7 +385,7 @@ body {
   will-change: opacity;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(37, 33, 32, 0.2);
+  background-color: var(--primary-header-back);
   position: fixed;
   background-color: rgba(54, 41, 38, 0.702);
   z-index: 110;
@@ -349,7 +402,7 @@ body {
   top: 0;
   width: 600px;
   height: 100%;
-  background-color: #fff;
+  background-color: var(--primary-player-background);
   box-shadow: 0px 25px 60px 0px rgba(97, 45, 45, 0.4);
   font-size: 14px;
   z-index: 999;
@@ -363,7 +416,7 @@ body {
   height: 410px;
   position: relative;
   overflow: hidden;
-  background-color: #fff9e1;
+  background-color: var(--primary-player-background-b);
 }
 
 .playback_blur {
@@ -405,7 +458,7 @@ body {
   text-align: center;
   padding: 10px 10px, 10px, 10px;
   transition: all 0.3s ease;
-  color: rgb(56, 50, 50);
+  color: var(--primary-player-extras-icon);
   font-size: 20px;
 }
 
@@ -447,13 +500,13 @@ body {
 .playback_info .title {
   font-size: 30px;
   display: inline;
-  color: #252120;
+  color: var(--primary-player-title-artist);
 }
 .playback_info .artist {
   margin-top: 14px;
   font-size: 20px;
   opacity: 0.34;
-  color: #252120;
+  color: var(--primary-player-title-artist);
 }
 
 .playback_btn_wrapper {
@@ -477,7 +530,7 @@ body {
   left: 10px;
   top: 300px;
   mix-blend-mode: color-burn;
-  color: #131111;
+  color: var(--primary-player-playback-timeline);
 }
 
 .playback_timeline_start-time, .playback_timeline_end-time {
@@ -500,7 +553,7 @@ body {
 .playback_timeline_slider .slider_base {
   width: 100%;
   height: 2px;
-  background-color: rgba(37, 33, 32, 0.12);
+  background-color: var(--primary-header-back);
   border-radius: 2px;
   position: absolute;
   top: 12px;
@@ -510,7 +563,7 @@ body {
   transform-origin: 0 0;
   width: 100%;
   height: 2px;
-  background-color: rgba(37, 33, 32, 0.5);
+  background-color: var(--primary-header-back);
   border-radius: 2px;
   position: absolute;
   top: 12px;
@@ -519,7 +572,7 @@ body {
   transform: matrix(1, 0, 0, 1, 37, 0);
   width: 12px;
   height: 12px;
-  background-color: #252120;
+  background-color: var(--primary-listners-title-span);
   border-radius: 50%;
   position: absolute;
   top: 7px;
@@ -556,12 +609,12 @@ body {
 }
 .list .info .title {
   font-size: 15px;
-  color: #999;
+  color: var(--primary-player-list-title) #999;
 }
 .list .info .artist {
   font-size: 13px;
   text-transform: uppercase;
-  color: #bbb;
+  color: var(--primary-player-list-artist) #bbb;
 }
 
 .list_item:hover {
@@ -646,7 +699,7 @@ body {
   height: 2px;
   border-radius: 2px;
   margin: 0 30px;
-  background-color: #252120;
+  background-color: var(--primary-listners-title-span);
 }
 
 .curator_list {
@@ -722,11 +775,11 @@ body {
 }
 .curator_list_content .info .name, .curator_list_content .info .desc {
   font-size: 13px;
-  color: #f1dfdd;
+  color: var(--primary-listners-users-title);
   clear: both;
   position: relative;
   padding: 0 3px 1px 3px;
-  background-color: #252120;
+  background-color: var(--primary-listners-title-span);
   display: inline-block;
   float: left;
   clear: both;
@@ -777,7 +830,6 @@ body {
   position: fixed;
   z-index: 103;
 }
-
 
 .anxiety {
   will-change: transform;
@@ -869,6 +921,7 @@ body {
 
 
 /* Volume css */
+/* *********************************** */
 .volumeDropDown{
   position: absolute;
   right: 54px;
@@ -958,6 +1011,7 @@ body {
 
 
 /* playlist select and add to playlist */
+/* *********************************** */
 .playliststyle {
   position: absolute;
   left: -170px;
@@ -1010,3 +1064,6 @@ body {
 .checkbox-menu li.active label:focus {
   background-color: #b8b8ff;
 }
+
+/* Audio visualizer spectrum */
+/* *********************************** */
