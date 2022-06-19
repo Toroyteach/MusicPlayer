@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import '../assets/Users/style.css';
 import $ from 'jquery';
 import { gsap, Power2, Expo, Elastic } from 'gsap';
+// import { Toast, Button } from 'react-bootstrap';
 
 // components
 import MainPlayer from './main-music-components/MainPlayer';
@@ -13,8 +14,23 @@ import Visualizer from './sub-components/Visualizer';
 import Astronomy from './child-components/Astronomy';
 import CalmAnxiety from './child-components/CalmAnxiety';
 import OnlineListeners from './child-components/OnlineListeners';
+import Weather from './main-music-components/Weather';
 
 export default class Home extends PureComponent {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      show: false,
+    };
+
+  }
+
+  //Handles Toast Information of new Music playing
+  updateMusicToast(){
+      this.setState({ show: true })
+  }
 
     //handles play of the music player
     handlePlayAction = () => {
@@ -157,7 +173,7 @@ export default class Home extends PureComponent {
 
                 {/* Weather 3D Canvas Component */}
                 <div>
-                  
+                  <Weather/>
                 </div>
 
                 {/* Waves and Audio Soectryum Visualizer Canvas Component */}
@@ -235,8 +251,24 @@ export default class Home extends PureComponent {
                     <Astronomy/>
               </div>
 
+                {/* <Toast onClose={() => this.setState({ show: false })} show={this.state.show} delay={3000} autohide>
+                  <Toast.Header>
+                    <img
+                      src="holder.js/20x20?text=%20"
+                      className="rounded me-2"
+                      alt=""
+                    />
+                    <strong className="me-auto">Bootstrap</strong>
+                    <small>11 mins ago</small>
+                  </Toast.Header>
+                  <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
+                </Toast>
 
+                <Button onClick={() => this.updateMusicToast()}>Show Toast</Button> */}
             </div>
+
+
+
         </div>
     )
   }
