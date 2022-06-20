@@ -31,9 +31,9 @@ function Visualizer() {
                     <div className="wave -three"></div>
                   </div>
 
-                  {/* <div className="custom-spectrum-container">
+                  <div className="custom-spectrum-container">
                     <canvas ref={ canvas }/>
-                  </div> */}
+                  </div>
                   
                 </div>
       </>

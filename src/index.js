@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-//import Home from './components/Home';
+import Home from './components/Home';
 //import Visualizer from './components/sub-components/Visualizer';
-import ClassVisualizerComponent from './components/sub-components/ClassVisualizerComponent';
+//import SampleWeather from './components/main-music-components/SampleWeather';
+//import ClassVisualizerComponent from './components/sub-components/ClassVisualizerComponent';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <ClassVisualizerComponent />
+    <Home />
   </React.StrictMode>
 );
 

@@ -5,7 +5,6 @@ import Song from '../music/audio.mp3';
 
 export default function ClassVisualizerComponent() {
 
-
     //Audio state of item playing
     const [audio] = useState(new Audio(Song));
 
@@ -32,6 +31,7 @@ export default function ClassVisualizerComponent() {
     let bufferLength = useRef();
     let dataArray = useRef();
     let barWidth = useRef();
+
     
     //use effect to load the canavas element
     useEffect(() => {
@@ -63,7 +63,7 @@ export default function ClassVisualizerComponent() {
 
         context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         //console.log(dataArray);
-        console.log(dataArray);
+        //console.log(dataArray);
         analyser.getByteFrequencyData(dataArray);
 
         for (let i = 0; i < bufferLength; i++) {
@@ -89,16 +89,17 @@ export default function ClassVisualizerComponent() {
 
             audio.play();
 
-            audioSource = audioCtx.createMediaElementSource(audio);
-            analyser = audioCtx.createAnalyser();
+            audioSource = audioCtx.createMediaElementSource(audio); //
+            analyser = audioCtx.createAnalyser(); //
             
             audioSource.connect(analyser);
             analyser.connect(audioCtx.destination);
             analyser.fftSize = 128;
             
-            bufferLength = analyser.frequencyBinCount
-            dataArray = new Uint8Array(bufferLength);
-            barWidth = canvasRef.current.width / bufferLength
+            bufferLength = analyser.frequencyBinCount //
+            dataArray = new Uint8Array(bufferLength);//
+            barWidth = canvasRef.current.width / bufferLength//
+            console.log(bufferLength);
 
             requestIdRef.current = requestAnimationFrame(tick);
 
@@ -109,7 +110,7 @@ export default function ClassVisualizerComponent() {
             //cancels the animation if pause button is hit
             cancelAnimationFrame(requestIdRef.current);
             if(context){
-                context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+                //context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
             }
 
         }

@@ -74,7 +74,7 @@ body {
   top: 40%;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
-  /* display: none; */
+  display: none;
 }
 
 .weather-canvas-container {
@@ -266,7 +266,7 @@ body {
   position: fixed;
   background-color: var(--primary-background-nav);
   width: 40vw;
-  min-width: 400px;
+  /* min-width: 400px; */
   height: 100vh;
   z-index: 10;
   box-shadow: 0 30px 80px 0 var(--primary-nav-box-shadow);
