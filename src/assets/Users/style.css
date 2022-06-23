@@ -92,6 +92,7 @@ body {
   position: fixed;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
+  /* display: none; */
 }
 
 .wave {
@@ -413,6 +414,9 @@ body {
   opacity: 0;
 }
 
+
+/* main player editing css starts here */
+/* ************* ************* ******* */
 .player {
   will-change: transform;
   display: none;
@@ -495,6 +499,7 @@ body {
 }
 .btn-LikeIcon {
   top: 160px;
+  cursor: pointer;
 }
 .btn-EqualizerIcon {
   top: 200px;
@@ -513,7 +518,7 @@ body {
   z-index: 10;
   margin: 42px 8px 8px 70px;
   width: 55%;
-  min-width: 100px;
+  /* min-width: 100px; */
   mix-blend-mode: color-burn;
 }
 .playback_info .title {
@@ -670,10 +675,10 @@ body {
 }
 
 .selected {
-  background-color: rgba(224, 186, 171, 0.19);
+  background-color: rgba(89, 84, 82, 0.19);;
 }
 .selected:hover {
-  background-color: rgba(224, 186, 171, 0.3);
+  background-color: rgba(104, 71, 58, 0.3);;
 }
 .selected .info .title {
   color: #252120;
@@ -689,6 +694,9 @@ body {
   display: block;
   opacity: 1;
 }
+
+/* main player editing css ends here */
+/* ************* ************* ******* */
 
 #curator {
   width: 100%;
@@ -1086,3 +1094,217 @@ body {
 
 /* Audio visualizer spectrum */
 /* *********************************** */
+
+
+
+
+
+/* // X-Small devices (portrait phones, less than 576px) small phones upto 575vp */
+@media (max-width: 375.98px) { 
+  .player {
+    width: 300px;
+  }
+
+  .playback_thumb {
+     width: 160px;
+     height: 160px;
+
+  }
+
+  .playback_info {
+    left: 0px;
+    top: 160px;
+
+  }
+
+  .playback_info .title {
+    font-size: 23px;
+  }
+
+  .playback_info .artist {
+    margin-top: -2px;
+    font-size: 14px;
+  }
+
+  .playback_timeline {
+    position: absolute;
+    width: 113%;
+    left: 1px;
+    top: 321px;
+  }
+
+  .playback_btn_wrapper {
+    position: absolute;
+    z-index: 10;
+    mix-blend-mode: color-burn;
+    width: 267px;
+    left: 17px;
+    top: 364px;
+    opacity: 0.6;
+  }
+
+  .playback_extras {
+    position: relative;
+    width: 45px;
+    height: 320px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 3px;
+  }
+
+  .playback_timeline_start-time, .playback_timeline_end-time {
+    font-size: 11px;
+  }
+
+  .list .thumb {
+    width: 40px;
+    height: 40px;
+  }
+
+  .selected .info .title {
+    font-size: 16px;
+  }
+
+  #curator .curator_title_wrapper {
+    margin-top: 25.6vh;
+    width: 99vw;
+    margin-left: 5vw;
+  }
+
+  .curator_list_content {
+    top: 56%;
+  }
+
+
+  /* landing page line */
+  .line {
+    position: fixed;
+    left: 46vw;
+    width: 5px;
+    height: 80px;
+  }
+
+  .mini-player { 
+    height: 30px;
+    top: 17.2vw;
+  }
+
+  .nav {
+    width: 45vw;
+  }
+
+  .nav ul.nav_main {
+    margin-top: 11vh;
+  }
+
+  .nav_link {
+    font-size: 3.8vw;
+  }
+
+
+}
+
+/* // Small devices (landscape phones, less than 768px) smaall devices from 576vp - 767vp */
+@media (max-width: 480.98px) { 
+
+.player {
+  width: 350px;
+}
+
+.playback_thumb {
+   width: 190px;
+   height: 190px;
+
+}
+
+.playback_info {
+  left: 0px;
+  top: 203px;
+
+}
+
+.playback_info .title {
+  font-size: 23px;
+}
+
+.playback_info .artist {
+  margin-top: -2px;
+  font-size: 14px;
+}
+
+.playback_timeline {
+  position: absolute;
+  width: 113%;
+  left: 1px;
+  top: 321px;
+}
+
+.playback_btn_wrapper {
+  position: absolute;
+  z-index: 10;
+  mix-blend-mode: color-burn;
+  width: 300px;
+  left: 17px;
+  top: 364px;
+  opacity: 0.6;
+}
+
+.playback_extras {
+  position: relative;
+  width: 45px;
+  height: 320px;
+  float: right;
+  margin-right: 10px;
+  margin-top: 3px;
+}
+
+.playback_timeline_start-time, .playback_timeline_end-time {
+  font-size: 14px;
+}
+
+.list .thumb {
+  width: 40px;
+  height: 40px;
+}
+
+.selected .info .title {
+  font-size: 16px;
+}
+
+#curator .curator_title_wrapper {
+  margin-top: 20.6vh;
+  width: 93vw;
+  margin-left: 4vw;
+}
+
+.curator_list_content {
+  top: 56%;
+}
+
+
+/* landing page line */
+.line {
+  position: fixed;
+  left: 46vw;
+  width: 5px;
+  height: 80px;
+}
+
+.mini-player { 
+  height: 30px;
+  top: 17.2vw;
+}
+
+.nav {
+  width: 45vw;
+}
+
+.nav ul.nav_main {
+  margin-top: 11vh;
+}
+
+.nav_link {
+  font-size: 4.8vw;
+}
+
+}

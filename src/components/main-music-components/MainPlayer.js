@@ -76,6 +76,37 @@ export default class MainPlayer extends PureComponent {
       $(this).addClass("selected");
     }
 
+    //handles going into full screenmode
+    handleGoingFullScreen = () => {
+      var element = document.querySelector("#wrapper");
+
+      if(element.requestFullscreen()){
+
+        element.requestFullscreen()
+        .then(function() {
+          // element has entered fullscreen mode successfully
+        })
+        .catch(function(error) {
+          // element could not enter fullscreen mode
+          // error message
+          console.log(error.message);
+        });
+
+      } else {
+
+        element.exitFullscreen()
+        .then(function() {
+          // element has entered fullscreen mode successfully
+        })
+        .catch(function(error) {
+          // element could not enter fullscreen mode
+          // error message
+          console.log(error.message);
+        });
+
+      }
+    }
+
 
   render() {
     return (
@@ -143,28 +174,8 @@ export default class MainPlayer extends PureComponent {
                               <i className="btn-heartOff fa fa-heart-o" aria-hidden="true" onClick={this.handleToggleLikeOnClickAction}></i>
                             </div>
 
-                            <div className='icon btn-EqualizerIcon dropdown-toggle' data-toggle="dropdown">
-                              <i className="fa fa-music" aria-hidden="true"></i>
-                              <div className='dropdown-menu equalizerstyle'>
-                                <span className="dropdown-item-text">Choose Equalizer</span>
-                                <ul className="">
-                                  <li className='dropdown-item allow-focus' >
-                                    <label>
-                                      <input type="checkbox"/> Rock
-                                    </label>
-                                  </li>
-                                  <li className='dropdown-item allow-focus' >
-                                    <label>
-                                      <input type="checkbox"/> Bass
-                                    </label>
-                                  </li>
-                                  <li className='dropdown-item allow-focus' >
-                                    <label>
-                                      <input type="checkbox"/> Dance
-                                    </label>
-                                  </li>
-                                </ul>
-                              </div>
+                            <div className='icon btn-EqualizerIcon  '>
+                              <i className="fa fa-expand" aria-hidden="true" onClick={this.handleGoingFullScreen}></i>
                             </div>
 
                             <div className='icon btn-VisualizerIcon dropdown-toggle' data-toggle="dropdown">

@@ -99,7 +99,7 @@ export default function ClassVisualizerComponent() {
             bufferLength = analyser.frequencyBinCount //
             dataArray = new Uint8Array(bufferLength);//
             barWidth = canvasRef.current.width / bufferLength//
-            console.log(bufferLength);
+            //console.log(bufferLength);
 
             requestIdRef.current = requestAnimationFrame(tick);
 

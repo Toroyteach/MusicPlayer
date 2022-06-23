@@ -46,13 +46,13 @@ export default class Home extends PureComponent {
   
       //handles mouse on hover of the text "LISTEN"
       handleMouseEnterTextHoverAction = () => {
-        gsap.to($(".main-btn_wrapper"), 0.5, {duration:0.5,  opacity: 1,  display: "block",  position: "absolute",  scale: 1,  ease: Elastic.easeOut.config(1, 0.75)});
-        gsap.to($(".line"), 0.5, {duration:0.5, css: { scaleY: 0.6, transformOrigin: "center center" }, ease: Expo.easeOut });
+        gsap.to($(".main-btn_wrapper"), {duration:0.5,  opacity: 1,  display: "block",  position: "absolute",  scale: 1,  ease: Elastic.easeOut.config(1, 0.75)});
+        gsap.to($(".line"), {duration:0.5, css: { scaleY: 0.6, transformOrigin: "center center" }, ease: Expo.easeOut });
       }
       
       handleMouseExitTextHoverAction = () => {
-          gsap.to($(".main-btn_wrapper"), 0.5, {duration:0.5,  opacity: 0,  display: "none",  scale: 0,  ease: Elastic.easeOut.config(1, 0.75)});
-          gsap.to($(".line"), 0.5, {duration:0.5, css: { scaleY: 1, transformOrigin: "center center" }, ease: Expo.easeOut });
+          gsap.to($(".main-btn_wrapper"), {duration:0.5,  opacity: 0,  display: "none",  scale: 0,  ease: Elastic.easeOut.config(1, 0.75)});
+          gsap.to($(".line"), {duration:0.5, css: { scaleY: 1, transformOrigin: "center center" }, ease: Expo.easeOut });
       }
   
       //handles the main play button in the middle
@@ -79,7 +79,18 @@ export default class Home extends PureComponent {
         if ($(".nav").css("display") === "none") {
             gsapAction.to(".dim", { duration:0.5, opacity: 1, display: "block", ease: Power2.easeInOut });
             gsapAction.fromTo(".nav", {duration:0.5, xPercent: -100 },  { xPercent: 0, display: "block", ease: Expo.easeOut } );
-            gsapAction.staggerTo( ".nav li", {duration:0.5, opacity: 0, y: 20, ease: Power2.easeInOut }, 0.1 );
+            //gsapAction.staggerTo( ".nav li", {duration:0.5, opacity: 0, y: 20, ease: Power2.easeInOut }, 0.1 );
+
+            gsapAction.to(".nav li", {
+              duration: 0.7,
+              y: 20,
+              ease: Power2.easeInOut,
+              stagger: {
+                grid: [7,15],
+                from: "random",
+                amount: 0.7
+              }
+            });
         
             $(".logo-text").css({ opacity: "0", display: "none" });
 
@@ -139,37 +150,43 @@ export default class Home extends PureComponent {
 
         //handles stopping the dim and also retracting the navigation and other tool bar
         handlePlayerDimAction = () => {
-            gsap.to(".dim", 0.5, { opacity: 0, display: "none", ease: Power2.easeInOut });
-            gsap.to("#player", 0.5, { xPercent: 100, display: "none", ease: Expo.easeOut });
-            gsap.to(".nav", 0.5, { xPercent: -100, display: "none", ease: Power2.easeInOut });
-            gsap.to(".mini-player", 0.5, { x: 0, ease: Expo.easeOut });
+            gsap.to(".dim",{ duration:0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
+            gsap.to("#player",{ duration:0.5, xPercent: 100, display: "none", ease: Expo.easeOut });
+            gsap.to(".nav",{ duration:0.5, xPercent: -100, y:-20, display: "none", ease: Expo.easeOut });
+            gsap.to(".mini-player",{ duration:0.5, x: 0, ease: Expo.easeOut });
           }
 
         // In the Music player navigation
-        handleHomeClickAction = () => {
+        handleHomeClickActionBack = () => {
             //edit this to resume playback from initial play or start  playing..
             let homeToMain = gsap;
+
+            if($("#curator").css("display") === "block"){
+                  homeToMain.fromTo($(".curator_title_wrapper"),{ opacity: 1, x: 0 }, { opacity: 0, x: 30, ease: Power2.easeInOut, duration:0.5 } )
+                  homeToMain.fromTo($(".curator_list"),{ opacity: 1, display: "block", x: 0 },{ opacity: 0, x: 30, display: "none", ease: Power2.easeInOut, duration:0.5 })
+                  homeToMain.to($("#curator"),{ display: "none", ease: Power2.easeInOut, duration:0.4 })
+            }
       
             // Hide
-            $("#astronomy, #anxiety, #curator").css("display", "none");
-            homeToMain.to( $(".back_btn"), 0.5, { display: "none", opacity: 0, x: 15, ease: Power2.easeInOut }, 0.5 );
+            $("#astronomy, #anxiety, .back_btn").css("display", "none");
+            //homeToMain.to( $(".back_btn"),{ display: "none" } );
+
             homeToMain.to( $(".wave-container"), 1, { yPercent: 0, ease: Power2.easeInOut }, 1 );
               // 	Show
-            homeToMain.to(  $(".text-wrap"),  0.5,  { display: "flex", opacity: 1, y: 0, ease: Power2.easeInOut },  1.2 );
+            homeToMain.to(  $(".text-wrap"), { display: "flex", opacity: 1, y: 0, ease: Power2.easeInOut , duration:1.3}, );
             homeToMain.to( $(".logo-text, .line"), 0.5, { display: "block", opacity: 1, y: 0, ease: Power2.easeInOut }, 1.2 );
               // 	Force to redraw by using y translate
-            homeToMain.fromTo( $(".text-wrap .text"), 0.1, { y: 0.1, position: "absolute" }, { y: 0, position: "relative", ease: Power2.easeInOut }, 1.3 );
+            homeToMain.fromTo( $(".text-wrap .text"),{ y: 0.1, position: "absolute" }, { y: 0, position: "relative", ease: Power2.easeInOut, duration:1.3 } );
             homeToMain.to(".nav", {duration:0.5, xPercent: -100, display: "none", ease: Expo.easeOut});
       
             homeToMain.to(".dim", {duration:0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
-              $(".logo-text").css("display", "block");
+            $(".logo-text").css("display", "block");
           }
-
 
   render() {
     return (
         <div>
-            <div className="wrapper">
+            <div className="wrapper" id="wrapper">
 
                 {/* Weather 3D Canvas Component */}
                 <div>
@@ -197,7 +214,7 @@ export default class Home extends PureComponent {
                     <div className="burger"></div>
                   </div>
                   <div className="logo-text" onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>Listeners Playlist</div>
-                  <div className="back_btn" onClick={this.handleHomeClickAction} onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>
+                  <div className="back_btn" onClick={this.handleHomeClickActionBack} onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>
                     <div className="circle"></div>
                     <div className="text">Home</div>
                   </div>
