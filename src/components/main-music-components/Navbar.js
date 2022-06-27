@@ -109,8 +109,7 @@ export default function Navbar() {
     }
     
     return (
-      <div>
-                <div className="nav">
+              <div className="nav">
                   <ul className="nav_main">
                     <li> <a href="#anchor" className="nav_link a" onMouseEnter={handleNavAnchorOnMouseEnterAction} onMouseLeave={handleNavAnchorOnMouseExitAction} onClick={handleHomeClickAction}>Home	</a></li>
                     <li> <a href="#anchor" className="nav_link a" onMouseEnter={handleNavAnchorOnMouseEnterAction} onMouseLeave={handleNavAnchorOnMouseExitAction} onClick={handleListnersClickAction}>Listeners	</a></li>
@@ -118,6 +117,5 @@ export default function Navbar() {
                     <li> <a href="#anchor" className="nav_link a" onMouseEnter={handleNavAnchorOnMouseEnterAction} onMouseLeave={handleNavAnchorOnMouseExitAction} onClick={handleAstronomyClickAction}>Astronomy Pic of Day	</a></li>
                   </ul>
                 </div>
-      </div>
     )
 }

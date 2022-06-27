@@ -185,8 +185,47 @@ export default class Home extends PureComponent {
 
   render() {
     return (
-        <div>
-            <div className="wrapper" id="wrapper">
+            <div className="container_fluid wrapper" id="wrapper">
+
+              <div className='container_fluid'>
+                <div className='row'>
+                  <div className='col-md-6'>
+                    {/* Header for the LIstners and home */}
+                    <div className="header">
+                      <div className="burger-wrapper" onClick={this.handlePlayerMenuAction} onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>
+                        <div className="burger"></div>
+                      </div>
+                      <div className="logo-text" onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>Listeners Playlist</div>
+                      <div className="back_btn" onClick={this.handleHomeClickActionBack} onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>
+                        <div className="circle"></div>
+                        <div className="text">Home</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='col-md-6'>
+                    {/* Mini Music */}
+                    <div className="mini-player">
+                      <div className="track_info_wrapper">
+                        <div className="track_info" onClick={this.handleOpenMiniPlayer} onMouseEnter={this.handleMouseEnterTrackInfo} onMouseLeave={this.handleMouseExitTrackInfo}>
+                          <div className="thumb"></div>
+                          <div className="info">
+                            <div className="title">Magnifico</div>
+                            <div className="artist">Toroyteach</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mini-player_btn_wrapper"><i className="btn-prev fa fa-step-backward" aria-hidden="true"></i>
+                        <div className="btn-switch">
+                          <i className="btn-play fa fa-play" aria-hidden="true" onClick={this.handlePlayAction}></i>
+                          <i className="btn-pause fa fa-pause" aria-hidden="true" onClick={this.handlePauseAction}></i>
+                        </div>
+                        <i className="btn-next fa fa-step-forward" aria-hidden="true"></i>
+                        <i className="btn-open-player fa fa-list" aria-hidden="true" onClick={this.handleOpenMiniPlayer} onMouseEnter={this.handleMiniPlayerOnMouseEnterAction} onMouseLeave={this.handleMiniPlayerOnMouseExitAction}></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
                 {/* Weather 3D Canvas Component */}
                 <div>
@@ -208,43 +247,9 @@ export default class Home extends PureComponent {
                     </div>
                   </div>
                 </div>
-              
-                <div className="header">
-                  <div className="burger-wrapper" onClick={this.handlePlayerMenuAction} onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>
-                    <div className="burger"></div>
-                  </div>
-                  <div className="logo-text" onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>Listeners Playlist</div>
-                  <div className="back_btn" onClick={this.handleHomeClickActionBack} onMouseEnter={this.handleMouseEnterBurgerLogoBackAction} onMouseLeave={this.handleMouseExitBurgerLogoBackAction}>
-                    <div className="circle"></div>
-                    <div className="text">Home</div>
-                  </div>
-                </div>
-
+                
                 {/* Music Page Sub-Navbar Component */}
-                <div>
                     <Navbar/>
-                </div>
-
-                {/* Mini Music */}
-                <div className="mini-player">
-                  <div className="track_info_wrapper">
-                    <div className="track_info" onClick={this.handleOpenMiniPlayer} onMouseEnter={this.handleMouseEnterTrackInfo} onMouseLeave={this.handleMouseExitTrackInfo}>
-                      <div className="thumb"></div>
-                      <div className="info">
-                        <div className="title">Magnifico</div>
-                        <div className="artist">Toroyteach</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mini-player_btn_wrapper"><i className="btn-prev fa fa-step-backward" aria-hidden="true"></i>
-                    <div className="btn-switch">
-                      <i className="btn-play fa fa-play" aria-hidden="true" onClick={this.handlePlayAction}></i>
-                      <i className="btn-pause fa fa-pause" aria-hidden="true" onClick={this.handlePauseAction}></i>
-                    </div>
-                    <i className="btn-next fa fa-step-forward" aria-hidden="true"></i>
-                    <i className="btn-open-player fa fa-list" aria-hidden="true" onClick={this.handleOpenMiniPlayer} onMouseEnter={this.handleMiniPlayerOnMouseEnterAction} onMouseLeave={this.handleMiniPlayerOnMouseExitAction}></i>
-                  </div>
-                </div>
 
               <div className="dim" onClick={this.handlePlayerDimAction}></div>
 
@@ -283,10 +288,6 @@ export default class Home extends PureComponent {
 
                 <Button onClick={() => this.updateMusicToast()}>Show Toast</Button> */}
             </div>
-
-
-
-        </div>
     )
   }
 }

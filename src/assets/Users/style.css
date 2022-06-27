@@ -87,9 +87,9 @@ body {
 }
 
 .wave-container {
-  width: 300vw;
+  width: 290vw;
   height: 100%;
-  position: fixed;
+  position: absolute;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
   /* display: none; */
@@ -146,18 +146,18 @@ body {
 } */
 
 .line {
-  position: fixed;
-  left: 50vw;
+  position: absolute;
+  left: 50%;
   width: 2px;
   height: 80px;
-  top: 24vh;
+  top: 11vh;
   background-color: var(--primary-main-text-span);
 }
 
 .text-wrap {
   position: absolute;
-  width: 100vw;
-  height: 100%;
+  width: 100%;
+  height: 67%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -195,10 +195,10 @@ body {
 }
 
 .header {
-  position: fixed;
-  left: 2.2vw;
-  top: 2.2vw;
-  margin-left: -4px;
+  position: relative;
+  left: 14px;
+  top: 14px;
+  margin-left: 0px;
   margin-top: -6px;
   color: #252120;
   z-index: 103;
@@ -214,6 +214,17 @@ body {
   display: flex;
   align-items: center;
 }
+
+.wrapper{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* top: 100px; */
+  /* left: 136px; */
+  /* border: 2px solid green; */
+  overflow: hidden;
+}
+
 .header .burger {
   width: 20px;
   height: 3px;
@@ -264,7 +275,7 @@ body {
 
 .nav {
   will-change: transform;
-  position: fixed;
+  position: absolute;
   background-color: var(--primary-background-nav);
   width: 40vw;
   /* min-width: 400px; */
@@ -272,6 +283,7 @@ body {
   z-index: 10;
   box-shadow: 0 30px 80px 0 var(--primary-nav-box-shadow);
   display: none;
+  top: 0px;
 }
 
 .nav ul {
@@ -279,7 +291,7 @@ body {
 }
 
 .nav ul.nav_main {
-  margin-top: 20vh;
+  margin-top: 7vh;
 }
 
 .nav ul.nav_sub {
@@ -324,13 +336,14 @@ body {
 
 .mini-player {
   color: var(--primary-mini-player-artist-info);
-  position: fixed;
-  height: 32px;
-  right: 2.2vw;
-  top: 2.2vw;
+  position: relative;
+  height: 1px;
+  right: 0.2vw;
+  top: 1.2vw;
   z-index: 1;
   display: flex;
   align-items: center;
+  float: right;
 }
 
 .track_info_wrapper {
@@ -406,7 +419,8 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: var(--primary-header-back);
-  position: fixed;
+  position: absolute;
+  top: 0px;
   background-color: rgba(54, 41, 38, 0.702);
   z-index: 110;
   display: none;
@@ -701,19 +715,21 @@ body {
 #curator {
   width: 100%;
   height: 100%;
-  position: fixed;
+  position: absolute;
   text-align: center;
   color: #252120;
   display: none;
+  top: 0px;
 }
 #curator .curator_title_wrapper {
-  position: fixed;
+  position: absolute;
   margin-top: 17.55vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
+  top: 0px;
 }
 #curator .curator_title_wrapper span {
   font-size: 2.16vh;
@@ -861,7 +877,7 @@ body {
 .anxiety {
   will-change: transform;
   display: none;
-  position: fixed;
+  position: absolute;
   right: 0;
   top: 0;
   width: 600px;
@@ -905,7 +921,7 @@ body {
 .astronomy {
   will-change: transform;
   display: none;
-  position: fixed;
+  position: absolute;
   right: 0;
   top: 0;
   width: 600px;
@@ -918,7 +934,8 @@ body {
 #astronomy {
   width: 100%;
   height: 100%;
-  position: fixed;
+  position: absolute;
+  top: 0px;
   text-align: center;
   color: #252120;
   display: none;
