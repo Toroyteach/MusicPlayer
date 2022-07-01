@@ -1,6 +1,6 @@
 import React from 'react'
 
-import NeutralUsageStats from '../components/NeutralUsageStats';
+import NeutralUsageStats from './NeutralUsageStats';
 
 export default function AdminDashboard() {
   return (
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
               </div>
               <div className="text-end pt-1">
                 <p className="text-sm mb-0 text-capitalize">Favourited</p>
-                <h4 className="mb-0">23</h4>
+                <h4 className="mb-0">Mamba</h4>
               </div>
             </div>
             <hr className="dark horizontal my-0"/>

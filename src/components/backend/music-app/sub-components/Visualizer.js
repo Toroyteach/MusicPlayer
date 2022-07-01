@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import '../../assets/Users/style.css';
+import '../../../../assets/Users/style.css';
 
-import '../../assets/Users/style.css';
 import Song from '../music/audio.mp3';
 
 // Component that is goung to house Audio Visualizer and the main Waves landing

@@ -8,13 +8,6 @@ import '../../assets/backend/css/material-dashboard.css';
 import '../../assets/backend/css/material-dashboard.css.map';
 import '../../assets/backend/css/style.css';
 
-
-// import '../../assets/backend/js/core/popper.min.js';
-// import '../../assets/backend/js/core/bootstrap.min.js';
-// import '../../assets/backend/js/plugins/perfect-scrollbar.min.js';
-// import '../../assets/backend/js/plugins/smooth-scrollbar.min.js';
-// import '../../assets/backend/js/material-dashboard.js';
-
 import Navbar from './components/Navbar.js';
 import SubNav from './components/SubNav.js';
 import Footer from './components/Footer.js';
@@ -29,9 +22,10 @@ import UsersMessages from './Pages/components/UsersMessages.js';
 import Notifications from './Pages/Notifications.js';
 import AdminProfile from './Pages/components/AdminProfile.js';
 // import UserProfile from './Pages/components/UserProfile.js';
-import HomePlayer from '../../components/Home.js';
+import HomePlayer from './music-app/Home.js';
 
 export default function Home() {
+
   return (
     <>
 
@@ -55,57 +49,13 @@ export default function Home() {
                 <Route path="" element={<UploadMix/>}/>
                 <Route path="" element={<UsersList/>}/> */}
             </Routes>
-            {/* Dashboard */}
-                {/* switch betwwen when user logs in and when admin logs in */}
-                {/* <AdminDashboard/> */}
-                {/* <UserDashboard/> */}
-
-
-            {/* Fanabase Map */}
-                {/* <Map/> */}
-
-            {/* Messages */}
-                {/* users */}
-                {/* <UsersMessages/> */}
-
-                {/* Admin */}
-                {/* <AdminMessages/> */}
-
-            {/* Music */}
-                {/* Music player */}
-
-                {/* Single Item */}
-                {/* <SingleMusic/> */}
-
-            {/* Notifications */}
-                {/* <Notifications/> */}
-
-            {/* Profile */}
-                {/* Admin */}
-                 {/* <AdminProfile/>  */}
-
-                {/* User */}
-                {/* <UserProfile/> */}
-
-            {/* Upload Quiz */}
-                {/* <UploadQuiz/> */}
-
-            {/* Upload Mix */}
-                {/* <UploadMix/> */}
-
-            {/* Users Admin */}
-                {/* <UsersList/> */}
-
-            {/* Sign in */}
-                
-            {/* Sign up */}
 
         </div>
 
         <Footer/>
 
-
     </main>
+
     </>
   )
 }

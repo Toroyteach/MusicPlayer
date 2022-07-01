@@ -1,6 +1,6 @@
 import React from 'react'
 
-import '../../assets/Users/style.css';
+import '../../../../assets/Users/style.css';
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
 
@@ -28,7 +28,7 @@ export default function OnlineListeners() {
             <div className="page" id="curator">
                 <div className="curator_title_wrapper"><span>LP</span>
                   <div className="curator_line"></div>
-                  <div className="curator_title">Listeners</div>
+                  <div className="curator_title">Online Listeners</div>
                   <div className="curator_line"></div><span>14</span>
                 </div>
 

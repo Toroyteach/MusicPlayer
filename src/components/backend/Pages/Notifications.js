@@ -11,13 +11,13 @@ export default function Notifications() {
             </div>
             <div class="card-body p-3 pb-0">
               <div class="alert alert-primary alert-dismissible text-white" role="alert">
-                <span class="text-sm">A simple primary alert with <a href="javascript:;" class="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span class="text-sm">A simple primary alert with <a href="#" class="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="alert alert-secondary alert-dismissible text-white" role="alert">
-                <span class="text-sm">A simple secondary alert with <a href="javascript:;" class="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span class="text-sm">A simple secondary alert with <a href="#" class="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>

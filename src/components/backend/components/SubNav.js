@@ -7,7 +7,7 @@ export default function SubNav() {
       <div className="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li className="breadcrumb-item text-sm"><a className="opacity-5 text-dark" href="javascript:;">Admin</a></li>
+            <li className="breadcrumb-item text-sm"><a className="opacity-5 text-dark" href="#">Admin</a></li>
             <li className="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
           </ol>
           <h6 className="font-weight-bolder mb-0">Dashboard</h6>
@@ -16,12 +16,6 @@ export default function SubNav() {
           <div className="ms-md-auto pe-md-3 d-flex align-items-center">
           </div>
           <ul className="navbar-nav  justify-content-end">
-            <li className="nav-item d-flex align-items-center">
-              <a href="#" className="nav-link text-body font-weight-bold px-0">
-                <i className="fa fa-user me-sm-1"></i>
-                <span className="d-sm-inline d-none">Sign In</span>
-              </a>
-            </li>
             <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="#" className="nav-link text-body p-0" id="iconNavbarSidenav">
                 <div className="sidenav-toggler-inner">
@@ -45,7 +39,7 @@ export default function SubNav() {
                   <a className="dropdown-item border-radius-md" href="javascript:;">
                     <div className="d-flex py-1">
                       <div className="my-auto">
-                        <img src="../assets/img/team-2.jpg" className="avatar avatar-sm  me-3 "/>
+                        <img src="../assets/img/team-2.jpg" className="avatar avatar-sm  me-3 " alt=""/>
                       </div>
                       <div className="d-flex flex-column justify-content-center">
                         <h6 className="text-sm font-weight-normal mb-1">
@@ -63,7 +57,7 @@ export default function SubNav() {
                   <a className="dropdown-item border-radius-md" href="javascript:;">
                     <div className="d-flex py-1">
                       <div className="my-auto">
-                        <img src="../assets/img/small-logos/logo-spotify.svg" className="avatar avatar-sm bg-gradient-dark  me-3 "/>
+                        <img src="../assets/img/small-logos/logo-spotify.svg" alt="" className="avatar avatar-sm bg-gradient-dark  me-3 "/>
                       </div>
                       <div className="d-flex flex-column justify-content-center">
                         <h6 className="text-sm font-weight-normal mb-1">

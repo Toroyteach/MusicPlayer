@@ -12,7 +12,7 @@ export default function Footer() {
                   document.write(new Date().getFullYear())
                 </script>
                 Created with <i className="fa fa-heart"></i> by
-                <a href="https://bellenorthedynamics.com" className="font-weight-bold" target="_blank"> Toroyteach </a>
+                <a href="https://bellenorthedynamics.com" className="font-weight-bold" target="_blank" rel="noreferrer"> Toroyteach </a>
                 for a cool You.
               </div>
             </div>

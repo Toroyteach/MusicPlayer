@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import '../../assets/Users/style.css';
+import '../../../../assets/Users/style.css';
 // import $ from 'jquery';
 
 export default class Astronomy extends PureComponent {

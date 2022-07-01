@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import '../assets/Users/style.css';
+import '../../../assets/Users/style.css';
 import $ from 'jquery';
 import { gsap, Power2, Expo, Elastic } from 'gsap';
 // import { Toast, Button } from 'react-bootstrap';

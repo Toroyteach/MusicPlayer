@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import '../../assets/Users/style.css';
+import '../../../../assets/Users/style.css';
+
 import Song from '../music/audio.mp3';
 
 export default function ClassVisualizerComponent() {

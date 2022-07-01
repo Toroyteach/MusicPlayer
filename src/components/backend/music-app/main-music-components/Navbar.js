@@ -1,6 +1,6 @@
 import React from 'react'
 
-import '../../assets/Users/style.css';
+import '../../../../assets/Users/style.css';
 import $ from 'jquery';
 import { gsap, Power2, Expo } from 'gsap';
 
