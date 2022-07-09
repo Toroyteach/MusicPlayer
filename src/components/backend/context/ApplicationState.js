@@ -1,9 +1,16 @@
 import React, { useReducer, useState, useEffect, useContext, createContext } from 'react'
 
 import appReducer from './appState/appReducer'
-import appContext, { themes } from './appContext'
+import appContext from './appContext'
 
 import { song_list } from '../music-app/music/songsList'
+import Song from '../music-app/music/audio.mp3';
+
+//import cookiee
+import { useCookies } from 'react-cookie';
+
+//librarty from axios to fetch the data
+import axios from 'axios';
 
 import {
   SET_CURRENT_SONG,
@@ -17,6 +24,7 @@ import {
   SET_MAIN_APP_DARKMODE,
   SET_MUSIC_APP_DARKMODE,
   SET_FAVOURITE_MIX_ITEM,
+  SET_ASTRONOMY_PICTURE,
 } from './appState/stateTypes';
 
 import defaultState from './appState/defaultState'
@@ -33,7 +41,19 @@ const ApplicationState = (props) => {
   const playlistSet = (songArr) => dispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: songArr })
 
   // Set playing state of the audio
-  // const togglePlaying = () => dispatch({ type: SET_TOGGLE_PLAYING, data: state.playing ? false : true })
+  //Audio state of item playing
+  const [audio] = useState(new Audio());
+  const togglePlaying = () => {
+
+    //audio.src = Song;
+    //audio.play();
+    dispatch({ type: SET_TOGGLE_PLAYING, data: state.playing ? false : true });
+
+    //state.playing ? audio.play() : audio.pause();
+    //audio.play();
+
+    //console.log(state.playing);
+  }
 
   // Set current song
   const SetCurrent = (id) => dispatch({ type: SET_CURRENT_SONG, data: id })
@@ -126,7 +146,7 @@ const ApplicationState = (props) => {
 
   //handle theme provider for dark mode and light mode
   // const ThemeUpdateContext = useContext();
-
+  const [cookies, setCookie] = useCookies(['darkMode']);
   const [appDarkTheme, setDarkTheme] = useState(false);
   const changeTheme = () => {
 
@@ -136,20 +156,62 @@ const ApplicationState = (props) => {
 
     if(!appDarkTheme){
 
-      console.log(" dark is State ");  
+      //console.log(" dark is State ");  
       setDarkTheme(true);
       document.body.classList.add('dark-version');
-      document.body.classList.add('music-version');
+      localStorage.setItem('theme', 'dark')
 
     } else {
 
-      console.log(" dark is not State ");
+      //console.log(" dark is not State ");
       setDarkTheme(false);
       document.body.classList.remove('dark-version');
-      document.body.classList.remove('music-version');
+      localStorage.removeItem('theme')
     }
 
   }
+
+  //allow the uer to change the visualizer type
+  //const [isVisualizer, setVisualizer] = useState('default')
+  const changeVisualizer = (dataValue) => {
+
+    // console.log(state.spectrumType))
+       dispatch({type: SET_SPECTRUM_TYPE, data: dataValue })
+
+  }
+
+  //load the image only once from Nasa and use reducer to main state of it.
+  const NASA_API_KEY = '';
+  const END_POINT = 'https://api.nasa.gov/planetary/apod?api_key=aQK0MCbvf5b9EN5j1ZSr0mKnxKH3ZAB9VLvhbit0';
+  //const EPOCH_POINT = 'https://api.nasa.gov/EPIC/archive/natural/2019/05/30/png/epic_1b_20190530011359.png?api_key=aQK0MCbvf5b9EN5j1ZSr0mKnxKH3ZAB9VLvhbit0';
+
+  useEffect(() => {
+
+    axios.get(END_POINT)
+        .then(response => {
+          dispatch({ type: SET_ASTRONOMY_PICTURE, data: response.data })
+          //console.log(response.data)
+        })
+        .catch(error => {
+          console.log(error, 'failed to get astronomy pic data data')
+        });
+
+    if(localStorage.getItem('theme') === 'dark'){
+
+      document.body.classList.add('dark-version');
+
+    } else {
+
+      document.body.classList.remove('dark-version');
+
+    }
+
+
+  }, []);
+
+
+  //handle all the request instances of the music player
+  //
 
 
   return (
@@ -161,15 +223,18 @@ const ApplicationState = (props) => {
         repeat: state.repeat,
         random: state.random,
         playing: state.playing,
+        astronomyPicture: state.astronomyPicture,
         nextMix,
         prevMix,
         SetCurrent,
         toggleRandom,
         toggleRepeat,
+        togglePlaying,
         handleEndOfMix,
         playlistSet,
         audio: state.audio,
         changeTheme,
+        changeVisualizer,
         ...state,
         // dispatch
       }}

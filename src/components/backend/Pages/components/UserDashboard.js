@@ -9,16 +9,6 @@ export default function UserDashboard() {
 
   const {
     userData,
-    appSettings:{
-      cumulativeMinutesListened,
-      cumulativeDownloaded,
-      cumulativePlays,
-      cummulativeQuizeAttempts,
-      usersCount,
-      shazamCounts,
-      highestFavourite,
-      cumulativeComments,
-    }
   } = useContext(appContext);
 
 

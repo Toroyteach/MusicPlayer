@@ -36,17 +36,17 @@ export default function OnlineListeners() {
                   <div className="curator_list_content">
                     <div className="connect_btn_wrapper item" onMouseEnter={onEnter} onMouseLeave={onLeave}>
                       <div className="connect_btn">
-                        <div className="connect_btn_text">Connect <br/>SoundCloud</div>
+                        <div className="connect_btn_text">Toroyteach</div>
                       </div>
                     </div>
 
-                    <div className="curator_list_content_desc">Or Select <br/>a Listener of <br/>L.P.			</div>
+                    <div className="curator_list_content_desc">Other <br/>Listeners</div>
 
                     <div className="item" onMouseEnter={onEnter} onMouseLeave={onLeave}>
                       <div className="thumb"></div>
                       <div className="info">
-                        <div className="name">Fantasy</div>
-                        <div className="desc">Sam</div>
+                        <div className="name">Kiplaget</div>
+                        <div className="desc">Mamba</div>
                       </div>
                     </div>
                   </div>

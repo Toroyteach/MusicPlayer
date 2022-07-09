@@ -3,9 +3,9 @@ const userData = {
   firstname: 'Anthony',
   lastname: 'Toroyteach',
   email: 'toroyteach@gmail.com',
-  excerpt: 'I am a deejaywhos likes to do this other jobe which is also being a coder haha. welcome to my experience. Its gonna be an amaizing experience',
+  excerpt: 'I am a deejayw hos likes to do this other thing which is also being a programmer. Checkout what i have in store for you. Welcome to my experience. Its gonna be an amaizing one',
   username: 'Toroyteach',
-  number: '0710516288',
+  number: 'wantoowantwo',
   userImage: 'thisimage',
   activePlaylist: 'Favourite',
   lastSong: 'Angst',
@@ -21,7 +21,7 @@ const userData = {
   totalPlaysCount: 34,
   appDarkMode: false,
   musicAppDarkMode: true,
-  role: 'ADMIN',
+  role: 'USER',
   totalQuizePoints: 10,
   lastQuizDate: 'today',
   history: [
@@ -56,7 +56,7 @@ const userData = {
       "artist": "Imany",
     },
     {
-      "title": "Sexy Bitch",
+      "title": "Sexy Chick",
       "artist": "David Guetta",
     },
   ],
@@ -68,7 +68,7 @@ const userData = {
     },
     {
       "mixItem": "Recesse",
-      "content": "Sexy Chuck but you got tp have tried some loream ipsum so that you can bring up all the logc to your thnking in the dumy text realm",
+      "content": "Sexy Chick but you got to have tried some loream ipsum so that you can bring up all the logc to your thnking in the dumy text realm",
       "dateCreated": "10th July 2022",
     },
     {
@@ -105,11 +105,11 @@ const defaultState = {
   seekTime: 0,
   mainAppTheme: 'default',
   musicAppTheme: 'default',
-  spectrumType: 'default',
   favourite: false,
   audio: null,
   userData,
-  appSettings
+  appSettings,
+  astronomyPicture: '',
 }
 
 export default defaultState

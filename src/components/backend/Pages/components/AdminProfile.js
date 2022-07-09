@@ -5,10 +5,10 @@ import image from "../../../../assets/backend/img/new/apocalypticsunset_pe.png";
 import profileImage from "../../../../assets/backend/img/bruce-mars.jpg"
 
 //user details context
-import appContext, { themes } from '../../context/appContext'
+import appContext from '../../context/appContext'
 
 //import theme update custom hook
-import useThemeUpdate from '../../context/ApplicationState';
+//import useThemeUpdate from '../../context/ApplicationState';
 
 //get the reducer types to help update the applcation states
 import {

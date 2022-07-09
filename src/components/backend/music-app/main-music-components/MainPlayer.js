@@ -7,6 +7,8 @@ import { gsap, Power2, Expo, Elastic } from 'gsap';
 //import necessary files to make state and context consistent
 import appContext from '../../context/appContext'
 
+import Select from 'react-select'
+
 export default function MainPlayer() {
 
   // Global State
@@ -24,7 +26,23 @@ export default function MainPlayer() {
     handleEndOfMix,
     activePlaylist,
     SetCurrent,
+    userData : {
+      activeSpectrum,
+    },
+    changeVisualizer,
   } = useContext(appContext)
+
+  const VisualizerOptions = [
+    {
+      label: "Default",
+      value: "default",
+    },
+    {
+      label: "Bars",
+      value: "bars",
+  
+    },
+  ];
 
   const audio = useRef('audio_tag')
 
@@ -39,10 +57,12 @@ export default function MainPlayer() {
   }
 
   //toggles the audio state to playing from pause or vice
+  //take this method logic to the reducer
   const toggleAudio = () => audio.current.paused ? audio.current.play() : audio.current.pause()
 
   //handles and enables moving the seek to move the audio to desired timeline
   const handleProgress = (e) => {
+    //take this method logic to the reducer
     let compute = (e.target.value * dur) / 100
     setCurrentTime(compute)
     audio.current.currentTime = compute
@@ -51,6 +71,7 @@ export default function MainPlayer() {
   //handle go back 30sec
   const handleback30 = () => {
 
+    //take this method logic to the reducer
     let time = audio.current.currentTime - 30
     setCurrentTime(time)
     audio.current.currentTime = time
@@ -60,6 +81,7 @@ export default function MainPlayer() {
   //handle forward 1 minute
   const handleForward1Minute = () => {
 
+    //take this method logic to the reducer
     let time = audio.current.currentTime + 60
     setCurrentTime(time)
     audio.current.currentTime = time
@@ -101,17 +123,17 @@ export default function MainPlayer() {
   }
 
   //handles play pause button state
-  const [isPlaying, setPlayPause] = useState(playing);
+  //const [isPlaying, setPlayPause] = useState(playing);
   //handles the actual playing and changing of the play pause buttons
   const handlePlayPause = () => {
 
-    if (isPlaying) {
+    if (playing) {
 
       //playing
-      setPlayPause(false)
+      //setPlayPause(false)
       //dispatch({ type: SET_TOGGLE_PLAYING, data: false })
-      //togglePlaying()
-      audio.current.pause()
+      togglePlaying()
+      audio.current.pause() //remove after edittin
 
       gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
       gsap.fromTo($(".btn-play"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, display: "block", scale: 1, ease: Power2.easeInOut });
@@ -120,10 +142,10 @@ export default function MainPlayer() {
     } else {
 
       //paused
-      setPlayPause(true)
+      //setPlayPause(true)
       //dispatch({ type: SET_TOGGLE_PLAYING, data: true })
-      //togglePlaying()
-      audio.current.play()
+      togglePlaying()
+      audio.current.play() //remove after editing
 
       gsap.to($(".btn-play"), { duration: 0.5, x: 20, opacity: 0, scale: 0.3, display: "none", ease: Power2.easeInOut });
       gsap.fromTo($(".btn-pause"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, scale: 1, display: "block", ease: Power2.easeInOut });
@@ -154,29 +176,17 @@ export default function MainPlayer() {
   }
 
   //handle Random icon active or not
-  const [isRandom, setRandom] = useState(random)
+  //const [isRandom, setRandom] = useState(random)
   //handle when user clicks the Random button
   const handleRandomClick = () => {
-
-    if (isRandom) {
-      setRandom(false)
-    } else {
-      setRandom(true)
-    }
 
     toggleRandom()
   }
 
   //handle Replay icon active or not
-  const [isReplay, setReplay] = useState(repeat)
+  //const [isReplay, setReplay] = useState(repeat)
   //handle when user clicks the Replay button
   const handleReplayMixItem = () => {
-
-    if (isReplay) {
-      setReplay(false)
-    } else {
-      setReplay(true)
-    }
 
     toggleRepeat()
   }
@@ -198,17 +208,22 @@ export default function MainPlayer() {
   }
 
   //handle visualizer spectrum choice
-  const [isVisualizer, setVisualizer] = useState("default")
+  const [isVisualizer, setVisualizer] = useState(activeSpectrum)
   //handle when user clicks the Select Playlist button
-  const handleChooseVisualizer = () => {
+  const handleChooseVisualizer = (e) => {
 
-    if (isFavPlaylist != "default") {
+    //console.log(e.target.value);
+    if (e.target.value === "default") {
 
-      setVisualizer('default')
+      //setVisualizer('default')
+      changeVisualizer(e.target.value)
+      //console.log('default');
 
     } else {
 
-      setVisualizer('bars')
+      //setVisualizer('bars')
+      changeVisualizer(e.target.value)
+      //console.log('bars');
 
     }
   }
@@ -246,19 +261,21 @@ export default function MainPlayer() {
             <div className='icon btn-PlaylistIcon dropdown-toggle' data-toggle="dropdown">
               <i className="cursor-pointer fa fa-list-ol" aria-hidden="true"></i>
               <div className='dropdown-menu playliststyle'>
-                <span className="dropdown-item-text">Choose Playlist</span>
-                <ul className="">
-                  <li className='dropdown-item allow-focus selected' >
+                <span className="dropdown-item-text">Choose Visualizer</span>
+                {/* <ul className="">
+                  <li className={'dropdown-item allow-focus ' + (activeSpectrum === 'default' ? 'selected' : '') }>
                     <label>
-                      <option value="1">Default</option>
+                      <option value="1" onClick={handleChooseVisualizer}>Default</option>
                     </label>
                   </li>
-                  <li className='dropdown-item allow-focus' >
+                  <li className={'dropdown-item allow-focus '+ (activeSpectrum === 'bars' ? 'selected' : '') } onClick={handleChooseVisualizer}>
                     <label>
-                      <option value="1">Favourites</option>
+                      <option value="2">Bars</option>
                     </label>
                   </li>
-                </ul>
+                </ul> */}
+
+                <Select className='dropdown-item allow-focus ' options={VisualizerOptions} />
               </div>
             </div>
 

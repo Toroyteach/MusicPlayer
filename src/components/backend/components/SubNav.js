@@ -1,5 +1,8 @@
 import React from 'react'
 
+import messageImage from '../../../assets/backend/img/team-2.jpg'
+import noticeImage from "../../../assets/backend/img/small-logos/logo-spotify.svg"
+
 export default function SubNav() {
   return (
     <>
@@ -39,7 +42,7 @@ export default function SubNav() {
                   <a className="dropdown-item border-radius-md" href="javascript:;">
                     <div className="d-flex py-1">
                       <div className="my-auto">
-                        <img src="../assets/img/team-2.jpg" className="avatar avatar-sm  me-3 " alt=""/>
+                        <img src={messageImage} className="avatar avatar-sm  me-3 " alt=""/>
                       </div>
                       <div className="d-flex flex-column justify-content-center">
                         <h6 className="text-sm font-weight-normal mb-1">
@@ -57,7 +60,7 @@ export default function SubNav() {
                   <a className="dropdown-item border-radius-md" href="javascript:;">
                     <div className="d-flex py-1">
                       <div className="my-auto">
-                        <img src="../assets/img/small-logos/logo-spotify.svg" alt="" className="avatar avatar-sm bg-gradient-dark  me-3 "/>
+                        <img src={noticeImage} alt="" className="avatar avatar-sm bg-gradient-dark  me-3 "/>
                       </div>
                       <div className="d-flex flex-column justify-content-center">
                         <h6 className="text-sm font-weight-normal mb-1">

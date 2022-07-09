@@ -21,6 +21,7 @@ import {
   SET_SHOW_OTHERS_COMMENTS,
   SET_ALLOW_RANDOM_QUIZ,
   SET_ARTIFICIAL_WEATHER,
+  SET_ASTRONOMY_PICTURE,
 
 } from './stateTypes'
 
@@ -52,6 +53,7 @@ export default (state, action) => {
       }
 
     case SET_TOGGLE_PLAYING:
+      console.log(action)
       return {
         ...state,
         playing: action.data,
@@ -66,7 +68,7 @@ export default (state, action) => {
     case SET_SPECTRUM_TYPE:
       return {
         ...state,
-        spectrumType: action.data,
+        userData: { ...state.userData, activeSpectrum: action.data}
       }
 
     case SET_FAVOURITE_MIX_ITEM:
@@ -146,6 +148,12 @@ export default (state, action) => {
         ...state,
         mainAppTheme: action.data,
       }
+
+    case SET_ASTRONOMY_PICTURE:
+        return {
+          ...state,
+          astronomyPicture: action.data,
+        }
 
     default:
       return state

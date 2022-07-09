@@ -4,6 +4,8 @@ import React, { useContext } from 'react'
 //user details context
 import appContext from '../../context/appContext.js'
 
+import imageBadge from '../../../../assets/backend/img/small-logos/logo-xd.svg'
+
 export default function NeutralUsageStats({userData}) {
 
     const {
@@ -152,7 +154,7 @@ export default function NeutralUsageStats({userData}) {
                                             <td>
                                                 <div className="avatar-group mt-2">
                                                     <a href="#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                                                        <img src="../assets/img/small-logos/logo-xd.svg" className="avatar avatar-sm me-3" alt="xd" />
+                                                        <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
                                                     </a>
                                                 </div>
                                             </td>
@@ -168,6 +170,76 @@ export default function NeutralUsageStats({userData}) {
                                                     </div>
                                                     <div className="progress">
                                                         <div className="progress-bar bg-gradient-info w-60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <div>
+                                                        <img src="../assets/img/team-1.jpg" alt="team1" className="avatar avatar-xs rounded-circle" />
+                                                    </div>
+                                                    <div className="d-flex flex-column justify-content-center">
+                                                        <h6 className="mb-0 text-sm">Kiplagat</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="avatar-group mt-2">
+                                                    <a href="#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
+                                                        <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td className="align-middle text-center text-sm">
+                                                <span className="text-xs font-weight-bold"> 35 </span>
+                                            </td>
+                                            <td className="align-middle">
+                                                <div className="progress-wrapper w-75 mx-auto">
+                                                    <div className="progress-info">
+                                                        <div className="progress-percentage">
+                                                            <span className="text-xs font-weight-bold">50%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="progress">
+                                                        <div className="progress-bar bg-gradient-info w-60" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <div>
+                                                        <img src="../assets/img/team-1.jpg" alt="team1" className="avatar avatar-xs rounded-circle" />
+                                                    </div>
+                                                    <div className="d-flex flex-column justify-content-center">
+                                                        <h6 className="mb-0 text-sm">Alex</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="avatar-group mt-2">
+                                                    <a href="#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
+                                                        <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td className="align-middle text-center text-sm">
+                                                <span className="text-xs font-weight-bold"> 20 </span>
+                                            </td>
+                                            <td className="align-middle">
+                                                <div className="progress-wrapper w-75 mx-auto">
+                                                    <div className="progress-info">
+                                                        <div className="progress-percentage">
+                                                            <span className="text-xs font-weight-bold">30%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="progress">
+                                                        <div className="progress-bar bg-gradient-info w-60" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                             </td>

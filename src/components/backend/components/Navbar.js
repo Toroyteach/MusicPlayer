@@ -105,7 +105,7 @@ export default function Navbar() {
               <span className="nav-link-text ms-1">Profile</span>
             </CustomLink>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
             <CustomLink to="signin" >
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">login</i>
@@ -120,7 +120,7 @@ export default function Navbar() {
               </div>
               <span className="nav-link-text ms-1">Sign Up</span>
           </CustomLink>
-        </li>
+        </li> */}
         <li className="nav-item">
             <CustomLink to="/logout" >
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">

@@ -163,7 +163,7 @@ export default class Home extends PureComponent {
                   <div className="track_info">
                     <div className="thumb"></div>
                     <div className="info">
-                      <div className="title">Magnifico</div>
+                      <div className="title">QuePasa</div>
                       <div className="artist">Toroyteach</div>
                     </div>
                   </div>

@@ -5,6 +5,9 @@ import { gsap, Power2 } from 'gsap';
 
 //import necessary files to make state and context consistent
 import appContext from '../context/appContext.js'
+import Song from '../music-app/music/audio.mp3';
+
+import '../../../assets/backend/css/style.css';
 
 //import the reducer function states to make consistent states
 import {
@@ -26,7 +29,7 @@ export default function Footer() {
     playing,
     activePlaylist,
     handleEndOfMix,
-    dispatch,
+    togglePlaying,
   } = useContext(appContext)
 
   const audio = useRef('audio_tag')
@@ -34,15 +37,20 @@ export default function Footer() {
   //handles play pause button state
   const [isPlaying, setPlayPause] = useState(playing);
 
+        //Audio state of item playing
+        const [audio2] = useState(new Audio(Song));
+
   //handles the actual playing and changing of the play pause buttons
-  const togglePlaying = () => {
+  const changeAudioPlaying = () => {
 
-    if (isPlaying) {
+    if (playing) {
 
+      //audio2.play()
       //playing
-      setPlayPause(false)
-      dispatch({ type: SET_TOGGLE_PLAYING, data: false })
-      audio.current.pause()
+      //setPlayPause(false)
+      //dispatch({ type: SET_TOGGLE_PLAYING, data: false })
+      togglePlaying()
+      //audio.current.pause()
 
       gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
       gsap.fromTo($(".btn-play"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, display: "block", scale: 1, ease: Power2.easeInOut });
@@ -51,9 +59,10 @@ export default function Footer() {
     } else {
 
       //paused
-      setPlayPause(true)
-      dispatch({ type: SET_TOGGLE_PLAYING, data: true })
-      audio.current.play()
+      //setPlayPause(true)
+      //dispatch({ type: SET_TOGGLE_PLAYING, data: true })
+      togglePlaying()
+      //audio.current.play()
 
       gsap.to($(".btn-play"), { duration: 0.5, x: 20, opacity: 0, scale: 0.3, display: "none", ease: Power2.easeInOut });
       gsap.fromTo($(".btn-pause"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, scale: 1, display: "block", ease: Power2.easeInOut });
@@ -92,10 +101,10 @@ export default function Footer() {
                 <div className="track_info_wrapper">
                   <div className="track_info">
                     <div className="thumb"></div>
-                    <div className="info">
-                      <div className="title">Magnifico</div>
-                      <div className="artist">Toroyteach</div>
-                    </div>
+                      <div className="info">
+                        <div className="title">{activePlaylist[currentSong].title}</div>
+                        <div className="artist">{activePlaylist[currentSong].artistName}</div>
+                      </div>
                   </div>
                 </div>
 
@@ -103,7 +112,7 @@ export default function Footer() {
 
                   <i className="btn-prev fa fa-step-backward" aria-hidden="true" onClick={prevMix}></i>
 
-                  <div className="btn-switch" onClick={togglePlaying}>
+                  <div className="btn-switch" onClick={changeAudioPlaying}>
                     <i className="btn-play fa fa-play" aria-hidden="true"></i>
                     <i className="btn-pause fa fa-pause" aria-hidden="true" ></i>
                   </div>

@@ -5,7 +5,7 @@ export const SET_TOGGLE_REPEAT = false
 export const SET_TOGGLE_PLAYING = false
 export const SET_ACTIVE_PLAYLIST_ARRAY = 'Default'
 export const SET_RECENT_SEEK_TIME = '0'
-export const SET_SPECTRUM_TYPE = 'Default'
+export const SET_SPECTRUM_TYPE = ''
 export const SET_FAVOURITE_MIX_ITEM = false
 
 //Main Application theme states
@@ -28,3 +28,6 @@ export const SET_SHOW_MY_ONLINE_STATUS = false
 export const SET_SHOW_OTHERS_COMMENTS = false
 export const SET_ALLOW_RANDOM_QUIZ = false
 export const SET_ARTIFICIAL_WEATHER = false
+
+//some basic global states
+export const SET_ASTRONOMY_PICTURE = [];
