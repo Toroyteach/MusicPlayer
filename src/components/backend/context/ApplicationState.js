@@ -45,12 +45,21 @@ const ApplicationState = (props) => {
   const [audio] = useState(new Audio());
   const togglePlaying = () => {
 
-    //audio.src = Song;
+    audio.src = Song;
     //audio.play();
-    dispatch({ type: SET_TOGGLE_PLAYING, data: state.playing ? false : true });
+    if(!state.playing){
 
-    //state.playing ? audio.play() : audio.pause();
-    //audio.play();
+      dispatch({ type: SET_TOGGLE_PLAYING, data:  true });
+      audio.play();
+      
+    } else {
+
+      dispatch({ type: SET_TOGGLE_PLAYING, data:  false });
+      audio.pause();
+
+    }
+
+    //state.playing ? audio.pause() : audio.play();
 
     //console.log(state.playing);
   }

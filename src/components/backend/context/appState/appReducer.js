@@ -53,7 +53,7 @@ export default (state, action) => {
       }
 
     case SET_TOGGLE_PLAYING:
-      console.log(action)
+      //console.log(action)
       return {
         ...state,
         playing: action.data,

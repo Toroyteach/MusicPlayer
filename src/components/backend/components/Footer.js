@@ -87,7 +87,7 @@ export default function Footer() {
                 ©
                 Created with <i className="fa fa-heart"></i> by
                 <a href="https://bellenorthedynamics.com" className="font-weight-bold" target="_blank" rel="noreferrer"> Toroyteach </a>
-                for a cool { username }.
+                for a cool YOU.
               </div>
             </div>
 
@@ -129,7 +129,7 @@ export default function Footer() {
                 </div>
 
                 <div className='btn-ShazamIcon' >
-                  <i className="cursor-pointer fa fa-search-plus" aria-hidden="true"></i>
+                  <i className="cursor-pointer fa fa-search-plus" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to Identify"></i>
                 </div>
 
               </div>
