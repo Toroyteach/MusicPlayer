@@ -6,24 +6,26 @@ import Song from '../music/audio.mp3';
 //import necessary files to make state and context consistent
 import appContext from '../../context/appContext';
 
-// Component that is goung to house Audio Visualizer and the main Waves landing
+// Component that is going to house Audio Visualizer and the main Waves landing
 function Visualizer() {
 
   // Global State
   const {
-    userData : {
+    userData: {
       activeSpectrum,
     },
+    playing,
+    audioObject,
   } = useContext(appContext)
 
   //Audio state of item playing
   const [audio] = useState(new Audio(Song));
 
   //playing state hook
-  const [playing, setPlaying] = useState(false);
+  //const [playing, setPlaying] = useState(false);
 
   //toggle between playing and not
-  const toggle = () => setPlaying(!playing);
+  //const toggle = () => setPlaying(!playing);
 
   //context to render the cframe
   const [context, setContext] = useState(null);
@@ -35,7 +37,7 @@ function Visualizer() {
   const requestIdRef = useRef(null);
 
   //Audio Waveform variables
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext);
   let audioSource = useRef();
   let analyser = useRef();
 
@@ -44,7 +46,8 @@ function Visualizer() {
   let barWidth = useRef();
 
   //get the user selected type of visualizer and set default
-  //const [ visualizerType, setVisualizerType ] = useState(activeSpectrum);
+  const [visualizerActive, setVisualizerActive] = useState(false);
+  //console.log(' visualizer active ',visualizerActive)
 
   //use effect to load the canavas element
   useEffect(() => {
@@ -57,12 +60,15 @@ function Visualizer() {
       canvasRef.current.style.height = "100%";
       canvasRef.current.width = canvasRef.current.offsetWidth;
       canvasRef.current.height = canvasRef.current.offsetHeight;
+      // canvasRef.current.style =  "border:2px solid #000000";
 
       if (renderCtx) {
         setContext(renderCtx);
       }
 
     }
+
+
 
   }, [context]);
 
@@ -74,7 +80,6 @@ function Visualizer() {
     let x = 0;
 
     context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    //console.log(dataArray);
     //console.log(dataArray);
     analyser.getByteFrequencyData(dataArray);
 
@@ -99,9 +104,13 @@ function Visualizer() {
 
     if (playing) {
 
-      audio.play();
+      //check if the user eneable to be showwn visualizer in profile settings
+      activeSpectrum ? setVisualizerActive(true) : setVisualizerActive(false)
 
-      audioSource = audioCtx.createMediaElementSource(audio); //
+      //audio.play();
+      //console.log('audio is playing')
+
+      audioSource = audioCtx.createMediaElementSource(audioObject); //
       analyser = audioCtx.createAnalyser(); //
 
       audioSource.connect(analyser);
@@ -117,7 +126,9 @@ function Visualizer() {
 
     } else {
 
-      audio.pause();
+      setVisualizerActive(false)
+      //audio.pause();
+      //console.log('audio is playing')
 
       //cancels the animation if pause button is hit
       cancelAnimationFrame(requestIdRef.current);
@@ -135,43 +146,21 @@ function Visualizer() {
 
     };
 
-  }, [playing, audio]
+  }, [playing, audioObject]
 
   );
-
-  //effect to listen to the audio playing to detect the end of it playing
-  useEffect(() => {
-
-    audio.addEventListener('ended', () => setPlaying(false));
-
-    return () => {
-      audio.removeEventListener('ended', () => setPlaying(false));
-    };
-
-  }, [audio]);
-
-  //test load the active spectrum type
-  // useEffect(() =>{
-  //   console.log(activeSpectrum, '= spectrum Type');
-  // },[activeSpectrum])
 
   return (
     <>
       {/* Waves on the container */}
+      <div className="wave-container" style={{ visibility: visualizerActive ? 'hidden' : '' }}>
+        <div className="wave -one"></div>
+        <div className="wave -two"></div>
+        <div className="wave -three"></div>
+      </div>
 
-      <div>
-        {/* <button onClick={toggle}>{playing ? "Pause" : "Play"}</button> */}
-
-        <div className="wave-container" style={{display: activeSpectrum != 'bars' ? 'block' : 'none' }}>
-          <div className="wave -one"></div>
-          <div className="wave -two"></div>
-          <div className="wave -three"></div>
-        </div>
-
-        <div className="custom-spectrum-container" style={{display: activeSpectrum === 'bars' ? 'block' : 'none' }}>
-          <canvas ref={canvasRef} />
-        </div>
-
+      <div className="custom-spectrum-container" style={{ visibility: visualizerActive ? '' : 'hidden' }}>
+        <canvas ref={canvasRef} />
       </div>
     </>
   )

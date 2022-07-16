@@ -1,9 +1,10 @@
 import { song_list } from '../../music-app/music/songsList'
+//default user state
 const userData = {
   firstname: 'Anthony',
   lastname: 'Toroyteach',
   email: 'toroyteach@gmail.com',
-  excerpt: 'I am a deejayw hos likes to do this other thing which is also being a programmer. Checkout what i have in store for you. Welcome to my experience. Its gonna be an amaizing one',
+  excerpt: 'I am a deejay who also likes to do this other programming thing. Checkout what i have in store for you. Welcome to my experience. Its gonna be an amaizing one',
   username: 'Toroyteach',
   number: 'wantoowantwo',
   userImage: 'thisimage',
@@ -12,15 +13,15 @@ const userData = {
   recentSeekTime: '12:13:48',
   randomPlayback: false,
   replayPlayback: false,
-  activeSpectrum: "default",
-  allowQuize: true,
-  allowWeather: true,
+  activeSpectrum: false,
+  allowQuize: false,
+  allowWeather: false,
   allowComments: false,
   allowOnlineStatus: false,
   totalMinutesListened: 129,
   totalPlaysCount: 34,
   appDarkMode: false,
-  musicAppDarkMode: true,
+  musicAppDarkMode: false,
   role: 'USER',
   totalQuizePoints: 10,
   lastQuizDate: 'today',
@@ -79,12 +80,13 @@ const userData = {
   ],
 };
 
+//default application state settings
 const appSettings = {
-  visualizerActive: true,
+  visualizerActive: false,
   astronomyActive: false,
-  shazamActive: true,
+  shazamActive: false,
   downloadActive: false,
-  anxietyVideos: true,
+  anxietyVideos: false,
   viewOtherUsers: false,
   cumulativeMinutesListened: 13992,
   cumulativeDownloaded: 123,
@@ -94,15 +96,18 @@ const appSettings = {
   usersCount: 34,
   shazamCounts: 13,
   highestFavourite: 'Mamba',
+  language: 'En',
 }
 
 const defaultState = {
   currentSong: 0,
-  activePlaylist: song_list, // should get deafult playlist
+  activePlaylist: song_list,
   repeat: false,
   random: false,
   playing: false,
   seekTime: 0,
+  duration: 0,
+  volume: 0.3,
   mainAppTheme: 'default',
   musicAppTheme: 'default',
   favourite: false,

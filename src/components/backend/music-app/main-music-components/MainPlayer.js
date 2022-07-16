@@ -1,13 +1,21 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 
 import '../../../../assets/Users/style.css';
 import $ from 'jquery';
-import { gsap, Power2, Expo, Elastic } from 'gsap';
+import { gsap, Power2 } from 'gsap';
 
 //import necessary files to make state and context consistent
 import appContext from '../../context/appContext'
 
-import Select from 'react-select'
+//import the reducer function states to make consistent states
+import {
+
+  SET_TOGGLE_RANDOM,
+  SET_TOGGLE_REPEAT,
+  SET_TOGGLE_PLAYING,
+  SET_CURRENT_SONG,
+
+} from '../../context/appState/stateTypes';
 
 export default function MainPlayer() {
 
@@ -15,21 +23,20 @@ export default function MainPlayer() {
   const {
     currentSong,
     songs,
-    nextMix,
-    prevMix,
     repeat,
     random,
     playing,
-    toggleRandom,
-    toggleRepeat,
-    togglePlaying,
-    handleEndOfMix,
     activePlaylist,
     SetCurrent,
-    userData : {
+    stateDispatch,
+    handleForward1Minute,
+    handleback30,
+    currentTime,
+    duration,
+    handleProgress,
+    userData: {
       activeSpectrum,
     },
-    changeVisualizer,
   } = useContext(appContext)
 
   const VisualizerOptions = [
@@ -40,57 +47,19 @@ export default function MainPlayer() {
     {
       label: "Bars",
       value: "bars",
-  
+
     },
   ];
 
   const audio = useRef('audio_tag')
 
-  // self State
-  const [statevolum, setStateVolum] = useState(0.3)
-  const [dur, setDur] = useState(0)
-  const [currentTime, setCurrentTime] = useState(0)
 
   //converts the tome to more understandable format
   const fmtMSS = (s) => {
     return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + ~~s
   }
 
-  //toggles the audio state to playing from pause or vice
-  //take this method logic to the reducer
-  const toggleAudio = () => audio.current.paused ? audio.current.play() : audio.current.pause()
-
-  //handles and enables moving the seek to move the audio to desired timeline
-  const handleProgress = (e) => {
-    //take this method logic to the reducer
-    let compute = (e.target.value * dur) / 100
-    setCurrentTime(compute)
-    audio.current.currentTime = compute
-  }
-
-  //handle go back 30sec
-  const handleback30 = () => {
-
-    //take this method logic to the reducer
-    let time = audio.current.currentTime - 30
-    setCurrentTime(time)
-    audio.current.currentTime = time
-
-  }
-
-  //handle forward 1 minute
-  const handleForward1Minute = () => {
-
-    //take this method logic to the reducer
-    let time = audio.current.currentTime + 60
-    setCurrentTime(time)
-    audio.current.currentTime = time
-
-  }
-
   //handle toggling of full screen
-  const [fullscreen, setFullscreen] = useState(false);
-  //const fullscreenIcon = useRef(fullscreenIcon);
   const handleGoingFullScreen = () => {
 
     var element = document.querySelector("#wrapper");
@@ -122,30 +91,18 @@ export default function MainPlayer() {
     }
   }
 
-  //handles play pause button state
-  //const [isPlaying, setPlayPause] = useState(playing);
   //handles the actual playing and changing of the play pause buttons
   const handlePlayPause = () => {
 
-    if (playing) {
+    stateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
 
-      //playing
-      //setPlayPause(false)
-      //dispatch({ type: SET_TOGGLE_PLAYING, data: false })
-      togglePlaying()
-      audio.current.pause() //remove after edittin
+    if (playing) {
 
       gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
       gsap.fromTo($(".btn-play"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, display: "block", scale: 1, ease: Power2.easeInOut });
 
 
     } else {
-
-      //paused
-      //setPlayPause(true)
-      //dispatch({ type: SET_TOGGLE_PLAYING, data: true })
-      togglePlaying()
-      audio.current.play() //remove after editing
 
       gsap.to($(".btn-play"), { duration: 0.5, x: 20, opacity: 0, scale: 0.3, display: "none", ease: Power2.easeInOut });
       gsap.fromTo($(".btn-pause"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, scale: 1, display: "block", ease: Power2.easeInOut });
@@ -175,21 +132,11 @@ export default function MainPlayer() {
     }
   }
 
-  //handle Random icon active or not
-  //const [isRandom, setRandom] = useState(random)
-  //handle when user clicks the Random button
-  const handleRandomClick = () => {
+  //handle Random icon active or not based on user action
+  const handleRandomClick = () => stateDispatch({ type: SET_TOGGLE_RANDOM, data: random ? false : true })
 
-    toggleRandom()
-  }
-
-  //handle Replay icon active or not
-  //const [isReplay, setReplay] = useState(repeat)
-  //handle when user clicks the Replay button
-  const handleReplayMixItem = () => {
-
-    toggleRepeat()
-  }
+  //handle Replay icon active or not based on user action
+  const handleReplayMixItem = () => stateDispatch({ type: SET_TOGGLE_REPEAT, data: repeat ? false : true })
 
   //handle when user wants to change the playlist
   const [isFavPlaylist, setFavPlaylist] = useState("default")
@@ -207,36 +154,42 @@ export default function MainPlayer() {
     }
   }
 
-  //handle visualizer spectrum choice
-  const [isVisualizer, setVisualizer] = useState(activeSpectrum)
-  //handle when user clicks the Select Playlist button
-  const handleChooseVisualizer = (e) => {
 
-    //console.log(e.target.value);
-    if (e.target.value === "default") {
+  //method to handle dispatching and handling playing the next song
+  const nextMixItem = () => {
 
-      //setVisualizer('default')
-      changeVisualizer(e.target.value)
-      //console.log('default');
+
+    if (currentSong === activePlaylist.length - 1) {
+
+      //SetCurrent(0)
+      stateDispatch({ type: SET_CURRENT_SONG, data: 0 })
+
+    } else if (random) {
+
+      stateDispatch({ type: SET_CURRENT_SONG, data: Math.floor(Math.random() * activePlaylist.length) })
 
     } else {
 
-      //setVisualizer('bars')
-      changeVisualizer(e.target.value)
-      //console.log('bars');
+      stateDispatch({ type: SET_CURRENT_SONG, data: currentSong + 1 })
 
     }
+
   }
 
+  //function to handle dispatching previous song
+  const prevMixItem = () => {
 
+    if (currentSong === 0) {
 
-  useEffect(() => {
-    audio.current.volume = statevolum
-    if (playing) {
-      toggleAudio()
+      stateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
+
+    } else {
+
+      stateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
+
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSong])
+
+  }
 
   return (
     <div>
@@ -262,20 +215,7 @@ export default function MainPlayer() {
               <i className="cursor-pointer fa fa-list-ol" aria-hidden="true"></i>
               <div className='dropdown-menu playliststyle'>
                 <span className="dropdown-item-text">Choose Visualizer</span>
-                {/* <ul className="">
-                  <li className={'dropdown-item allow-focus ' + (activeSpectrum === 'default' ? 'selected' : '') }>
-                    <label>
-                      <option value="1" onClick={handleChooseVisualizer}>Default</option>
-                    </label>
-                  </li>
-                  <li className={'dropdown-item allow-focus '+ (activeSpectrum === 'bars' ? 'selected' : '') } onClick={handleChooseVisualizer}>
-                    <label>
-                      <option value="2">Bars</option>
-                    </label>
-                  </li>
-                </ul> */}
 
-                <Select className='dropdown-item allow-focus ' options={VisualizerOptions} />
               </div>
             </div>
 
@@ -312,28 +252,19 @@ export default function MainPlayer() {
 
           <div className="">
 
-            <audio onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
-              onCanPlay={(e) => setDur(e.target.duration)}
-              onEnded={handleEndOfMix}
-              ref={audio}
-              type="audio/mpeg"
-              preload="true"
-              src={activePlaylist[currentSong].fileUrl}
-            />
-
             <div className="p-2 playback_timeline">
               <div className="playback_timeline_start-time">{fmtMSS(currentTime)}</div>
 
               <div className="playback_timeline_slider">
-                <input onChange={handleProgress} value={dur ? (currentTime * 100) / dur : 0} type="range" name="progresBar" id="prgbar" style={{ width: "100%" }} />
+                <input onChange={handleProgress} value={duration ? (currentTime * 100) / duration : 0} type="range" name="progresBar" id="prgbar" style={{ width: "100%" }} />
               </div>
 
-              <div className="playback_timeline_end-time">{fmtMSS(dur)}</div>
+              <div className="playback_timeline_end-time">{fmtMSS(duration)}</div>
             </div>
 
             <div className="p-2 playback_btn_wrapper">
 
-              <i className="btn-prev fa fa-step-backward" aria-hidden="true" onClick={prevMix}></i>
+              <i className="btn-prev fa fa-step-backward" aria-hidden="true" onClick={prevMixItem}></i>
               <i className="btn-prev fa fa-reply" aria-hidden="true" onClick={handleback30}></i>
 
               <div className="btn-switch" onClick={handlePlayPause}>
@@ -342,7 +273,7 @@ export default function MainPlayer() {
               </div>
 
               <i className="btn-next fa fa-share" aria-hidden="true" onClick={handleForward1Minute}></i>
-              <i className="btn-next fa fa-step-forward" aria-hidden="true" onClick={nextMix}></i>
+              <i className="btn-next fa fa-step-forward" aria-hidden="true" onClick={nextMixItem}></i>
 
             </div>
 

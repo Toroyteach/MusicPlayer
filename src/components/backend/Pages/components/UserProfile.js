@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 
 //sunsset image profile background
 import image from "../../../../assets/backend/img/new/apocalypticsunset_pe.png";
@@ -7,8 +7,6 @@ import profileImage from "../../../../assets/backend/img/bruce-mars.jpg"
 //user details context
 import appContext from '../../context/appContext'
 
-import Select from 'react-select'
-
 //get the reducer types to help update the applcation states
 import {
 
@@ -16,9 +14,16 @@ import {
   SET_SHOW_OTHERS_COMMENTS,
   SET_ALLOW_RANDOM_QUIZ,
   SET_ARTIFICIAL_WEATHER,
-
+  SET_SPECTRUM_TYPE,
   SET_MAIN_APP_DARKMODE,
   SET_MUSIC_APP_DARKMODE,
+  SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
+  SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE,
+  SET_ENABLE_GLOBAL_SHAZAM_SEARCH,
+  SET_ENABLE_GLOBAL_DOWNLOAD_OPTION,
+  SET_ENABLE_GLOBAL_CALM_ANXIETY,
+  SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY,
+
 
 } from '../../context/appState/stateTypes';
 
@@ -42,149 +47,126 @@ export default function UserProfile() {
       username,
       activeSpectrum,
     },
-    changeTheme,
-    changeVisualizer,
+  appSettings: {
+    visualizerActive,
+    astronomyActive,
+    shazamActive,
+    downloadActive,
+    anxietyVideos,
+    viewOtherUsers
+    },
+    stateDispatch,
   } = useContext(appContext)
 
-  const VisualizerOptions = [
-    {
-      label: "Default",
-      value: "default",
-    },
-    {
-      label: "Waves",
-      value: "waves",
-    },
-    {
-      label: "Bars",
-      value: "bars",
-
-    },
-  ];
 
   //update show listeners my online status
-  const updateShowMyOnlineStatus = (dispatch) => ({ type: SET_SHOW_MY_ONLINE_STATUS, data: allowOnlineStatus ? false : true })
+  const updateShowMyOnlineStatus = () => stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: allowOnlineStatus ? false : true })
 
   //update show other listeners my online status
-  const updateShowMyComments = (dispatch) => ({ type: SET_SHOW_OTHERS_COMMENTS, data: allowComments ? false : true })
+  const updateShowMyComments = () => stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: allowComments ? false : true })
 
   //update allow random quizes
-  const updateAllowRandomQuizes = (dispatch) => ({ type: SET_ALLOW_RANDOM_QUIZ, data: allowQuize ? false : true })
+  const updateAllowRandomQuizes = () => stateDispatch({ type: SET_ALLOW_RANDOM_QUIZ, data: allowQuize ? false : true })
 
   //update eneable artificial weather
-  const updateEnableArtificalWeather = (dispatch) => ({ type: SET_ARTIFICIAL_WEATHER, data: allowWeather ? false : true })
+  const updateEnableArtificalWeather = () => stateDispatch({ type: SET_ARTIFICIAL_WEATHER, data: allowWeather ? false : true })
 
   //update app dark mode
-  //const updateEnableAppDarkMode = (dispatch) => ({ type: SET_MAIN_APP_DARKMODE, data: appDarkMode ? false : true })
-  //update app dark mode
-  //const updateEnableAppDarkMode = useThemeUpdate()
-  const [appDarkTheme, setDarkTheme] = useState(appDarkMode);
-  const updateEnableAppDarkMode = () => (
-
-    //{type: SET_MAIN_APP_DARKMODE, data: appDarkTheme ? false : true },
-    appDarkTheme ? setDarkTheme(false) : setDarkTheme(true),
-    changeTheme()
-
-    //console.log(appDarkMode+ " is = button")
-
-  )
+  const updateEnableAppDarkMode = () => stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: appDarkMode ? false : true })
 
   //handle visualizer spectrum choice
-  //const [isVisualizer, setVisualizer] = useState(activeSpectrum)
-  //handle when user clicks the Select Playlist button
-  const handleChooseVisualizer = (e) => {
+  const handleChooseVisualizer = () => stateDispatch({ type: SET_SPECTRUM_TYPE, data: activeSpectrum ? false : true })
 
-    //console.log(e.target.value);
-    if (e.target.value === "default") {
+  //update enable global visualizer
+  const updateEnableGlobalVisualizer = () => stateDispatch({ type: SET_ENABLE_GLOBAL_AUDIO_VISUALIZER, data: visualizerActive ? false : true })
 
-      //setVisualizer('default')
-      changeVisualizer(e.target.value)
-      //console.log('default');
+  //update enable global astronomy picture
+  const updateEnableGlobalAstronomyPic = () => stateDispatch({ type: SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE, data: astronomyActive ? false : true })
 
-    } else {
+  //update enable global shazam requests
+  const updateEnableGlobalShazam = () => stateDispatch({ type: SET_ENABLE_GLOBAL_SHAZAM_SEARCH, data: shazamActive ? false : true })
 
-      //setVisualizer('bars')
-      changeVisualizer(e.target.value)
-      //console.log('bars');
+  //update enable global dowbload option
+  const updateEnableGlobalDownload = () => stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
 
-    }
-  }
+  //update enable anxiety video
+  const updateEnableGlobalAnxietyVideo = () => stateDispatch({ type: SET_ENABLE_GLOBAL_CALM_ANXIETY, data: anxietyVideos ? false : true })
 
-  //update music player dark mode
-  // const updateEnableMusicPlayerDarkMode = () => dispatch({ type: SET_MUSIC_APP_DARKMODE, data: musicAppDarkMode ? false : true })
+  //update enable see other users online status
+  const updateEnableGlobalUsersToViewOtherUsersOnlineActivity = () => stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
 
 
   return (
     <>
-      <div class="container-fluid px-2 px-md-4">
-        <div class="page-header max-height-300 border-radius-xl mt-4">
-          <img src={image} alt="profile_image" class="background_image" />
-          <span class="mask  bg-gradient-primary  opacity-3"></span>
+      <div className="container-fluid px-2 px-md-4">
+        <div className="page-header max-height-300 border-radius-xl mt-4">
+          <img src={image} alt="profile_image" className="background_image" />
+          <span className="mask  bg-gradient-primary  opacity-3"></span>
         </div>
-        <div class="card card-body mx-3 mx-md-4 mt-n6">
-          <div class="row gx-4 mb-2">
-            <div class="col-auto">
-              <div class="avatar avatar-xl position-relative">
-                <img src={profileImage} alt="profile_image" class="w-100 border-radius-lg shadow-sm" />
+        <div className="card card-body mx-3 mx-md-4 mt-n6">
+          <div className="row gx-4 mb-2">
+            <div className="col-auto">
+              <div className="avatar avatar-xl position-relative">
+                <img src={profileImage} alt="profile_image" className="w-100 border-radius-lg shadow-sm" />
               </div>
             </div>
-            <div class="col-auto my-auto">
-              <div class="h-100">
-                <h5 class="mb-1">
+            <div className="col-auto my-auto">
+              <div className="h-100">
+                <h5 className="mb-1">
                   {lastname}
                 </h5>
-                <p class="mb-0 font-weight-normal text-sm">
+                <p className="mb-0 font-weight-normal text-sm">
                   {role}
                 </p>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-              {/* <!-- <div class="nav-wrapper position-relative end-0">
-              <ul class="nav nav-pills nav-fill p-1" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="#" role="tab" aria-selected="true">
-                    <i class="material-icons text-lg position-relative">home</i>
-                    <span class="ms-1">App</span>
+            <div className="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+              {/* <!-- <div className="nav-wrapper position-relative end-0">
+              <ul className="nav nav-pills nav-fill p-1" role="tablist">
+                <li className="nav-item">
+                  <a className="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="#" role="tab" aria-selected="true">
+                    <i className="material-icons text-lg position-relative">home</i>
+                    <span className="ms-1">App</span>
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
-                    <i class="material-icons text-lg position-relative">email</i>
-                    <span class="ms-1">Messages</span>
+                <li className="nav-item">
+                  <a className="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
+                    <i className="material-icons text-lg position-relative">email</i>
+                    <span className="ms-1">Messages</span>
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
-                    <i class="material-icons text-lg position-relative">settings</i>
-                    <span class="ms-1">Settings</span>
+                <li className="nav-item">
+                  <a className="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
+                    <i className="material-icons text-lg position-relative">settings</i>
+                    <span className="ms-1">Settings</span>
                   </a>
                 </li>
               </ul>
             </div> --> */}
             </div>
           </div>
-          <div class="row">
-            <div class="row">
-              <div class="col-12 col-xl-4">
-                <div class="card card-plain h-100">
-                  <div class="card-header pb-0 p-3">
-                    <div class="row">
-                      <div class="col-md-8 d-flex align-items-center">
-                        <h6 class="mb-0">Profile Information</h6>
+          <div className="row">
+            <div className="row">
+              <div className="col-12 col-xl-4">
+                <div className="card card-plain h-100">
+                  <div className="card-header pb-0 p-3">
+                    <div className="row">
+                      <div className="col-md-8 d-flex align-items-center">
+                        <h6 className="mb-0">Profile Information</h6>
                       </div>
-                      <div class="col-md-4 text-end">
+                      <div className="col-md-4 text-end">
                         <a href="javascript:;">
-                          <i class="fas fa-user-edit text-secondary text-sm" data-toggle="modal" data-target="#modalRegisterForm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
+                          <i className="fas fa-user-edit text-secondary text-sm" data-toggle="modal" data-target="#staticBackdrop" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
                         </a>
                       </div>
                     </div>
                   </div>
-                  <div class="card-body p-3">
-                    <p class="text-sm">
+                  <div className="card-body p-3">
+                    <p className="text-sm">
                       {excerpt}
                     </p>
-                    <hr class="horizontal gray-light my-4" />
-                    <ul class="list-group">
+                    <hr className="horizontal gray-light my-4" />
+                    <ul className="list-group">
                       <li className="list-group-item border-0 ps-0 pt-0 text-sm"><strong className="text-dark">Full Name:</strong> &nbsp; {firstname + " " + lastname}</li>
                       <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Mobile:</strong> &nbsp; {number}</li>
                       <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Email:</strong> &nbsp; {email}</li>
@@ -196,59 +178,54 @@ export default function UserProfile() {
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-xl-4">
-                <div class="card card-plain h-100">
-                  <div class="card-header pb-0 p-3">
-                    <h6 class="mb-0">Platform Settings</h6>
+              <div className="col-12 col-xl-4">
+                <div className="card card-plain h-100">
+                  <div className="card-header pb-0 p-3">
+                    <h6 className="mb-0">Platform Settings</h6>
                   </div>
-                  <div class="card-body p-3">
-                    <h6 class="text-uppercase text-body text-xs font-weight-bolder">Account</h6>
-                    <ul class="list-group">
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={allowOnlineStatus} />
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">Show other Listeners my online status</label>
+                  <div className="card-body p-3">
+                    <h6 className="text-uppercase text-body text-xs font-weight-bolder">Account</h6>
+                    <ul className="list-group">
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={allowOnlineStatus} onChange={updateShowMyOnlineStatus}/>
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">Show other Listeners my online status</label>
                         </div>
                       </li>
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={allowComments} />
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault1">Show others my comment on Mix Item</label>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={allowComments} onChange={updateShowMyComments}/>
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault1">Show others my comment on Mix Item</label>
                         </div>
                       </li>
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowQuize} />
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Allow Random Music Quizes</label>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowQuize} onChange={updateAllowRandomQuizes}/>
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Allow Random Music Quizes</label>
                         </div>
                       </li>
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowWeather} />
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Artificial Weather</label>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowWeather} onChange={updateEnableArtificalWeather}/>
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Artificial Weather</label>
                         </div>
                       </li>
                     </ul>
-                    <ul class="list-group">
-                      <li class="list-group-item border-0 px-0">
-                        <div class="row">
+                    <ul className="list-group">
+                      <li className="list-group-item border-0 px-0">
+                        <div className="row">
 
-                          <div class="col-6">
-                            <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">Application Dark Theme</h6>
-                            <div class="form-check form-switch ps-0">
-                              <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" checked={appDarkTheme} onChange={updateEnableAppDarkMode} />
+                          <div className="col-6">
+                            <h6 className="text-uppercase text-body text-xs font-weight-bolder mt-4">Application Dark Theme</h6>
+                            <div className="form-check form-switch ps-0">
+                              <input className="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" checked={appDarkMode} onChange={updateEnableAppDarkMode} />
                             </div>
                           </div>
-                          <div class="col-6">
-                            <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">Music Player Visualizer</h6>
-                            <div class="form-check form-switch ps-0">
-                              {/* <Select className='dropdown-item allow-focus ' value={this.state.fruit} options={VisualizerOptions} onChange={handleChooseVisualizer} /> */}
+                          <div className="col-6">
+                            <h6 className="text-uppercase text-body text-xs font-weight-bolder mt-4">Music Player Visualization</h6>
+                            <div className="form-check form-switch ps-0">
 
-                              <select >
-                                {VisualizerOptions.map((option) => (
-                                  <option value={option.value}>{option.label}</option>
-                                ))}
-                              </select>
+                              <input className="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" checked={activeSpectrum} onChange={handleChooseVisualizer} />
 
                             </div>
                           </div>
@@ -259,10 +236,60 @@ export default function UserProfile() {
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-xl-4">
-
+              <div className="col-12 col-xl-4">
+                <div className="card card-plain h-100">
+                  <div className="card-header pb-0 p-3">
+                    <h6 className="mb-0">Application Settings</h6>
+                  </div>
+                  <div className="card-body p-3">
+                    <ul className="list-group">
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={visualizerActive} onChange={updateEnableGlobalVisualizer} />
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">Enable Audio Visualizer</label>
+                        </div>
+                      </li>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={astronomyActive} onChange={updateEnableGlobalAstronomyPic} />
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault1">Enable Astronmy Picture</label>
+                        </div>
+                      </li>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={shazamActive} onChange={updateEnableGlobalShazam} />
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Shazam search</label>
+                        </div>
+                      </li>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={downloadActive} onChange={updateEnableGlobalDownload} />
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Download options</label>
+                        </div>
+                      </li>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={anxietyVideos} onChange={updateEnableGlobalAnxietyVideo} />
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Calm Anxiety Video</label>
+                        </div>
+                      </li>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={viewOtherUsers} onChange={updateEnableGlobalUsersToViewOtherUsersOnlineActivity} />
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable users to see what others are Listening</label>
+                        </div>
+                      </li>
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" />
+                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Direct Commenting</label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-              <div class="col-12 mt-4">
+              <div className="col-12 mt-4">
 
               </div>
 
@@ -272,54 +299,56 @@ export default function UserProfile() {
       </div>
 
       {/* <!-- Modal to update user details --> */}
-      <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
           <div class="modal-content">
-            <div class="modal-header text-center">
-              <h4 class="modal-title w-100 font-weight-bold">Update Profile</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Update Profile</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body mx-3">
-              <div class="md-form mb-5">
-                <i class="fas fa-user prefix grey-text"></i>
-                <input type="text" id="orangeForm-name" class="form-control validate" />
-                <label data-error="wrong" data-success="right" for="orangeForm-name">Your firstname</label>
-              </div>
-              <div class="md-form mb-5">
-                <i class="fas fa-user prefix grey-text"></i>
-                <input type="text" id="orangeForm-name" class="form-control validate" />
-                <label data-error="wrong" data-success="right" for="orangeForm-name">Your lastname</label>
-              </div>
-              <div class="md-form mb-5">
-                <i class="fas fa-envelope prefix grey-text"></i>
-                <input type="email" id="orangeForm-email" class="form-control validate" />
-                <label data-error="wrong" data-success="right" for="orangeForm-email">Your email</label>
-              </div>
+            <div class="modal-body">
+              <form>
+                <div class="row align-items-center g-3 modalIntro">
+                  <div className="col-auto modalIntro">
+                    <i className="fas fa-user prefix grey-text"></i>
+                    <input type="text" id="orangeForm-name" className="form-control validate" />
+                    <label data-error="wrong" data-success="right" for="orangeForm-name">Your firstname</label>
+                  </div>
+                  <div className="col-auto">
+                    <i className="fas fa-user prefix grey-text"></i>
+                    <input type="text" id="orangeForm-name" className="form-control validate" />
+                    <label data-error="wrong" data-success="right" for="orangeForm-name">Your lastname</label>
+                  </div>
+                  <div className="col-auto">
+                    <i className="fas fa-envelope prefix grey-text"></i>
+                    <input type="email" id="orangeForm-email" className="form-control validate" />
+                    <label data-error="wrong" data-success="right" for="orangeForm-email">Your email</label>
+                  </div>
 
-              <div class="md-form mb-5">
-                <i class="fas fa-envelope prefix grey-text"></i>
-                <input type="email" id="orangeForm-email" class="form-control validate" />
-                <label data-error="wrong" data-success="right" for="orangeForm-email">Your number</label>
-              </div>
+                  <div className="col-auto">
+                    <i className="fas fa-envelope prefix grey-text"></i>
+                    <input type="email" id="orangeForm-email" className="form-control validate" />
+                    <label data-error="wrong" data-success="right" for="orangeForm-email">Your number</label>
+                  </div>
 
-              <div class="md-form mb-5">
-                <i class="fas fa-envelope prefix grey-text"></i>
-                <input type="email" id="orangeForm-email" class="form-control validate" />
-                <label data-error="wrong" data-success="right" for="orangeForm-email">Username</label>
-              </div>
+                  <div className="col-auto">
+                    <i className="fas fa-envelope prefix grey-text"></i>
+                    <input type="email" id="orangeForm-email" className="form-control validate" />
+                    <label data-error="wrong" data-success="right" for="orangeForm-email">Username</label>
+                  </div>
 
-              <div class="md-form mb-4">
-                <i class="fas fa-lock prefix grey-text"></i>
-                <input type="password" id="orangeForm-pass" class="form-control validate" />
-                <label data-error="wrong" data-success="right" for="orangeForm-pass">Your password</label>
-              </div>
-
+                  <div className="col-auto">
+                    <i className="fas fa-lock prefix grey-text"></i>
+                    <input type="password" id="orangeForm-pass" className="form-control validate" />
+                    <label data-error="wrong" data-success="right" for="orangeForm-pass">Your password</label>
+                  </div>
+                </div>
+              </form>
             </div>
-            <div class="modal-footer d-flex justify-content-center">
-              <button class="btn btn-deep-orange">Sign up</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Update</button>
             </div>
           </div>
         </div>

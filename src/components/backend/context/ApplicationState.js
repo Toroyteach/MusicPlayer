@@ -1,27 +1,21 @@
-import React, { useReducer, useState, useEffect, useContext, createContext } from 'react'
+import React, { useReducer, useState, useEffect, createContext } from 'react'
 
 import appReducer from './appState/appReducer'
 import appContext from './appContext'
 
-import { song_list } from '../music-app/music/songsList'
-import Song from '../music-app/music/audio.mp3';
 
 //import cookiee
-import { useCookies } from 'react-cookie';
+//import { useCookies } from 'react-cookie';
 
 //librarty from axios to fetch the data
 import axios from 'axios';
 
 import {
   SET_CURRENT_SONG,
-  SET_TOGGLE_RANDOM,
-  SET_TOGGLE_REPEAT,
   SET_TOGGLE_PLAYING,
   SET_ACTIVE_PLAYLIST_ARRAY,
   SET_RECENT_SEEK_TIME,
-  SET_SPECTRUM_TYPE,
-  SET_FAVOURITE_MIX,
-  SET_MAIN_APP_DARKMODE,
+  SET_MIX_ITEM_DURATION,
   SET_MUSIC_APP_DARKMODE,
   SET_FAVOURITE_MIX_ITEM,
   SET_ASTRONOMY_PICTURE,
@@ -42,38 +36,35 @@ const ApplicationState = (props) => {
 
   // Set playing state of the audio
   //Audio state of item playing
-  const [audio] = useState(new Audio());
-  const togglePlaying = () => {
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext);
+  const [audio] = useState(new Audio(state.activePlaylist[0].fileUrl));
+  //sshsh
+  // let audioSource = useRef();
+  // let analyser = useRef();
+  // let bufferLength = useRef();
+  // const [dataArray, setDataArray] = useState([]);
 
-    audio.src = Song;
-    //audio.play();
-    if(!state.playing){
+  //handles the playing and pausing of the audio object
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const togglePlaying = () =>  {
 
-      dispatch({ type: SET_TOGGLE_PLAYING, data:  true });
-      audio.play();
-      
-    } else {
+    //audio.oncanplay = () => {
+      state.playing ? audio.play() : audio.pause()
+    //}
 
-      dispatch({ type: SET_TOGGLE_PLAYING, data:  false });
-      audio.pause();
-
-    }
-
-    //state.playing ? audio.pause() : audio.play();
-
-    //console.log(state.playing);
   }
 
   // Set current song
-  const SetCurrent = (id) => dispatch({ type: SET_CURRENT_SONG, data: id })
+  const SetCurrent = (id) => {
 
-  // Prev song
-  const prevMix = () => {
-    if (state.currentSong === 0) {
-      SetCurrent(state.activePlaylist.length - 1)
-    } else {
-      SetCurrent(state.currentSong - 1)
-    }
+    console.log(id);
+
+    //add the correct method to fetch the correct file path
+    audio.src = state.activePlaylist[id].fileUrl;
+
+    //dispatch({ type: SET_CURRENT_SONG, data: id })
+
   }
 
   // Handle Next song
@@ -85,7 +76,6 @@ const ApplicationState = (props) => {
     } else if (state.random) {
 
       SetCurrent(Math.floor(Math.random() * state.activePlaylist.length));
-      //console.log(Math.floor(Math.random() * state.activePlaylist.length));
 
     } else {
 
@@ -93,23 +83,9 @@ const ApplicationState = (props) => {
     }
   }
 
-  // Handle Repeat Mix Item
-  const toggleRepeat = () => dispatch({ type: SET_TOGGLE_REPEAT, data: state.repeat ? false : true })
 
   // Handle Random
-  const toggleRandom = () => dispatch({ type: SET_TOGGLE_RANDOM, data: state.random ? false : true })
-
-  // Handle Random
-  const setSpectrum = () => dispatch({ type: SET_SPECTRUM_TYPE, data: state.random ? false : true })
-
-  // Handle Random
-  const setRecentSeekTime = (id) => dispatch({ type: SET_RECENT_SEEK_TIME, data: state.random ? false : true })
-
-  // Handle Random
-  const setFavouriteMix = (id) => dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: state.random ? false : true })
-
-  // Handle Random
-  const setAppDarkTheme = () => dispatch({ type: SET_MAIN_APP_DARKMODE, data: state.random ? false : true })
+  const setFavouriteMix = () => dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: state.random ? false : true })
 
   // Handle Random
   const setMusicAppDarkTheme = () => dispatch({ type: SET_MUSIC_APP_DARKMODE, data: state.random ? false : true })
@@ -140,7 +116,6 @@ const ApplicationState = (props) => {
           type: SET_TOGGLE_PLAYING,
           data: false,
         })
-        console.log('false')
 
         return
 
@@ -153,42 +128,32 @@ const ApplicationState = (props) => {
     }
   }
 
-  //handle theme provider for dark mode and light mode
-  // const ThemeUpdateContext = useContext();
-  const [cookies, setCookie] = useCookies(['darkMode']);
-  const [appDarkTheme, setDarkTheme] = useState(false);
-  const changeTheme = () => {
+  //handles and enables moving the seek to move the audio to desired timeline
+  const handleProgress = (e) => {
 
-    //setTheme(theme);
-
-    //dispatch({type: SET_MAIN_APP_DARKMODE, data: theme })
-
-    if(!appDarkTheme){
-
-      //console.log(" dark is State ");  
-      setDarkTheme(true);
-      document.body.classList.add('dark-version');
-      localStorage.setItem('theme', 'dark')
-
-    } else {
-
-      //console.log(" dark is not State ");
-      setDarkTheme(false);
-      document.body.classList.remove('dark-version');
-      localStorage.removeItem('theme')
-    }
+    let compute = (e.target.value * duration) / 100
+    setCurrentTime(compute)
+    audio.currentTime = compute
 
   }
 
-  //allow the uer to change the visualizer type
-  //const [isVisualizer, setVisualizer] = useState('default')
-  const changeVisualizer = (dataValue) => {
+  //handle go back 30sec
+  const handleback30 = () => {
 
-    // console.log(state.spectrumType))
-       dispatch({type: SET_SPECTRUM_TYPE, data: dataValue })
+    let time = audio.currentTime - 30
+    setCurrentTime(time)
+    audio.currentTime = time
 
   }
 
+  //handle forward 1 minute
+  const handleForward1Minute = () => {
+
+    let time = audio.currentTime + 60
+    setCurrentTime(time)
+    audio.currentTime = time
+
+  }
   //load the image only once from Nasa and use reducer to main state of it.
   const NASA_API_KEY = '';
   const END_POINT = 'https://api.nasa.gov/planetary/apod?api_key=aQK0MCbvf5b9EN5j1ZSr0mKnxKH3ZAB9VLvhbit0';
@@ -199,13 +164,17 @@ const ApplicationState = (props) => {
     axios.get(END_POINT)
         .then(response => {
           dispatch({ type: SET_ASTRONOMY_PICTURE, data: response.data })
-          //console.log(response.data)
         })
         .catch(error => {
-          console.log(error, 'failed to get astronomy pic data data')
+          console.log(error, 'failed to get astronomy pic data')
         });
 
-    if(localStorage.getItem('theme') === 'dark'){
+  }, []);
+
+  //effect to make theme state on load
+  useEffect(() => {
+    
+    if(state.userData.appDarkMode){
 
       document.body.classList.add('dark-version');
 
@@ -215,12 +184,50 @@ const ApplicationState = (props) => {
 
     }
 
+  }, [state.userData.appDarkMode])
 
-  }, []);
+  // effect to handle changing of the play pause states of the application
+  useEffect(() => {
 
+    togglePlaying()
 
-  //handle all the request instances of the music player
-  //
+  }, [state.playing])
+
+  //effect to handle changes to the current song
+  useEffect(() => {
+
+    //create a method to interact with audio object and hit next to play the next item
+    SetCurrent(state.currentSong)
+
+    audio.ontimeupdate = () => { 
+      setCurrentTime( audio.currentTime ) 
+      dispatch({ type: SET_RECENT_SEEK_TIME, data: audio.currentTime })
+    }
+
+    audio.oncanplay = () => { 
+      setDuration( audio.duration ) 
+      dispatch({ type: SET_MIX_ITEM_DURATION, data: audio.duration })
+    }
+
+    audio.onended = () => {
+      handleEndOfMix()
+    }
+
+  }, [state.currentSong])
+
+  //effect to control the volume of the audio player
+  useEffect(() => {
+
+    audio.volume = state.volume
+
+  }, [state.volume])
+
+  //get and set the current language
+  // useEffect(() => {
+
+  //   console.log('languge has changed to ', state.appSettings.language)
+
+  // }, [state.appSettings.language])
 
 
   return (
@@ -233,19 +240,16 @@ const ApplicationState = (props) => {
         random: state.random,
         playing: state.playing,
         astronomyPicture: state.astronomyPicture,
-        nextMix,
-        prevMix,
+        audioObject: audio,
+        volume: state.volume,
+        duration: duration,
+        currentTime: currentTime,
+        stateDispatch: dispatch,
+        handleForward1Minute,
+        handleback30,
+        handleProgress,
         SetCurrent,
-        toggleRandom,
-        toggleRepeat,
-        togglePlaying,
-        handleEndOfMix,
-        playlistSet,
-        audio: state.audio,
-        changeTheme,
-        changeVisualizer,
         ...state,
-        // dispatch
       }}
     >
           {props.children}

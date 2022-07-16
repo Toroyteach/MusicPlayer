@@ -1,5 +1,6 @@
 {
   "name": "my-music-mix-app",
+  "homepage": "https://music.toroyteach.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.1.3",
+    "flag-icons": "^6.6.4",
     "gsap": "^3.10.4",
     "i18next": "^21.8.11",
     "jquery": "^3.6.0",

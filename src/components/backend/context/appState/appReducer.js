@@ -1,3 +1,4 @@
+//imports for the state types to be used in the reducer
 import {
   SET_CURRENT_SONG,
   SET_TOGGLE_RANDOM,
@@ -9,6 +10,9 @@ import {
   SET_FAVOURITE_MIX_ITEM,
   SET_MAIN_APP_DARKMODE,
   SET_MUSIC_APP_DARKMODE,
+  SET_MIX_ITEM_DURATION,
+  SET_VOLUME,
+  SET_GLOBAL_LANGUAGE,
 
   SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
   SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE,
@@ -25,6 +29,7 @@ import {
 
 } from './stateTypes'
 
+//the redcuers state and dispatch methods
 export default (state, action) => {
   switch (action.type) {
 
@@ -53,7 +58,6 @@ export default (state, action) => {
       }
 
     case SET_TOGGLE_PLAYING:
-      //console.log(action)
       return {
         ...state,
         playing: action.data,
@@ -65,95 +69,114 @@ export default (state, action) => {
         seekTime: action.data,
       }
 
-    case SET_SPECTRUM_TYPE:
+    case SET_MIX_ITEM_DURATION:
       return {
         ...state,
-        userData: { ...state.userData, activeSpectrum: action.data}
+        duration: action.data,
+      }
+
+    case SET_VOLUME:
+      return {
+        ...state,
+        volume: action.data,
       }
 
     case SET_FAVOURITE_MIX_ITEM:
       return {
+        // comee back to this one
         ...state,
         favourite: action.data,
+      }
+
+    case SET_SPECTRUM_TYPE:
+      return {
+        ...state,
+        userData: { ...state.userData, activeSpectrum: action.data }
       }
 
     case SET_MAIN_APP_DARKMODE:
       return {
         ...state,
-        mainAppTheme: action.data,
+        userData: { ...state.userData, appDarkMode: action.data }
       }
 
     case SET_MUSIC_APP_DARKMODE:
       return {
         ...state,
-        musicAppTheme: action.data,
-      }
-
-    case SET_ENABLE_GLOBAL_AUDIO_VISUALIZER:
-      return {
-        ...state,
-        mainAppTheme: action.data,
-      }
-
-    case SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE:
-      return {
-        ...state,
-        mainAppTheme: action.data,
-      }
-
-    case SET_ENABLE_GLOBAL_SHAZAM_SEARCH:
-      return {
-        ...state,
-        mainAppTheme: action.data,
-      }
-
-    case SET_ENABLE_GLOBAL_DOWNLOAD_OPTION:
-      return {
-        ...state,
-        mainAppTheme: action.data,
-      }
-
-    case SET_ENABLE_GLOBAL_CALM_ANXIETY:
-      return {
-        ...state,
-        mainAppTheme: action.data,
-      }
-
-    case SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY:
-      return {
-        ...state,
-        mainAppTheme: action.data,
+        userData: { ...state.userData, musicAppDarkMode: action.data }
       }
 
     case SET_SHOW_MY_ONLINE_STATUS:
       return {
         ...state,
-        mainAppTheme: action.data,
+        userData: { ...state.userData, allowOnlineStatus: action.data }
       }
 
     case SET_SHOW_OTHERS_COMMENTS:
       return {
         ...state,
-        mainAppTheme: action.data,
+        userData: { ...state.userData, allowComments: action.data }
       }
 
     case SET_ARTIFICIAL_WEATHER:
       return {
         ...state,
-        mainAppTheme: action.data,
+        userData: { ...state.userData, allowWeather: action.data }
       }
 
     case SET_ALLOW_RANDOM_QUIZ:
       return {
         ...state,
-        mainAppTheme: action.data,
+        userData: { ...state.userData, allowQuize: action.data }
+      }
+
+    case SET_ENABLE_GLOBAL_AUDIO_VISUALIZER:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, visualizerActive: action.data }
+      }
+
+    case SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, astronomyActive: action.data }
+      }
+
+    case SET_ENABLE_GLOBAL_SHAZAM_SEARCH:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, shazamActive: action.data }
+      }
+
+    case SET_ENABLE_GLOBAL_DOWNLOAD_OPTION:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, downloadActive: action.data }
+      }
+
+    case SET_ENABLE_GLOBAL_CALM_ANXIETY:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, anxietyVideos: action.data }
+      }
+
+    case SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, viewOtherUsers: action.data }
+      }
+
+    case SET_GLOBAL_LANGUAGE:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, language: action.data }
       }
 
     case SET_ASTRONOMY_PICTURE:
-        return {
-          ...state,
-          astronomyPicture: action.data,
-        }
+      return {
+        ...state,
+        astronomyPicture: action.data,
+      }
 
     default:
       return state

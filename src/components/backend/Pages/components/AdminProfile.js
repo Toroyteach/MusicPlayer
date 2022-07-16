@@ -57,30 +57,32 @@ export default function AdminProfile() {
       anxietyVideos,
       viewOtherUsers
     },
-    changeTheme,
+    stateDispatch,
+    // changeTheme,
   } = useContext(appContext)
 
   //on change to the check boxes of profile preference
   //update show listeners my online status
-  const updateShowMyOnlineStatus = (dispatch) => ({ type: SET_SHOW_MY_ONLINE_STATUS, data: allowOnlineStatus ? false : true })
+  const updateShowMyOnlineStatus = () => stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: allowOnlineStatus ? false : true })
 
   //update show other listeners my online status
-  const updateShowMyComments = (dispatch) => ({ type: SET_SHOW_OTHERS_COMMENTS, data: allowComments ? false : true })
+  const updateShowMyComments = () => stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: allowComments ? false : true })
 
   //update allow random quizes
-  const updateAllowRandomQuizes = (dispatch) => ({ type: SET_ALLOW_RANDOM_QUIZ, data: allowQuize ? false : true })
+  const updateAllowRandomQuizes = () => stateDispatch({ type: SET_ALLOW_RANDOM_QUIZ, data: allowQuize ? false : true })
 
   //update eneable artificial weather
-  const updateEnableArtificalWeather = (dispatch) => ({ type: SET_ARTIFICIAL_WEATHER, data: allowWeather ? false : true })
+  const updateEnableArtificalWeather = () => stateDispatch({ type: SET_ARTIFICIAL_WEATHER, data: allowWeather ? false : true })
 
   //update app dark mode
   //const updateEnableAppDarkMode = useThemeUpdate()
-  const [appDarkTheme, setDarkTheme] = useState(appDarkMode);
+  //const [appDarkTheme, setDarkTheme] = useState(appDarkMode);
   const updateEnableAppDarkMode = () => ( 
 
     //{type: SET_MAIN_APP_DARKMODE, data: appDarkTheme ? false : true },
-    appDarkTheme ? setDarkTheme(false) : setDarkTheme(true) ,
-    changeTheme()
+    //appDarkTheme ? setDarkTheme(false) : setDarkTheme(true)
+    //changeTheme()
+    stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: appDarkMode ? false : true })
 
     //console.log(appDarkMode+ " is = button")
 
@@ -91,22 +93,22 @@ export default function AdminProfile() {
 
   //admin profile updates
   //update enable global visualizer
-  const updateEnableGlobalVisualizer = (dispatch) => ({ type: SET_ENABLE_GLOBAL_AUDIO_VISUALIZER, data: visualizerActive ? false : true })
+  const updateEnableGlobalVisualizer = () => stateDispatch({ type: SET_ENABLE_GLOBAL_AUDIO_VISUALIZER, data: visualizerActive ? false : true })
 
   //update enable global astronomy picture
-  const updateEnableGlobalAstronomyPic = (dispatch) => ({ type: SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE, data: astronomyActive ? false : true })
+  const updateEnableGlobalAstronomyPic = () => stateDispatch({ type: SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE, data: astronomyActive ? false : true })
 
   //update enable global shazam requests
-  const updateEnableGlobalShazam = (dispatch) => ({ type: SET_ENABLE_GLOBAL_SHAZAM_SEARCH, data: shazamActive ? false : true })
+  const updateEnableGlobalShazam = () => stateDispatch({ type: SET_ENABLE_GLOBAL_SHAZAM_SEARCH, data: shazamActive ? false : true })
 
   //update enable global dowbload option
-  const updateEnableGlobalDownload = (dispatch) => ({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
+  const updateEnableGlobalDownload = () => stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
 
   //update enable anxiety video
-  const updateEnableGlobalAnxietyVideo = (dispatch) => ({ type: SET_ENABLE_GLOBAL_CALM_ANXIETY, data: anxietyVideos ? false : true })
+  const updateEnableGlobalAnxietyVideo = () => stateDispatch({ type: SET_ENABLE_GLOBAL_CALM_ANXIETY, data: anxietyVideos ? false : true })
 
   //update enable see other users online status
-  const updateEnableGlobalUsersToViewOtherUsersOnlineActivity = (dispatch) => ({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
+  const updateEnableGlobalUsersToViewOtherUsersOnlineActivity = () => stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
 
 
   return (
@@ -233,7 +235,7 @@ export default function AdminProfile() {
                           <div className="col-6">
                             <h6 className="text-uppercase text-body text-xs font-weight-bolder mt-4">Application Dark Theme</h6>
                             <div className="form-check form-switch ps-0">
-                              <input className="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" checked={appDarkTheme} onChange={updateEnableAppDarkMode} />
+                              <input className="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" checked={appDarkMode} onChange={updateEnableAppDarkMode} />
                             </div>
                           </div>
                           <div className="col-6">

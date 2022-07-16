@@ -5,15 +5,18 @@ import React, { useContext } from 'react'
 import appContext from '../../context/appContext.js'
 
 import imageBadge from '../../../../assets/backend/img/small-logos/logo-xd.svg'
+import userImageTable from '../../../../assets/backend/img/team-1.jpg'
 
 export default function NeutralUsageStats({userData}) {
 
     const {
-        comments,
-        history,
-        shazam,
-        favourite,
-    } = userData;
+        userData : {
+            comments,
+            history,
+            shazam,
+            favourite,
+        },
+      } = useContext(appContext);
 
 
     return (
@@ -144,7 +147,7 @@ export default function NeutralUsageStats({userData}) {
                                             <td>
                                                 <div className="d-flex px-2 py-1">
                                                     <div>
-                                                        <img src="../assets/img/team-1.jpg" alt="team1" className="avatar avatar-xs rounded-circle" />
+                                                        <img src={userImageTable} alt="team1" className="avatar avatar-xs rounded-circle" />
                                                     </div>
                                                     <div className="d-flex flex-column justify-content-center">
                                                         <h6 className="mb-0 text-sm">Toroyteach</h6>
@@ -179,7 +182,7 @@ export default function NeutralUsageStats({userData}) {
                                             <td>
                                                 <div className="d-flex px-2 py-1">
                                                     <div>
-                                                        <img src="../assets/img/team-1.jpg" alt="team1" className="avatar avatar-xs rounded-circle" />
+                                                        <img src={userImageTable} alt="team1" className="avatar avatar-xs rounded-circle" />
                                                     </div>
                                                     <div className="d-flex flex-column justify-content-center">
                                                         <h6 className="mb-0 text-sm">Kiplagat</h6>
@@ -214,7 +217,7 @@ export default function NeutralUsageStats({userData}) {
                                             <td>
                                                 <div className="d-flex px-2 py-1">
                                                     <div>
-                                                        <img src="../assets/img/team-1.jpg" alt="team1" className="avatar avatar-xs rounded-circle" />
+                                                        <img src={userImageTable} alt="team1" className="avatar avatar-xs rounded-circle" />
                                                     </div>
                                                     <div className="d-flex flex-column justify-content-center">
                                                         <h6 className="mb-0 text-sm">Alex</h6>

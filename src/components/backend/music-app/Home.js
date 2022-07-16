@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { useContext } from 'react'
 
 import '../../../assets/Users/style.css';
 import $ from 'jquery';
@@ -14,37 +14,32 @@ import Visualizer from './sub-components/Visualizer';
 import Astronomy from './child-components/Astronomy';
 import CalmAnxiety from './child-components/CalmAnxiety';
 import OnlineListeners from './child-components/OnlineListeners';
-import Weather from './main-music-components/Weather';
+// import Weather from './main-music-components/Weather';
 
-export default class Home extends PureComponent {
+import appContext from '../context/appContext'
 
-  constructor(props) {
-    super(props);
+export default function Home() {
 
-    this.state = {
-      show: false,
-    };
+  // Global State
+  const {
+    activePlaylist,
+    currentSong
+  } = useContext(appContext)
 
-  }
-
-  //Handles Toast Information of new Music playing
-  updateMusicToast() {
-    this.setState({ show: true })
-  }
 
   //handles mouse on hover of the text "LISTEN"
-  handleMouseEnterTextHoverAction = () => {
+  const handleMouseEnterTextHoverAction = () => {
     gsap.to($(".main-btn_wrapper"), { duration: 0.5, opacity: 1, display: "block", position: "absolute", scale: 1, ease: Elastic.easeOut.config(1, 0.75) });
     gsap.to($(".line"), { duration: 0.5, css: { scaleY: 0.6, transformOrigin: "center center" }, ease: Expo.easeOut });
   }
 
-  handleMouseExitTextHoverAction = () => {
+  const handleMouseExitTextHoverAction = () => {
     gsap.to($(".main-btn_wrapper"), { duration: 0.5, opacity: 0, display: "none", scale: 0, ease: Elastic.easeOut.config(1, 0.75) });
     gsap.to($(".line"), { duration: 0.5, css: { scaleY: 1, transformOrigin: "center center" }, ease: Expo.easeOut });
   }
 
   //handles the main play button in the middle. use thos to initiate the music quiz
-  handleStartListeningAction = () => {
+  const handleStartListeningAction = () => {
     //edit this to resume playback from initial play or start  playing..
     let homeToMain = gsap;
 
@@ -61,7 +56,7 @@ export default class Home extends PureComponent {
   }
 
   //handles opening of the navigation bar
-  handlePlayerMenuAction = () => {
+  const handlePlayerMenuAction = () => {
     // ===== Toggle the oppening and closing of the users nav bar
     let gsapAction = gsap;
     if ($(".nav").css("display") === "none") {
@@ -94,7 +89,7 @@ export default class Home extends PureComponent {
   }
 
   //handles opening of the mini player playlist
-  handleOpenMiniPlayer = () => {
+  const handleOpenMiniPlayer = () => {
     let gsapAction = gsap;
 
     gsapAction.to(".dim", { duration: 0.5, opacity: 1, display: "block", ease: Power2.easeInOut });
@@ -103,7 +98,7 @@ export default class Home extends PureComponent {
   }
 
   //handles stopping the dim and also retracting the navigation and other tool bar
-  handlePlayerDimAction = () => {
+  const handlePlayerDimAction = () => {
     gsap.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
     gsap.to("#player", { duration: 0.5, xPercent: 100, display: "none", ease: Expo.easeOut });
     gsap.to(".nav", { duration: 0.5, xPercent: -100, y: -20, display: "none", ease: Expo.easeOut });
@@ -111,7 +106,7 @@ export default class Home extends PureComponent {
   }
 
   // In the Music player navigation
-  handleHomeClickActionBack = () => {
+  const handleHomeClickActionBack = () => {
     //edit this to resume playback from initial play or start  playing..
     let homeToMain = gsap;
 
@@ -137,94 +132,86 @@ export default class Home extends PureComponent {
     $(".logo-text").css("display", "block");
   }
 
-  render() {
-    return (
-      <div className="container_fluid wrapper" id="wrapper">
+  return (
+    <div className="container_fluid wrapper" id="wrapper">
 
-        <div className='container_fluid'>
-          <div className='row'>
-            <div className='col-md-6'>
-              {/* Header for the LIstners and home */}
-              <div className="header">
-                <div className="burger-wrapper" onClick={this.handlePlayerMenuAction}>
-                  <div className="burger"></div>
-                </div>
-                <div className="logo-text">Listeners Playlist</div>
-                <div className="back_btn" onClick={this.handleHomeClickActionBack}>
-                  <div className="circle"></div>
-                  <div className="text">Home</div>
-                </div>
+      <div className='container_fluid'>
+        <div className='row'>
+          <div className='col-4'>
+            {/* Header for the LIstners and home */}
+            <div className="header">
+              <div className="burger-wrapper" onClick={handlePlayerMenuAction}>
+                <div className="burger"></div>
+              </div>
+              <div className="back_btn" onClick={handleHomeClickActionBack}>
+                <div className="circle"></div>
+                <div className="text">Home</div>
               </div>
             </div>
-            <div className='col-md-6'>
-              {/* Mini Music */}
-              <div className="mini-player" onClick={this.handleOpenMiniPlayer}>
-                <div className="track_info_wrapper">
-                  <div className="track_info">
-                    <div className="thumb"></div>
-                    <div className="info">
-                      <div className="title">QuePasa</div>
-                      <div className="artist">Toroyteach</div>
-                    </div>
+          </div>
+          <div className='col-8'>
+            {/* Mini Music */}
+            <div className="mini-player" onClick={handleOpenMiniPlayer}>
+              <div className="track_info_wrapper">
+                <div className="track_info">
+                  <div className="thumb"></div>
+                  <div className="info">
+                    <div className="title">{activePlaylist[currentSong].title}</div>
+                    <div className="artist">{activePlaylist[currentSong].artistName}</div>
                   </div>
                 </div>
-
-                <div className="mini-player_btn_wrapper">
-                  <i className="btn-open-player fa fa-list" aria-hidden="true"></i>
-                </div>
-
               </div>
+
+              <div className="mini-player_btn_wrapper">
+                <i className="btn-open-player fa fa-list" aria-hidden="true"></i>
+              </div>
+
             </div>
           </div>
         </div>
-
-        {/* Weather 3D Canvas Component */}
-        <div>
-          <Weather />
-        </div>
-
-        {/* Waves and Audio Soectryum Visualizer Canvas Component */}
-        <div>
-          <Visualizer />
-        </div>
-
-        <div className="line"></div>
-
-        <div className="text-wrap">
-          <div className="text" onMouseEnter={this.handleMouseEnterTextHoverAction} onMouseLeave={this.handleMouseExitTextHoverAction}>
-            <span>L</span><span>I</span><span>S</span><span>T</span><span>E</span><span>N</span>
-            <div className="main-btn_wrapper" onClick={this.handleStartListeningAction}>
-              <i className="main-btn fa fa-play" aria-hidden="true"></i>
-            </div>
-          </div>
-        </div>
-
-        {/* Music Page Sub-Navbar Component */}
-        <Navbar />
-
-        <div className="dim" onClick={this.handlePlayerDimAction}></div>
-
-        {/* Sliding in Music Player Component */}
-        <div>
-          <MainPlayer />
-        </div>
-
-        {/* this section Online Active Listeners Component*/}
-        <div>
-          <OnlineListeners />
-        </div>
-
-        {/* this section will have the calm your anxiety pictures */}
-        <div>
-          <CalmAnxiety />
-        </div>
-
-        {/* this section will host the astronomy picture of the day */}
-        <div>
-          <Astronomy />
-        </div>
-
       </div>
-    )
-  }
+
+      {/* Waves and Audio Soectryum Visualizer Canvas Component */}
+      <div>
+        <Visualizer />
+      </div>
+
+      <div className="line"></div>
+
+      <div className="text-wrap">
+        <div className="text" onMouseEnter={handleMouseEnterTextHoverAction} onMouseLeave={handleMouseExitTextHoverAction}>
+          <span>L</span><span>I</span><span>S</span><span>T</span><span>E</span><span>N</span>
+          <div className="main-btn_wrapper" onClick={handleStartListeningAction}>
+            <i className="main-btn fa fa-play" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+
+      {/* Music Page Sub-Navbar Component */}
+      <Navbar />
+
+      <div className="dim" onClick={handlePlayerDimAction}></div>
+
+      {/* Sliding in Music Player Component */}
+      <div>
+        <MainPlayer />
+      </div>
+
+      {/* this section Online Active Listeners Component*/}
+      <div>
+        <OnlineListeners />
+      </div>
+
+      {/* this section will have the calm your anxiety pictures */}
+      <div>
+        <CalmAnxiety />
+      </div>
+
+      {/* this section will host the astronomy picture of the day */}
+      <div>
+        <Astronomy />
+      </div>
+
+    </div>
+  )
 }
