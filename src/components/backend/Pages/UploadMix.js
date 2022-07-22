@@ -3,107 +3,107 @@ import React from 'react'
 export default function UploadMix() {
   return (
     <>
-    <section className="container py-5">
+      <section className="container py-5">
         <div className="container">
-            
-            <div className="row ">
-                <div className="col">
-                {/* <!-- Name input --> */}
-                    <div className="form-outline">
-                        <input type="text" id="form8Example1" className="form-control" />
-                        <label className="form-label" for="form8Example1">Title</label>
-                    </div>
-                </div>
-                <div className="col">
-                {/* <!-- Email input --> */}
-                    <div className="form-outline">
-                        <input type="text" id="form8Example2" className="form-control" />
-                        <label className="form-label" for="form8Example2">Artist</label>
-                    </div>
-                </div>
-            </div>
-            
-            <hr />
-            <br/>
-        
-            <div className="row">
-                <div className="col">
-                {/* <!-- Name input --> */}
-                    <div className="form-outline">
-                        <input type="number" id="form8Example3" className="form-control" />
-                        <label className="form-label" for="form8Example3">Songs Count</label>
-                    </div>
-                </div>
-                <div className="col">
-                {/* <!-- Name input --> */}
-                    <div className="form-outline">
-                        <input type="number" id="form8Example4" className="form-control" />
-                        <label className="form-label" for="form8Example4">Duration</label>
-                    </div>
-                </div>
-                <div className="col">
-                    {/* <!-- Name input --> */}
-                    <div className="form-outline">
-                        <input type="date" id="form8Example3" className="form-control" />
-                        <label className="form-label" for="form8Example3">Date Created</label>
-                    </div>
-                </div>
-            </div>
 
-            <hr />
-            <br/>
-        
-            <div className="row">
-                <div className="col">
-                    {/* <!-- Name input --> */}
-                    <div className="form-outline">
-                        <textarea className="form-control" id="textAreaExample1" rows="4"></textarea>
-                        <label className="form-label" for="textAreaExample">Description</label>
-                    </div>
-                </div>
-                <div className="col">
-                    {/* <!-- Email input --> */}
-                    <div className="form-outline">
-                        <textarea className="form-control" id="textAreaExample1" rows="4"></textarea>
-                        <label className="form-label" for="textAreaExample">Comments</label>
-                    </div>
-                </div>
+          <div className="row ">
+            <div className="col">
+              {/* <!-- Name input --> */}
+              <div className="form-outline">
+                <input type="text" id="form8Example1" className="form-control" />
+                <label className="form-label" for="form8Example1">Title</label>
+              </div>
             </div>
+            <div className="col">
+              {/* <!-- Email input --> */}
+              <div className="form-outline">
+                <input type="text" id="form8Example2" className="form-control" />
+                <label className="form-label" for="form8Example2">Artist</label>
+              </div>
+            </div>
+          </div>
 
-            <hr />
-            <br/>
-        
-            <div className="row">
-                <div className="col">
-                    {/* <!-- Name input --> */}
-                    <div className="form-outline">
-                        <input type="file" id="form8Example3" className="form-control" />
-                        <label className="form-label" for="form8Example3">Cover Art</label>
-                    </div>
-                </div>
-                <div className="col">
-                {/* <!-- Name input --> */}
-                    <div className="form-outline">
-                        <input type="file" id="form8Example4" className="form-control" />
-                        <label className="form-label" for="form8Example4">Mix Upload</label>
-                    </div>
-                </div>
-            </div>
+          <hr />
+          <br />
 
-            {/* <!-- Submit button --> */}
-            <div className="row">
-                <div className="col-6">
-                    <button type="submit" className="btn btn-primary btn-block mb-4">Upload Mix</button>
-                </div>
-                <div className="col-6">
-                    <button type="submit" className="btn btn-primary btn-block mb-4">Update Mix</button>
-                </div>
+          <div className="row">
+            <div className="col">
+              {/* <!-- Name input --> */}
+              <div className="form-outline">
+                <input type="number" id="form8Example3" className="form-control" />
+                <label className="form-label" for="form8Example3">Songs Count</label>
+              </div>
             </div>
+            <div className="col">
+              {/* <!-- Name input --> */}
+              <div className="form-outline">
+                <input type="number" id="form8Example4" className="form-control" />
+                <label className="form-label" for="form8Example4">Duration</label>
+              </div>
+            </div>
+            <div className="col">
+              {/* <!-- Name input --> */}
+              <div className="form-outline">
+                <input type="date" id="form8Example3" className="form-control" />
+                <label className="form-label" for="form8Example3">Date Created</label>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+          <br />
+
+          <div className="row">
+            <div className="col">
+              {/* <!-- Name input --> */}
+              <div className="form-outline">
+                <textarea className="form-control" id="textAreaExample1" rows="4"></textarea>
+                <label className="form-label" for="textAreaExample">Description</label>
+              </div>
+            </div>
+            <div className="col">
+              {/* <!-- Email input --> */}
+              <div className="form-outline">
+                <textarea className="form-control" id="textAreaExample1" rows="4"></textarea>
+                <label className="form-label" for="textAreaExample">Comments</label>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+          <br />
+
+          <div className="row">
+            <div className="col">
+              {/* <!-- Name input --> */}
+              <div className="form-outline">
+                <input type="file" id="form8Example3" className="form-control" />
+                <label className="form-label" for="form8Example3">Cover Art</label>
+              </div>
+            </div>
+            <div className="col">
+              {/* <!-- Name input --> */}
+              <div className="form-outline">
+                <input type="file" id="form8Example4" className="form-control" />
+                <label className="form-label" for="form8Example4">Mix Upload</label>
+              </div>
+            </div>
+          </div>
+
+          {/* <!-- Submit button --> */}
+          <div className="row">
+            <div className="col-6">
+              <button type="submit" className="btn btn-primary btn-block mb-4">Upload Mix</button>
+            </div>
+            <div className="col-6">
+              <button type="submit" className="btn btn-primary btn-block mb-4">Update Mix</button>
+            </div>
+          </div>
 
         </div>
-    </section>
+      </section>
 
-    <div className="container-fluid py-4">
+      <div className="container-fluid py-4">
         <div className="row">
           <div className="col-12">
             <div className="card my-4">
@@ -129,7 +129,7 @@ export default function UploadMix() {
                         <td>
                           <div className="d-flex px-2 py-1">
                             <div>
-                              <img src="../assets/img/team-2.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user1"/>
+                              <img src="../assets/img/team-2.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
                             </div>
                             <div className="d-flex flex-column justify-content-center">
                               <h6 className="mb-0 text-sm">John Michael</h6>
@@ -157,7 +157,7 @@ export default function UploadMix() {
                         <td>
                           <div className="d-flex px-2 py-1">
                             <div>
-                              <img src="../assets/img/team-3.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user2"/>
+                              <img src="../assets/img/team-3.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user2" />
                             </div>
                             <div className="d-flex flex-column justify-content-center">
                               <h6 className="mb-0 text-sm">Alexa Liras</h6>
@@ -185,7 +185,7 @@ export default function UploadMix() {
                         <td>
                           <div className="d-flex px-2 py-1">
                             <div>
-                              <img src="../assets/img/team-4.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user3"/>
+                              <img src="../assets/img/team-4.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user3" />
                             </div>
                             <div className="d-flex flex-column justify-content-center">
                               <h6 className="mb-0 text-sm">Laurent Perrier</h6>
@@ -216,7 +216,7 @@ export default function UploadMix() {
             </div>
           </div>
         </div>
-    </div>
+      </div>
 
     </>
   )

@@ -23,7 +23,7 @@ export default function Navbar() {
     // 	Force to redraw by using y translate
     homeToMain.fromTo($(".text-wrap .text"), { y: 0.1, position: "absolute" }, { y: 0, position: "relative", ease: Power2.easeInOut, duration: 2.3 });
 
-    homeToMain.to(".nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
+    homeToMain.to(".m-nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
 
     homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
     $(".logo-text").css("display", "block");
@@ -47,7 +47,7 @@ export default function Navbar() {
 
     homeToMain.fromTo($(".curator_list"), { opacity: 0, display: "none", x: 30 }, { opacity: 1, x: 0, display: "block", ease: Power2.easeInOut, duration: 2.0 });
 
-    homeToMain.to(".nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
+    homeToMain.to(".m-nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
 
     homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
   }
@@ -64,13 +64,9 @@ export default function Navbar() {
     // Show
     homeToMain.fromTo($(".back_btn"), { x: 15 }, { display: "flex", opacity: 1, x: 0, ease: Power2.easeInOut, duration: 1 });
 
-    homeToMain.to(".nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
+    homeToMain.to(".m-nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
 
     homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
-
-    //homeToMain.to( $("#astronomy, #curator"),{ duration:0.2, display: "none", opacity: 0, y: -20, ease: Power2.easeInOut });
-
-    // homeToMain.to( $("#anxiety"), {duration:5, display: "block", ease: Power2.easeInOut });
 
     $("#astronomy, #curator").css("display", "none");
 
@@ -90,19 +86,19 @@ export default function Navbar() {
     // Show
     homeToMain.fromTo($(".back_btn"), { x: 15 }, { display: "flex", opacity: 1, x: 0, ease: Power2.easeInOut, duration: 1 });
 
-    homeToMain.to(".nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
+    homeToMain.to(".m-nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
 
     homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
     $("#astronomy").css("display", "block");
   }
 
   return (
-    <div className="nav">
-      <ul className="nav_main">
-        <li> <a href="#anchor" className="nav_link a" onClick={handleHomeClickAction}>Home	</a></li>
-        <li> <a href="#anchor" className="nav_link a" onClick={handleListnersClickAction}>Listeners	</a></li>
-        <li> <a href="#anchor" className="nav_link a" onClick={handleAnxietyClickAction}>Calm Your Anxiety	</a></li>
-        <li> <a href="#anchor" className="nav_link a" onClick={handleAstronomyClickAction}>Astronomy Pic of Day	</a></li>
+    <div className="m-nav">
+      <ul className="m-nav_main">
+        <li> <a href="#anchor" className="m-nav_link a" onClick={handleHomeClickAction}>Home	</a></li>
+        <li> <a href="#anchor" className="m-nav_link a" onClick={handleListnersClickAction}>Listeners	</a></li>
+        <li> <a href="#anchor" className="m-nav_link a" onClick={handleAnxietyClickAction}>Calm Your Anxiety	</a></li>
+        <li> <a href="#anchor" className="m-nav_link a" onClick={handleAstronomyClickAction}>Picture of the Day	</a></li>
       </ul>
     </div>
   )

@@ -7,16 +7,16 @@ import appContext from '../../context/appContext.js'
 import imageBadge from '../../../../assets/backend/img/small-logos/logo-xd.svg'
 import userImageTable from '../../../../assets/backend/img/team-1.jpg'
 
-export default function NeutralUsageStats({userData}) {
+export default function NeutralUsageStats() {
 
     const {
-        userData : {
+        userData: {
             comments,
             history,
             shazam,
             favourite,
         },
-      } = useContext(appContext);
+    } = useContext(appContext);
 
 
     return (
@@ -102,8 +102,8 @@ export default function NeutralUsageStats({userData}) {
                                             <i className="material-icons text-success text-gradient"><svg xmlns="http://www.w3.org/2000/svg" transform="translate(0,-3)" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z" /></svg></i>
                                         </span>
                                         <div className="timeline-content">
-                                            <h6 className="text-dark font-weight-bold mb-0">{ song.title }</h6>
-                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0">{ song.artist }</p>
+                                            <h6 className="text-dark font-weight-bold mb-0">{song.title}</h6>
+                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0">{song.artist}</p>
                                         </div>
                                     </div>
 
@@ -273,9 +273,9 @@ export default function NeutralUsageStats({userData}) {
                                             <i className="material-icons text-success text-gradient"><svg xmlns="http://www.w3.org/2000/svg" transform="translate(0,-3)" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg></i>
                                         </span>
                                         <div className="timeline-content">
-                                            <h6 className="text-dark text-sm font-weight-bold mb-0">{ song.mixItem }</h6>
-                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0"> { song.dateCreated }</p>
-                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0">{ song.content }.</p>
+                                            <h6 className="text-dark text-sm font-weight-bold mb-0">{song.mixItem}</h6>
+                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0"> {song.dateCreated}</p>
+                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0">{song.content}.</p>
                                         </div>
                                     </div>
 

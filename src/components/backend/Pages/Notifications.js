@@ -3,7 +3,7 @@ import React from 'react'
 export default function Notifications() {
   return (
     <>
-          <div className="row">
+      <div className="row">
         <div className="col-lg-8 col-md-10 mx-auto">
           <div className="card mt-4">
             <div className="card-header p-3">
@@ -145,7 +145,7 @@ export default function Notifications() {
             Hello, world! This is a notification message.
           </div>
         </div> --> */}
-        
+
       </div>
     </>
   )

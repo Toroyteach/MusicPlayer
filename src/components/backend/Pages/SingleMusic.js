@@ -1,17 +1,35 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import coverImage from '../music-app/music/Cover-Image.jpg';
 
+//import necessary files to make state and context consistent
+import appContext from '../context/appContext.js'
+
 export default function SingleMusic() {
+
+  // Global State
+  const {
+    astronomyPicture,
+  } = useContext(appContext)
+
+
   return (
     <>
-      <div className="row container">
+      <div className="row container_fluid">
+
+        <section>
+          <div class="card-body">
+            <h4 class="card-title">Comments</h4>
+          </div>
+        </section>
 
         <div className="mb-4">
 
           <section className="border-bottom mb-4">
-            <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(144).jpg"
-              className="img-fluid shadow-2-strong rounded-5 mb-4" alt="" />
+            <div className='d-flex justify-content-center'>
+              <img src={astronomyPicture.url} alt={astronomyPicture.title}
+                className="img-fluid shadow-2-strong rounded-5 mb-4" />
+            </div>
 
           </section>
 
@@ -74,17 +92,17 @@ export default function SingleMusic() {
             <div className="card mb-3">
               <div className="row g-0">
                 <div className="col-md-4">
-                  <img src={coverImage} className="img-fluid rounded-start" alt="Magnifico"/>
+                  <img src={coverImage} className="img-fluid rounded-start" alt="Magnifico" />
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
                     <h5 className="card-title">Magnifico</h5>
                     <p className="card-text">I dont have any good descrioption to talk about this mix. While i was creating it i had thought of the word TNT to mean that it is an exploseive mix tape but
-                  later on i came to change it to Magnifico which would come to hit me that i have named this mix item as some spectacular and am not so sure how the viewers or
-                  the fans are going to persieve it if not enjoy it haha. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                  but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-                  and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum..</p>
+                      later on i came to change it to Magnifico which would come to hit me that i have named this mix item as some spectacular and am not so sure how the viewers or
+                      the fans are going to persieve it if not enjoy it haha. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                      standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                      but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+                      and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum..</p>
                   </div>
                 </div>
               </div>

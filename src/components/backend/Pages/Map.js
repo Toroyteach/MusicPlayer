@@ -3,7 +3,7 @@ import React from 'react'
 export default function Map() {
   return (
     <>
-    <div className="row min-vh-80">
+      <div className="row min-vh-80">
         <div className="col-12">
           <div className="card h-100">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">

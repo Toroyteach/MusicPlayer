@@ -3,7 +3,7 @@ import React from 'react'
 export default function UsersList() {
   return (
     <>
-    <div className="row">
+      <div className="row">
         <div className="col-12">
           <div className="card my-4">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -28,7 +28,7 @@ export default function UsersList() {
                       <td>
                         <div className="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/team-2.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user1"/>
+                            <img src="../assets/img/team-2.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
                           </div>
                           <div className="d-flex flex-column justify-content-center">
                             <h6 className="mb-0 text-sm">John Michael</h6>
@@ -56,7 +56,7 @@ export default function UsersList() {
                       <td>
                         <div className="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/team-3.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user2"/>
+                            <img src="../assets/img/team-3.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user2" />
                           </div>
                           <div className="d-flex flex-column justify-content-center">
                             <h6 className="mb-0 text-sm">Alexa Liras</h6>
@@ -84,7 +84,7 @@ export default function UsersList() {
                       <td>
                         <div className="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/team-4.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user3"/>
+                            <img src="../assets/img/team-4.jpg" className="avatar avatar-sm me-3 border-radius-lg" alt="user3" />
                           </div>
                           <div className="d-flex flex-column justify-content-center">
                             <h6 className="mb-0 text-sm">Laurent Perrier</h6>

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useContext } from 'react'
 
+import { Link } from 'react-router-dom';
+
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
 
@@ -111,15 +113,17 @@ export default function Footer() {
               {/* Mini Music */}
               <div className="mini-player-footer">
 
-                <div className="track_info_wrapper">
-                  <div className="track_info">
-                    <div className="thumb"></div>
-                    <div className="info">
-                      <div className="title ">{activePlaylist[currentSong].title}</div>
-                      <div className="artist ">{activePlaylist[currentSong].artistName}</div>
+                <Link to="/single">
+                  <div className="track_info_wrapper">
+                    <div className="track_info">
+                      <div className="thumb"></div>
+                      <div className="info">
+                        <div className="title ">{activePlaylist[currentSong].title}</div>
+                        <div className="artist ">{activePlaylist[currentSong].artistName}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
 
                 <div className="mini-player_btn_wrapper">
 
@@ -150,21 +154,6 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        {/* <Toast onClose={() => this.setState({ show: false })} show={this.state.show} delay={3000} autohide>
-                  <Toast.Header>
-                    <img
-                      src="holder.js/20x20?text=%20"
-                      className="rounded me-2"
-                      alt=""
-                    />
-                    <strong className="me-auto">Bootstrap</strong>
-                    <small>11 mins ago</small>
-                  </Toast.Header>
-                  <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
-                </Toast>
-
-                <Button onClick={() => this.updateMusicToast()}>Show Toast</Button> */}
-
       </footer>
     </>
   )

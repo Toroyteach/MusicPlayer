@@ -59,12 +59,12 @@ export default function Home() {
   const handlePlayerMenuAction = () => {
     // ===== Toggle the oppening and closing of the users nav bar
     let gsapAction = gsap;
-    if ($(".nav").css("display") === "none") {
+    if ($(".m-nav").css("display") === "none") {
       gsapAction.to(".dim", { duration: 0.5, opacity: 1, display: "block", ease: Power2.easeInOut });
-      gsapAction.fromTo(".nav", { duration: 0.5, xPercent: -100 }, { xPercent: 0, display: "block", ease: Expo.easeOut });
-      //gsapAction.staggerTo( ".nav li", {duration:0.5, opacity: 0, y: 20, ease: Power2.easeInOut }, 0.1 );
+      gsapAction.fromTo(".m-nav", { duration: 0.5, xPercent: -100 }, { xPercent: 0, display: "block", ease: Expo.easeOut });
+      //gsapAction.staggerTo( ".m-nav li", {duration:0.5, opacity: 0, y: 20, ease: Power2.easeInOut }, 0.1 );
 
-      gsapAction.to(".nav li", {
+      gsapAction.to(".m-nav li", {
         duration: 0.7,
         y: 20,
         ease: Power2.easeInOut,
@@ -77,13 +77,13 @@ export default function Home() {
 
       $(".logo-text").css({ opacity: "0", display: "none" });
 
-    } else if ($(".nav").css("display") === "block" && $("#curator").css("display") === "block") {
+    } else if ($(".m-nav").css("display") === "block" && $("#curator").css("display") === "block") {
       gsapAction.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
-      gsapAction.to(".nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
+      gsapAction.to(".m-nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
       // $('.logo-text').css({'opacity': '1', 'display': 'block'});
     } else {
       gsapAction.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
-      gsapAction.to(".nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
+      gsapAction.to(".m-nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
       $(".logo-text").css({ opacity: "1", display: "block" });
     }
   }
@@ -101,7 +101,7 @@ export default function Home() {
   const handlePlayerDimAction = () => {
     gsap.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
     gsap.to("#player", { duration: 0.5, xPercent: 100, display: "none", ease: Expo.easeOut });
-    gsap.to(".nav", { duration: 0.5, xPercent: -100, y: -20, display: "none", ease: Expo.easeOut });
+    gsap.to(".m-nav", { duration: 0.5, xPercent: -100, y: -20, display: "none", ease: Expo.easeOut });
     gsap.to(".mini-player", { duration: 0.5, x: 0, ease: Expo.easeOut });
   }
 
@@ -126,7 +126,7 @@ export default function Home() {
     homeToMain.to($(".logo-text, .line"), 0.5, { display: "block", opacity: 1, y: 0, ease: Power2.easeInOut }, 1.2);
     // 	Force to redraw by using y translate
     homeToMain.fromTo($(".text-wrap .text"), { y: 0.1, position: "absolute" }, { y: 0, position: "relative", ease: Power2.easeInOut, duration: 1.3 });
-    homeToMain.to(".nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
+    homeToMain.to(".m-nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
 
     homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
     $(".logo-text").css("display", "block");
@@ -152,7 +152,7 @@ export default function Home() {
           <div className='col-8'>
             {/* Mini Music */}
             <div className="mini-player" onClick={handleOpenMiniPlayer}>
-              <div className="track_info_wrapper">
+              <div className="track_info_wrapper miniPlayer">
                 <div className="track_info">
                   <div className="thumb"></div>
                   <div className="info">

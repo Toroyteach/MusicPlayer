@@ -49,15 +49,15 @@ import HomePlayer from './music-app/Home.js';
 
 //import cookiee
 import { useCookies } from 'react-cookie';
+import About from './Pages/About';
 
 export default function Home() {
 
-  // Global State
+  //Global State
   // const {
-  //   appSettings: {
-  //     language,
-  //   },
-  //   stateDispatch,
+  //   userData: {
+  //     username,
+  //   }
   // } = useContext(appContext)
 
   //language choices
@@ -141,51 +141,16 @@ export default function Home() {
                   <span className="nav-link-text ms-1">Notifications</span>
                 </CustomLink>
               </li>
-              {/* <li className="nav-item mt-3">
-          <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin Pages</h6>
-        </li>
-        <li className="nav-item">
-            <CustomLink to="/users" >
-              <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">people</i>
-                </div>
-              <span className="nav-link-text ms-1">Users</span>
-            </CustomLink>
-        </li>
-        <li className="nav-item">
-            <CustomLink to="/add-quiz" >
-            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="material-icons opacity-10">add</i>
-              </div>
-              <span className="nav-link-text ms-1">Add Quiz</span>
-            </CustomLink>
-        </li>
-        <li className="nav-item">
-            <CustomLink to="/add-mix" >
-              <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">add</i>
-                </div>
-              <span className="nav-link-text ms-1">Add Mix</span>
-            </CustomLink>
-        </li>
-        <li className="nav-item">
-          <CustomLink to="/comments" >
-            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="material-icons opacity-10">assignment</i>
-            </div>
-            <span className="nav-link-text ms-1">Comments</span>
-          </CustomLink>
-        </li>
-        <li className="nav-item">
-          <CustomLink to="/map" >
-            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="material-icons opacity-10">people</i>
-              </div>
-            <span className="nav-link-text ms-1">FanBase</span>
-            </CustomLink>
-        </li> */}
+              <li className="nav-item">
+                <CustomLink to="/about" >
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">info</i>
+                  </div>
+                  <span className="nav-link-text ms-1">About</span>
+                </CustomLink>
+              </li>
               <li className="nav-item mt-3">
-                <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+                <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account</h6>
               </li>
               <li className="nav-item">
                 <CustomLink to="/profile" >
@@ -193,6 +158,57 @@ export default function Home() {
                     <i className="material-icons opacity-10">person</i>
                   </div>
                   <span className="nav-link-text ms-1">Profile</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item">
+                <CustomLink to="/single" >
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">logout</i>
+                  </div>
+                  <span className="nav-link-text ms-1">Log Out</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item mt-3">
+                <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin Pages</h6>
+              </li>
+              <li className="nav-item">
+                <CustomLink to="/users" >
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">people</i>
+                  </div>
+                  <span className="nav-link-text ms-1">Users</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item">
+                <CustomLink to="/add-quiz" >
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">add</i>
+                  </div>
+                  <span className="nav-link-text ms-1">Add Quiz</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item">
+                <CustomLink to="/add-mix" >
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">add</i>
+                  </div>
+                  <span className="nav-link-text ms-1">Add Mix</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item">
+                <CustomLink to="/comments" >
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">assignment</i>
+                  </div>
+                  <span className="nav-link-text ms-1">Comments</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item">
+                <CustomLink to="/map" >
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">people</i>
+                  </div>
+                  <span className="nav-link-text ms-1">FanBase</span>
                 </CustomLink>
               </li>
               {/* <li className="nav-item">
@@ -211,14 +227,6 @@ export default function Home() {
               <span className="nav-link-text ms-1">Sign Up</span>
           </CustomLink>
         </li> */}
-              <li className="nav-item">
-                <CustomLink to="/single" >
-                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i className="material-icons opacity-10"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" /></svg></i>
-                  </div>
-                  <span className="nav-link-text ms-1">Log Out</span>
-                </CustomLink>
-              </li>
             </ul>
           </div>
         </aside>
@@ -230,27 +238,20 @@ export default function Home() {
             <div className="container-fluid py-1 px-3">
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                  <li className="breadcrumb-item text-sm"><a className="opacity-5 text-dark" href="#">User</a></li>
-                  <li className="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
+                  <li className="breadcrumb-item text-sm"><a className="opacity-5 text-dark" href="#">Welcome</a></li>
+                  <li className="breadcrumb-item text-sm active modalIntro" aria-current="page">Toroyteach</li>
                 </ol>
               </nav>
               <div className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <div className="ms-md-auto pe-md-3 d-flex align-items-center">
                 </div>
                 <ul className="navbar-nav  justify-content-end">
-                  <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
-                    <a href="#" className="nav-link text-body p-0" id="iconNavbarSidenav" onClick={openNavBar}>
-                      <div className="sidenav-toggler-inner">
-                        <i className="sidenav-toggler-line"></i>
-                        <i className="sidenav-toggler-line"></i>
-                        <i className="sidenav-toggler-line"></i>
-                      </div>
+
+                  <li className="nav-item d-flex align-items-center">
+                    <a href="#" className="nav-link text-body p-3" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i className="fa fa-language cursor-pointer"></i>
                     </a>
-                  </li>
-
-                  <li className="nav-item px-3 d-flex align-items-center">
-                    {/* <Select className='dropdown-item allow-focus ' options={languageOtions} onChange={handleChangeLanguage} /> */}
-
+                    {/* <Select className='dropdown-item allow-focus ' options={languageOtions} /> */}
                   </li>
 
                   <li className="nav-item dropdown pe-2 d-flex align-items-center">
@@ -296,11 +297,22 @@ export default function Home() {
                       </li>
                     </ul>
                   </li>
+
+                  <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="#" className="nav-link text-body p-0" id="iconNavbarSidenav" onClick={openNavBar}>
+                      <div className="sidenav-toggler-inner">
+                        <i className="sidenav-toggler-line"></i>
+                        <i className="sidenav-toggler-line"></i>
+                        <i className="sidenav-toggler-line"></i>
+                      </div>
+                    </a>
+                  </li>
+
                 </ul>
               </div>
             </div>
           </nav>
-          <div className="container-fluid changeView" style={{ height: "88vh", overflow: "auto" }}>
+          <div className="container-fluid changeView" style={{ height: "85vh", overflow: "auto" }}>
 
             <button type="button" className="btn btn-primary buttnonChange" data-toggle="modal" data-target="#exampleModalCenter" onClick={() => setButtonCookie()} style={{ display: show ? "block" : "none" }}>
               Click Me
@@ -343,6 +355,7 @@ export default function Home() {
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/single" element={<SingleAudio />} />
+              <Route path="/about" element={<About />} />
               {/* <Route path="" element={<UploadMix/>}/>
               <Route path="" element={<UsersList/>}/> */}
             </Routes>

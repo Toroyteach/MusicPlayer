@@ -34,9 +34,6 @@ export default function MainPlayer() {
     currentTime,
     duration,
     handleProgress,
-    userData: {
-      activeSpectrum,
-    },
   } = useContext(appContext)
 
   const VisualizerOptions = [

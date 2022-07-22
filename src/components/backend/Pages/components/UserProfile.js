@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 //sunsset image profile background
 import image from "../../../../assets/backend/img/new/apocalypticsunset_pe.png";
@@ -6,6 +6,13 @@ import profileImage from "../../../../assets/backend/img/bruce-mars.jpg"
 
 //user details context
 import appContext from '../../context/appContext'
+
+//import cool alerts from sweetalerts
+import swal from 'sweetalert';
+
+//import bootstrap toast
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
 //get the reducer types to help update the applcation states
 import {
@@ -47,20 +54,28 @@ export default function UserProfile() {
       username,
       activeSpectrum,
     },
-  appSettings: {
-    visualizerActive,
-    astronomyActive,
-    shazamActive,
-    downloadActive,
-    anxietyVideos,
-    viewOtherUsers
+    appSettings: {
+      visualizerActive,
+      astronomyActive,
+      shazamActive,
+      downloadActive,
+      anxietyVideos,
+      viewOtherUsers
     },
     stateDispatch,
   } = useContext(appContext)
 
+  //set the states to the toats to stack them
+  const [show, setShow] = useState(false);
+  const [position, setPosition] = useState('top-start');
 
   //update show listeners my online status
-  const updateShowMyOnlineStatus = () => stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: allowOnlineStatus ? false : true })
+  const updateShowMyOnlineStatus = () => {
+
+    stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: allowOnlineStatus ? false : true });
+
+    setShow(true);
+  }
 
   //update show other listeners my online status
   const updateShowMyComments = () => stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: allowComments ? false : true })
@@ -95,15 +110,53 @@ export default function UserProfile() {
   //update enable see other users online status
   const updateEnableGlobalUsersToViewOtherUsersOnlineActivity = () => stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
 
+  //handle delete users account
+  const deleteUsersAccount = () => {
+
+    swal({
+      title: "Are you sure?",
+      text: "Once you have deleted your account theres no going back!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("Poof! Your imaginary account has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Pheew!! Your imaginary account is safe!");
+        }
+      });
+
+  }
+
 
   return (
     <>
-      <div className="container-fluid px-2 px-md-4">
+      <div className='toastUpdateNotification'>
+        <ToastContainer position="top-end" className="p-3">
+          <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto toastNotification">Information</strong>
+            </Toast.Header>
+            <Toast.Body><p className=''>You have set the Setting to True:False</p></Toast.Body>
+          </Toast>
+        </ToastContainer>
+      </div>
+
+      <div className="container-fluid px-0">
         <div className="page-header max-height-300 border-radius-xl mt-4">
           <img src={image} alt="profile_image" className="background_image" />
           <span className="mask  bg-gradient-primary  opacity-3"></span>
         </div>
-        <div className="card card-body mx-3 mx-md-4 mt-n6">
+        <div className="card card-body mx-md-4 mt-n6">
           <div className="row gx-4 mb-2">
             <div className="col-auto">
               <div className="avatar avatar-xl position-relative">
@@ -119,30 +172,6 @@ export default function UserProfile() {
                   {role}
                 </p>
               </div>
-            </div>
-            <div className="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-              {/* <!-- <div className="nav-wrapper position-relative end-0">
-              <ul className="nav nav-pills nav-fill p-1" role="tablist">
-                <li className="nav-item">
-                  <a className="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="#" role="tab" aria-selected="true">
-                    <i className="material-icons text-lg position-relative">home</i>
-                    <span className="ms-1">App</span>
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
-                    <i className="material-icons text-lg position-relative">email</i>
-                    <span className="ms-1">Messages</span>
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
-                    <i className="material-icons text-lg position-relative">settings</i>
-                    <span className="ms-1">Settings</span>
-                  </a>
-                </li>
-              </ul>
-            </div> --> */}
             </div>
           </div>
           <div className="row">
@@ -167,12 +196,12 @@ export default function UserProfile() {
                     </p>
                     <hr className="horizontal gray-light my-4" />
                     <ul className="list-group">
-                      <li className="list-group-item border-0 ps-0 pt-0 text-sm"><strong className="text-dark">Full Name:</strong> &nbsp; {firstname + " " + lastname}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Mobile:</strong> &nbsp; {number}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Email:</strong> &nbsp; {email}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Username:</strong> &nbsp; {username}</li>
+                      <li className="list-group-item border-0 ps-0 pt-0 text-sm"><strong className="">Full Name:</strong> &nbsp; {firstname + " " + lastname}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="">Mobile:</strong> &nbsp; {number}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="">Email:</strong> &nbsp; {email}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="">Username:</strong> &nbsp; {username}</li>
                       <li className="list-group-item border-0 ps-0 pb-0">
-                        <button type="button" className="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">Delete My account together with data</button> &nbsp;
+                        <button onClick={deleteUsersAccount} type="button" className="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">Delete My account together with data</button> &nbsp;
                       </li>
                     </ul>
                   </div>
@@ -188,26 +217,26 @@ export default function UserProfile() {
                     <ul className="list-group">
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={allowOnlineStatus} onChange={updateShowMyOnlineStatus}/>
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">Show other Listeners my online status</label>
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={allowOnlineStatus} onChange={updateShowMyOnlineStatus} />
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault">Show other Listeners my online status</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={allowComments} onChange={updateShowMyComments}/>
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault1">Show others my comment on Mix Item</label>
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={allowComments} onChange={updateShowMyComments} />
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault1">Show others my comment on Mix Item</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowQuize} onChange={updateAllowRandomQuizes}/>
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Allow Random Music Quizes</label>
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowQuize} onChange={updateAllowRandomQuizes} />
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault2">Allow Random Music Quizes</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowWeather} onChange={updateEnableArtificalWeather}/>
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Artificial Weather</label>
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowWeather} onChange={updateEnableArtificalWeather} />
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault2">Enable Artificial Weather</label>
                         </div>
                       </li>
                     </ul>
@@ -246,43 +275,43 @@ export default function UserProfile() {
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={visualizerActive} onChange={updateEnableGlobalVisualizer} />
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">Enable Audio Visualizer</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault">Enable Audio Visualizer</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={astronomyActive} onChange={updateEnableGlobalAstronomyPic} />
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault1">Enable Astronmy Picture</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault1">Enable Astronmy Picture</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={shazamActive} onChange={updateEnableGlobalShazam} />
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Shazam search</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable Shazam search</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={downloadActive} onChange={updateEnableGlobalDownload} />
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Download options</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable Download options</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={anxietyVideos} onChange={updateEnableGlobalAnxietyVideo} />
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Calm Anxiety Video</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable Calm Anxiety Video</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={viewOtherUsers} onChange={updateEnableGlobalUsersToViewOtherUsersOnlineActivity} />
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable users to see what others are Listening</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable users to see what others are Listening</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" />
-                          <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Enable Direct Commenting</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable Direct Commenting</label>
                         </div>
                       </li>
                     </ul>
@@ -302,44 +331,38 @@ export default function UserProfile() {
 
       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
+          <div class="modal-content modalUpdateDetails">
             <div class="modal-header">
               <h5 class="modal-title" id="staticBackdropLabel">Update Profile</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <form>
-                <div class="row align-items-center g-3 modalIntro">
-                  <div className="col-auto modalIntro">
-                    <i className="fas fa-user prefix grey-text"></i>
+                <div class="row g-3 modalIntro">
+                  <div className="col-6 modalIntro">
                     <input type="text" id="orangeForm-name" className="form-control validate" />
                     <label data-error="wrong" data-success="right" for="orangeForm-name">Your firstname</label>
                   </div>
-                  <div className="col-auto">
-                    <i className="fas fa-user prefix grey-text"></i>
+                  <div className="col-6">
                     <input type="text" id="orangeForm-name" className="form-control validate" />
                     <label data-error="wrong" data-success="right" for="orangeForm-name">Your lastname</label>
                   </div>
-                  <div className="col-auto">
-                    <i className="fas fa-envelope prefix grey-text"></i>
+                  <div className="col-6">
                     <input type="email" id="orangeForm-email" className="form-control validate" />
                     <label data-error="wrong" data-success="right" for="orangeForm-email">Your email</label>
                   </div>
 
-                  <div className="col-auto">
-                    <i className="fas fa-envelope prefix grey-text"></i>
+                  <div className="col-6">
                     <input type="email" id="orangeForm-email" className="form-control validate" />
                     <label data-error="wrong" data-success="right" for="orangeForm-email">Your number</label>
                   </div>
 
-                  <div className="col-auto">
-                    <i className="fas fa-envelope prefix grey-text"></i>
+                  <div className="col-6">
                     <input type="email" id="orangeForm-email" className="form-control validate" />
                     <label data-error="wrong" data-success="right" for="orangeForm-email">Username</label>
                   </div>
 
-                  <div className="col-auto">
-                    <i className="fas fa-lock prefix grey-text"></i>
+                  <div className="col-6">
                     <input type="password" id="orangeForm-pass" className="form-control validate" />
                     <label data-error="wrong" data-success="right" for="orangeForm-pass">Your password</label>
                   </div>
