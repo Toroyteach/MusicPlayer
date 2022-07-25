@@ -95,10 +95,10 @@ export default function Navbar() {
   return (
     <div className="m-nav">
       <ul className="m-nav_main">
-        <li> <a href="#anchor" className="m-nav_link a" onClick={handleHomeClickAction}>Home	</a></li>
-        <li> <a href="#anchor" className="m-nav_link a" onClick={handleListnersClickAction}>Listeners	</a></li>
-        <li> <a href="#anchor" className="m-nav_link a" onClick={handleAnxietyClickAction}>Calm Your Anxiety	</a></li>
-        <li> <a href="#anchor" className="m-nav_link a" onClick={handleAstronomyClickAction}>Picture of the Day	</a></li>
+        <li> <a className="m-nav_link a" onClick={handleHomeClickAction}>Home	</a></li>
+        <li> <a className="m-nav_link a" onClick={handleListnersClickAction}>Listeners	</a></li>
+        <li> <a className="m-nav_link a" onClick={handleAnxietyClickAction}>Calm Your Anxiety	</a></li>
+        <li> <a className="m-nav_link a" onClick={handleAstronomyClickAction}>Picture of the Day	</a></li>
       </ul>
     </div>
   )

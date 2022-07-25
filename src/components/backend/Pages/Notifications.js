@@ -11,49 +11,49 @@ export default function Notifications() {
             </div>
             <div className="card-body p-3 pb-0">
               <div className="alert alert-primary alert-dismissible text-white" role="alert">
-                <span className="text-sm">A simple primary alert with <a href="#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span className="text-sm">A simple primary alert with <a href="/#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="alert alert-secondary alert-dismissible text-white" role="alert">
-                <span className="text-sm">A simple secondary alert with <a href="#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span className="text-sm">A simple secondary alert with <a href="/#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               {/* <!-- <div className="alert alert-success alert-dismissible text-white" role="alert">
-                <span className="text-sm">A simple success alert with <a href="#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span className="text-sm">A simple success alert with <a href="/#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="alert alert-danger alert-dismissible text-white" role="alert">
-                <span className="text-sm">A simple danger alert with <a href="#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span className="text-sm">A simple danger alert with <a href="/#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="alert alert-warning alert-dismissible text-white" role="alert">
-                <span className="text-sm">A simple warning alert with <a href="#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span className="text-sm">A simple warning alert with <a href="/#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="alert alert-info alert-dismissible text-white" role="alert">
-                <span className="text-sm">A simple info alert with <a href="#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span className="text-sm">A simple info alert with <a href="/#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="alert alert-light alert-dismissible text-white" role="alert">
-                <span className="text-sm">A simple light alert with <a href="#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span className="text-sm">A simple light alert with <a href="/#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="alert alert-dark alert-dismissible text-white" role="alert">
-                <span className="text-sm">A simple dark alert with <a href="#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
+                <span className="text-sm">A simple dark alert with <a href="/#" className="alert-link text-white">an example link</a>. Give it a click if you like.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>

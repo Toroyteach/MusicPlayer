@@ -17,7 +17,7 @@ export default function AdminMessages() {
 
                   <ul className="list-unstyled mb-0">
                     <li className="p-2 border-bottom modalIntro">
-                      <a href="#" className="d-flex justify-content-between">
+                      <a href="/#" className="d-flex justify-content-between">
                         <div className="d-flex flex-row">
                           <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp" alt="avatar" className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />
                           <div className="pt-1">
@@ -32,7 +32,7 @@ export default function AdminMessages() {
                       </a>
                     </li>
                     <li className="p-2 border-bottom">
-                      <a href="#" className="d-flex justify-content-between">
+                      <a href="/#" className="d-flex justify-content-between">
                         <div className="d-flex flex-row">
                           <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-1.webp" alt="avatar"
                             className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />
@@ -47,7 +47,7 @@ export default function AdminMessages() {
                       </a>
                     </li>
                     <li className="p-2 border-bottom">
-                      <a href="#" className="d-flex justify-content-between">
+                      <a href="/#" className="d-flex justify-content-between">
                         <div className="d-flex flex-row">
                           <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-2.webp" alt="avatar"
                             className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />
@@ -62,7 +62,7 @@ export default function AdminMessages() {
                       </a>
                     </li>
                     <li className="p-2 border-bottom">
-                      <a href="#" className="d-flex justify-content-between">
+                      <a href="/#" className="d-flex justify-content-between">
                         <div className="d-flex flex-row">
                           <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp" alt="avatar"
                             className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />
@@ -77,7 +77,7 @@ export default function AdminMessages() {
                       </a>
                     </li>
                     <li className="p-2 border-bottom">
-                      <a href="#" className="d-flex justify-content-between">
+                      <a href="/#" className="d-flex justify-content-between">
                         <div className="d-flex flex-row">
                           <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-4.webp" alt="avatar"
                             className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />
@@ -92,7 +92,7 @@ export default function AdminMessages() {
                       </a>
                     </li>
                     <li className="p-2 border-bottom">
-                      <a href="#" className="d-flex justify-content-between">
+                      <a href="/#" className="d-flex justify-content-between">
                         <div className="d-flex flex-row">
                           <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
                             className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />
@@ -107,7 +107,7 @@ export default function AdminMessages() {
                       </a>
                     </li>
                     <li className="p-2">
-                      <a href="#" className="d-flex justify-content-between">
+                      <a href="/#" className="d-flex justify-content-between">
                         <div className="d-flex flex-row">
                           <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
                             className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />

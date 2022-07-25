@@ -47,7 +47,7 @@ export default function UsersList() {
                         <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
                       </td>
                       <td className="align-middle">
-                        <a href="#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                        <a href="/#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                           Disable
                         </a>
                       </td>
@@ -75,7 +75,7 @@ export default function UsersList() {
                         <span className="text-secondary text-xs font-weight-bold">11/01/19</span>
                       </td>
                       <td className="align-middle">
-                        <a href="#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                        <a href="/#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                           Disable
                         </a>
                       </td>
@@ -103,7 +103,7 @@ export default function UsersList() {
                         <span className="text-secondary text-xs font-weight-bold">19/09/17</span>
                       </td>
                       <td className="align-middle">
-                        <a href="#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                        <a href="/#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                           Enable
                         </a>
                       </td>

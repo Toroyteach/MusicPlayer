@@ -156,7 +156,7 @@ export default function NeutralUsageStats() {
                                             </td>
                                             <td>
                                                 <div className="avatar-group mt-2">
-                                                    <a href="#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
+                                                    <a href="/#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
                                                         <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
                                                     </a>
                                                 </div>
@@ -191,7 +191,7 @@ export default function NeutralUsageStats() {
                                             </td>
                                             <td>
                                                 <div className="avatar-group mt-2">
-                                                    <a href="#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
+                                                    <a href="/#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
                                                         <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
                                                     </a>
                                                 </div>
@@ -226,7 +226,7 @@ export default function NeutralUsageStats() {
                                             </td>
                                             <td>
                                                 <div className="avatar-group mt-2">
-                                                    <a href="#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
+                                                    <a href="/#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
                                                         <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
                                                     </a>
                                                 </div>

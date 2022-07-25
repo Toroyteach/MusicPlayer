@@ -3,7 +3,7 @@ import React from 'react'
 export default function UploadMix() {
   return (
     <>
-      <section className="container py-5">
+      <section className="container py-5" style={{ background: "#f4f4f4" }}>
         <div className="container">
 
           <div className="row ">
@@ -148,7 +148,7 @@ export default function UploadMix() {
                           <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
                         </td>
                         <td className="align-middle">
-                          <a href="#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          <a href="/#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                             Disable
                           </a>
                         </td>
@@ -176,7 +176,7 @@ export default function UploadMix() {
                           <span className="text-secondary text-xs font-weight-bold">11/01/19</span>
                         </td>
                         <td className="align-middle">
-                          <a href="#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          <a href="/#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                             Disable
                           </a>
                         </td>
@@ -204,7 +204,7 @@ export default function UploadMix() {
                           <span className="text-secondary text-xs font-weight-bold">19/09/17</span>
                         </td>
                         <td className="align-middle">
-                          <a href="#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          <a href="/#" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                             Enable
                           </a>
                         </td>

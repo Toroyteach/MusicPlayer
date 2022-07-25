@@ -141,19 +141,19 @@ export default function AdminProfile() {
               {/* <!-- <div className="nav-wrapper position-relative end-0">
               <ul className="nav nav-pills nav-fill p-1" role="tablist">
                 <li className="nav-item">
-                  <a className="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="#" role="tab" aria-selected="true">
+                  <a className="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="/#" role="tab" aria-selected="true">
                     <i className="material-icons text-lg position-relative">home</i>
                     <span className="ms-1">App</span>
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
+                  <a className="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="/#" role="tab" aria-selected="false">
                     <i className="material-icons text-lg position-relative">email</i>
                     <span className="ms-1">Messages</span>
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
+                  <a className="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="/#" role="tab" aria-selected="false">
                     <i className="material-icons text-lg position-relative">settings</i>
                     <span className="ms-1">Settings</span>
                   </a>
@@ -172,7 +172,7 @@ export default function AdminProfile() {
                         <h6 className="mb-0">Profile Information</h6>
                       </div>
                       <div className="col-md-4 text-end">
-                        <a href="#">
+                        <a href="/#">
                           <i className="fas fa-user-edit text-secondary text-sm" data-toggle="modal" data-target="#modalRegisterForm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
                         </a>
                       </div>

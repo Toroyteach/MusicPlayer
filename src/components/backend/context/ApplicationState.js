@@ -174,7 +174,7 @@ const ApplicationState = (props) => {
   //effect to make theme state on load
   useEffect(() => {
     
-    if(state.userData.appDarkMode){
+    if(state.appSettings.appDarkMode){
 
       document.body.classList.add('dark-version');
 
@@ -184,7 +184,7 @@ const ApplicationState = (props) => {
 
     }
 
-  }, [state.userData.appDarkMode])
+  }, [state.appSettings.appDarkMode])
 
   // effect to handle changing of the play pause states of the application
   useEffect(() => {

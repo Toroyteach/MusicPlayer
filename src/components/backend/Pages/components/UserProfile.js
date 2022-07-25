@@ -23,7 +23,7 @@ import {
   SET_ARTIFICIAL_WEATHER,
   SET_SPECTRUM_TYPE,
   SET_MAIN_APP_DARKMODE,
-  SET_MUSIC_APP_DARKMODE,
+  // SET_MUSIC_APP_DARKMODE,
   SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
   SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE,
   SET_ENABLE_GLOBAL_SHAZAM_SEARCH,
@@ -48,11 +48,11 @@ export default function UserProfile() {
       allowWeather,
       allowComments,
       allowOnlineStatus,
-      appDarkMode,
-      musicAppDarkMode,
+      // appDarkMode,
+      // musicAppDarkMode,
       role,
       username,
-      activeSpectrum,
+      // activeSpectrum,
     },
     appSettings: {
       visualizerActive,
@@ -60,14 +60,17 @@ export default function UserProfile() {
       shazamActive,
       downloadActive,
       anxietyVideos,
-      viewOtherUsers
+      viewOtherUsers,
+      appDarkMode,
+      activeSpectrum,
+      appSettings,
     },
     stateDispatch,
   } = useContext(appContext)
 
-  //set the states to the toats to stack them
+  //set the states to the toast to stack them
   const [show, setShow] = useState(false);
-  const [position, setPosition] = useState('top-start');
+  //const [position, setPosition] = useState('top-start');
 
   //update show listeners my online status
   const updateShowMyOnlineStatus = () => {
@@ -184,7 +187,7 @@ export default function UserProfile() {
                         <h6 className="mb-0">Profile Information</h6>
                       </div>
                       <div className="col-md-4 text-end">
-                        <a href="javascript:;">
+                        <a>
                           <i className="fas fa-user-edit text-secondary text-sm" data-toggle="modal" data-target="#staticBackdrop" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
                         </a>
                       </div>

@@ -130,9 +130,9 @@ export default function SingleMusic() {
                             March 07, 2021
                             <span className="badge bg-primary">Pending</span>
                           </p>
-                          <a href="#" className="link-muted"><i className="fas fa-pencil-alt ms-2"></i></a>
-                          <a href="#" className="link-muted"><i className="fas fa-redo-alt ms-2"></i></a>
-                          <a href="#" className="link-muted"><i className="fas fa-heart ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-pencil-alt ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-redo-alt ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-heart ms-2"></i></a>
                         </div>
                         <p className="mb-0">
                           Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -158,9 +158,9 @@ export default function SingleMusic() {
                             March 15, 2021
                             <span className="badge bg-success">Approved</span>
                           </p>
-                          <a href="#" className="link-muted"><i className="fas fa-pencil-alt ms-2"></i></a>
-                          <a href="#" className="text-success"><i className="fas fa-redo-alt ms-2"></i></a>
-                          <a href="#" className="link-danger"><i className="fas fa-heart ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-pencil-alt ms-2"></i></a>
+                          <a href="/#" className="text-success"><i className="fas fa-redo-alt ms-2"></i></a>
+                          <a href="/#" className="link-danger"><i className="fas fa-heart ms-2"></i></a>
                         </div>
                         <p className="mb-0">
                           Contrary to popular belief, Lorem Ipsum is not simply random text. It
@@ -188,9 +188,9 @@ export default function SingleMusic() {
                             March 24, 2021
                             <span className="badge bg-danger">Rejected</span>
                           </p>
-                          <a href="#" className="link-muted"><i className="fas fa-pencil-alt ms-2"></i></a>
-                          <a href="#" className="link-muted"><i className="fas fa-redo-alt ms-2"></i></a>
-                          <a href="#" className="link-muted"><i className="fas fa-heart ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-pencil-alt ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-redo-alt ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-heart ms-2"></i></a>
                         </div>
                         <p className="mb-0">
                           There are many variations of passages of Lorem Ipsum available, but the
@@ -216,9 +216,9 @@ export default function SingleMusic() {
                             March 30, 2021
                             <span className="badge bg-primary">Pending</span>
                           </p>
-                          <a href="#" className="link-muted"><i className="fas fa-pencil-alt ms-2"></i></a>
-                          <a href="#" className="link-muted"><i className="fas fa-redo-alt ms-2"></i></a>
-                          <a href="#" className="link-muted"><i className="fas fa-heart ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-pencil-alt ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-redo-alt ms-2"></i></a>
+                          <a href="/#" className="link-muted"><i className="fas fa-heart ms-2"></i></a>
                         </div>
                         <p className="mb-0">
                           It uses a dictionary of over 200 Latin words, combined with a handful of

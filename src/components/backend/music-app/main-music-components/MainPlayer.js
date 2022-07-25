@@ -1,5 +1,7 @@
 import React, { useState, useRef, useContext } from 'react'
 
+import { Link } from 'react-router-dom';
+
 import '../../../../assets/Users/style.css';
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
@@ -196,7 +198,10 @@ export default function MainPlayer() {
         <div className="playback_wrapper">
 
           <div className="playback_blur"></div>
-          <div className="playback_thumb"></div>
+
+          <Link to="/single">
+            <div className="playback_thumb"></div>
+          </Link>
 
           <div className="playback_extras text_center">
 
@@ -212,7 +217,6 @@ export default function MainPlayer() {
               <i className="cursor-pointer fa fa-list-ol" aria-hidden="true"></i>
               <div className='dropdown-menu playliststyle'>
                 <span className="dropdown-item-text">Choose Visualizer</span>
-
               </div>
             </div>
 
@@ -230,8 +234,8 @@ export default function MainPlayer() {
               <div className='dropdown-menu visualizerstyle'>
                 <span className="dropdown-item-text">Choose Visualizer</span>
                 <ul class="">
-                  <li className='selected'><a class="dropdown-item" href="#">Default</a></li>
-                  <li><a class="dropdown-item" href="#">Bars</a></li>
+                  <li className='selected'><a class="dropdown-item" href="/#">Default</a></li>
+                  <li><a class="dropdown-item" href="/#">Bars</a></li>
                 </ul>
               </div>
             </div>

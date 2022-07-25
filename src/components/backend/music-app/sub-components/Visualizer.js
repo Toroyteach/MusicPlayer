@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import '../../../../assets/Users/style.css';
 
-import Song from '../music/audio.mp3';
+// import Song from '../music/audio.mp3';
 
 //import necessary files to make state and context consistent
 import appContext from '../../context/appContext';
@@ -11,15 +11,15 @@ function Visualizer() {
 
   // Global State
   const {
-    userData: {
-      activeSpectrum,
+    appSettings: {
+      activeSpectrum
     },
     playing,
     audioObject,
   } = useContext(appContext)
 
   //Audio state of item playing
-  const [audio] = useState(new Audio(Song));
+  // const [audio] = useState(new Audio(Song));
 
   //playing state hook
   //const [playing, setPlaying] = useState(false);
