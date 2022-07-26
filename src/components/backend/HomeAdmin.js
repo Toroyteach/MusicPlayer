@@ -79,7 +79,10 @@ export default function Home() {
 
   //use to set the nav active or not on mobile view
   const [isActive, setIsActive] = useState(false);
-  const openNavBar = () => setIsActive(current => !current);
+  const openNavBar = (e) => {
+    e.preventDefault();
+    setIsActive(current => !current)
+  }
 
   //use this to allow users to change the current active localisation language
   //const handleChangeLanguage = (e) => stateDispatch({ type: SET_GLOBAL_LANGUAGE, data: e.target.value })
@@ -300,8 +303,8 @@ export default function Home() {
                   </ul>
                 </li>
 
-                <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
-                  <a href="/#" className="nav-link text-body p-0" id="iconNavbarSidenav" onClick={openNavBar}>
+                <li className="nav-item d-xl-none ps-3 d-flex align-items-center" onClick={openNavBar}>
+                  <a href="/#" className="nav-link text-body p-0" id="iconNavbarSidenav">
                     <div className="sidenav-toggler-inner">
                       <i className="sidenav-toggler-line"></i>
                       <i className="sidenav-toggler-line"></i>
@@ -345,7 +348,9 @@ export default function Home() {
             </div>
           </div>
 
-          <Outlet />
+
+            <Outlet />
+
 
         </div>
 

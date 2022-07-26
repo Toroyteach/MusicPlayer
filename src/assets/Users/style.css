@@ -2000,6 +2000,144 @@ body {
   }
 }
 
+@media (max-width: 424px) and ( min-height: 786px ){ 
+  .miniPlayer{
+    display: none !important;
+  }
+
+  .miniPlayer{
+    display: none !important;
+  }
+
+  .player {
+    width: 300px;
+  }
+
+  .playback_thumb {
+     width: 160px;
+     height: 160px;
+
+  }
+
+  .playback_info {
+    left: 0px;
+    top: 160px;
+
+  }
+
+  .playback_info .title {
+    font-size: 23px;
+  }
+
+  .playback_info .artist {
+    margin-top: -2px;
+    font-size: 14px;
+  }
+
+  .playback_timeline {
+    position: absolute;
+    width: 94%;
+    left: 0px;
+    top: 311px;
+  }
+
+  .playback_btn_wrapper {
+    position: absolute;
+    z-index: 10;
+    /* mix-blend-mode: color-burn; */
+    width: 267px;
+    left: 17px;
+    top: 364px;
+    opacity: 0.6;
+  }
+
+  .playback_extras {
+    position: relative;
+    width: 45px;
+    height: 320px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 3px;
+    z-index: 11;
+  }
+
+  .playback_timeline_start-time, .playback_timeline_end-time {
+    font-size: 11px;
+  }
+
+  .list .thumb {
+    width: 40px;
+    height: 40px;
+  }
+
+  .selected .info .title {
+    font-size: 16px;
+  }
+
+  #curator .curator_title_wrapper {
+    margin-top: 25.6vh;
+    width: 99vw;
+    margin-left: 5vw;
+  }
+
+  .curator_list_content {
+    top: 56%;
+  }
+
+  .curator_list_content .item {
+    height: 0;
+  }
+
+  .line {
+    position: relative;
+    left: 40vw;
+    width: 5px;
+    height: 80px;
+  }
+
+  .text-wrap {
+    width: 83%;
+  }
+
+  .mini-player { 
+    height: 30px;
+    top: 2.2vw;
+    left: 6.8vw;
+  }
+
+  .mini-player-footer {
+    position: relative;
+    height: 5px;
+    right: 10px !important;
+  }
+
+  .m-nav {
+    width: 45vw;
+  }
+
+  .m-nav ul.nav_main {
+    margin-top: 11vh;
+  }
+
+  .m-nav_link {
+    font-size: 3.8vw;
+  }
+
+  #curator .curator_title_wrapper .curator_title {
+    font-size: 3.4vh;
+  }
+
+  #curator .curator_title_wrapper {
+    margin-top: 25vw;
+    width: 75vw;
+  }
+
+  .background_image {
+    transform: translate(0px, 0px);
+  }
+
+}
+
 @media (max-width: 428px) and ( min-height: 926px ){ 
   .miniPlayer{
     display: none !important;

@@ -252,6 +252,13 @@ label.star:before {
 
 }
 
+@media (max-width: 424px) and ( min-height: 786px ){ 
+  .changeView {
+    height: 77vh !important;
+  }
+
+}
+
 @media (max-width: 428px) and ( min-height: 926px ){ 
   .changeView {
     height: 81vh !important;

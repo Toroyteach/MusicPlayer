@@ -827,6 +827,33 @@
   }
 }
 
+@media (max-width: 424px) and ( min-height: 786px ){ 
+  .section-title h2::after {
+    height: 1px;
+    margin: 5px 10px;
+  }
+
+  .footer-title {
+    position: relative;
+    top: 40px;
+  }
+
+  .footer-title h2::after {
+    height: 1px;
+    margin: 10px 10px;
+  }
+
+  .music-box {
+    position: relative;
+    width: 338px;
+  }
+
+  .section-title h2 {
+    letter-spacing: 0px;
+  }
+
+}
+
 @media (max-width: 428px) and ( min-height: 926px ){ 
   .section-title h2::after {
     height: 1px;
