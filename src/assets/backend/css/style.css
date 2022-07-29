@@ -4,13 +4,15 @@ div.stars {
 
 }
 
- .mt-200{
-     margin-top:200px;  
- }
+.mt-200 {
+  margin-top: 200px;
+}
 
-input.star { display: none; }
+input.star {
+  display: none;
+}
 
- 
+
 
 label.star {
 
@@ -26,9 +28,9 @@ label.star {
 
 }
 
- 
 
-input.star:checked ~ label.star:before {
+
+input.star:checked~label.star:before {
 
   content: '\f005';
 
@@ -38,8 +40,8 @@ input.star:checked ~ label.star:before {
 
 }
 
- 
-input.star-5:checked ~ label.star:before {
+
+input.star-5:checked~label.star:before {
 
   color: #FE7;
 
@@ -47,15 +49,19 @@ input.star-5:checked ~ label.star:before {
 
 }
 
- 
 
-input.star-1:checked ~ label.star:before { color: #F62; }
 
-    
+input.star-1:checked~label.star:before {
+  color: #F62;
+}
 
-label.star:hover { transform: rotate(-15deg) scale(1.3); }
 
- 
+
+label.star:hover {
+  transform: rotate(-15deg) scale(1.3);
+}
+
+
 
 label.star:before {
 
@@ -66,10 +72,10 @@ label.star:before {
 }
 
 
-.background_image{
+.background_image {
   width: 100% !important;
   height: auto;
-  transform: translate(0px,-150px);
+  transform: translate(0px, -150px);
 }
 
 .footer {
@@ -77,8 +83,23 @@ label.star:before {
   z-index: 10;
 }
 
+
+/* loading spinner in the footer section */
+.footerPlayerSpinner {
+  position: relative;
+  right: 15px;
+  top: 2px;
+}
+
+.mainPlayerSpinner {
+  position: relative;
+  top: 4px;
+}
+
 /* language selector css */
 .sl-nav {
+  position: relative;
+  top: 4px;
   display: inline;
 }
 
@@ -156,7 +177,8 @@ label.star:before {
   padding-left: 5px;
 }
 
-.sl-nav li ul li span:hover, .sl-nav li ul li span.active {
+.sl-nav li ul li span:hover,
+.sl-nav li ul li span.active {
   color: #146c78;
 }
 
@@ -204,69 +226,69 @@ label.star:before {
 
 /* media queries fro the main landing page of backend */
 /* mostly for special phones */
-@media (max-width: 360px) { 
+@media (max-width: 360px) {
   .changeView {
     height: 75vh !important;
   }
 
 }
 
-@media (max-width: 375px) and ( min-height: 667px ) { 
+@media (max-width: 375px) and (min-height: 667px) {
   .changeView {
     height: 73vh !important;
   }
 }
 
-@media (max-width: 375px) and ( min-height: 812px ){ 
+@media (max-width: 375px) and (min-height: 812px) {
   .changeView {
     height: 80vh !important;
   }
 
 }
 
-@media (max-width: 411px) and ( min-height: 731px ){ 
+@media (max-width: 411px) and (min-height: 731px) {
   .changeView {
     height: 77vh !important;
   }
 
 }
 
-@media (max-width: 414px) and ( min-height: 736px ){ 
+@media (max-width: 414px) and (min-height: 736px) {
   .changeView {
     height: 75vh !important;
   }
 
 }
 
-@media (max-width: 414px) and ( min-height: 846px ){ 
+@media (max-width: 414px) and (min-height: 846px) {
   .changeView {
     height: 78vh !important;
   }
 
 }
 
-@media (max-width: 414px) and ( min-height: 896px ){ 
+@media (max-width: 414px) and (min-height: 896px) {
   .changeView {
     height: 76vh !important;
   }
 
 }
 
-@media (max-width: 424px) and ( min-height: 786px ){ 
+@media (max-width: 424px) and (min-height: 786px) {
   .changeView {
     height: 77vh !important;
   }
 
 }
 
-@media (max-width: 428px) and ( min-height: 926px ){ 
+@media (max-width: 428px) and (min-height: 926px) {
   .changeView {
     height: 81vh !important;
   }
 
 }
 
-@media (max-width: 480px) and ( min-height: 853px ){ 
+@media (max-width: 480px) and (min-height: 853px) {
   .changeView {
     height: 81vh !important;
   }

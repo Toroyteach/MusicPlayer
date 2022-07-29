@@ -10,6 +10,12 @@ import appContext from '../context/appContext.js'
 
 import '../../../assets/backend/css/style.css';
 
+//import shazam icon
+import { TbBrandShazam } from 'react-icons/tb';
+
+//import bootstrap loading spinner for when loading audio
+import Spinner from 'react-bootstrap/Spinner'
+
 //import the reducer function states to make consistent states
 import {
 
@@ -26,15 +32,19 @@ export default function Footer() {
     userData: {
       username,
     },
-    currentSong,
-    playing,
-    activePlaylist,
-    stateDispatch,
-    random,
-    volume,
+    musicSettings: {
+      currentSong,
+      playing,
+      activePlaylist,
+      stateDispatch,
+      random,
+      volume,
+      spinnerLoading
+    },
   } = useContext(appContext)
 
   //handles the actual playing and changing of the play pause buttons
+  // const [showSpinner, setShowSpinner] = useState(false)
   const playAndPause = () => {
 
     stateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
@@ -114,7 +124,7 @@ export default function Footer() {
               <div className="mini-player-footer">
 
                 <Link to="/single">
-                  <div className="track_info_wrapper">
+                  <div className="track_info_wrapper" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Leave Comment">
                     <div className="track_info">
                       <div className="thumb"></div>
                       <div className="info">
@@ -127,14 +137,26 @@ export default function Footer() {
 
                 <div className="mini-player_btn_wrapper">
 
-                  <i className="btn-prev fa fa-step-backward footerPlayer" aria-hidden="true" onClick={prevMixItem}></i>
+                  <i className="btn-prev fa fa-step-backward footerPlayer" data-bs-toggle="tooltip" data-bs-placement="top" title="Previous Mix" aria-hidden="true" onClick={prevMixItem}></i>
 
-                  <div className="btn-switch" onClick={playAndPause}>
-                    <i className="btn-play fa fa-play footerPlayer" aria-hidden="true"></i>
-                    <i className="btn-pause fa fa-pause footerPlayer" aria-hidden="true" ></i>
+                  <div className="btn-switch" onClick={playAndPause} data-bs-toggle="tooltip" data-bs-placement="top" title="Play Pause">
+
+
+                    { spinnerLoading ? <Loader/> : <Player /> }
+
+
+                    {/* <div style={{ display: "none" }}>
+                      <i className="btn-play fa fa-play footerPlayer" aria-hidden="true"></i>
+                      <i className="btn-pause fa fa-pause footerPlayer" aria-hidden="true" ></i>
+                    </div>
+
+                    <Spinner className='footerPlayerSpinner' size="sm" animation="border" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner> */}
+
                   </div>
 
-                  <i className="btn-next fa fa-step-forward footerPlayer" aria-hidden="true" onClick={nextMixItem}></i>
+                  <i className="btn-next fa fa-step-forward footerPlayer" data-bs-toggle="tooltip" data-bs-placement="top" title="Next Mix" aria-hidden="true" onClick={nextMixItem}></i>
 
                 </div>
 
@@ -146,7 +168,8 @@ export default function Footer() {
                 </div>
 
                 <div className='btn-ShazamIcon' >
-                  <i className="cursor-pointer fa fa-search-plus" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to Identify"></i>
+                  {/* <i className="cursor-pointer fa fa-search-plus" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to Identify"></i> */}
+                  <h3 className='cursor-pointer' aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to Identify"><TbBrandShazam /></h3>
                 </div>
 
               </div>
@@ -156,5 +179,22 @@ export default function Footer() {
         </div>
       </footer>
     </>
+  )
+}
+
+function Player() {
+  return (
+    <>
+      <i className="btn-play fa fa-play footerPlayer" aria-hidden="true"></i>
+      <i className="btn-pause fa fa-pause footerPlayer" aria-hidden="true" ></i>
+    </>
+  )
+}
+
+function Loader() {
+  return (
+    <Spinner className='footerPlayerSpinner' size="sm" animation="border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
   )
 }

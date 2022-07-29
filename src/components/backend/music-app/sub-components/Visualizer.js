@@ -14,8 +14,10 @@ function Visualizer() {
     appSettings: {
       activeSpectrum
     },
-    playing,
-    audioObject,
+    musicSettings: {
+      playing,
+      audioObject,
+    },
   } = useContext(appContext)
 
   //Audio state of item playing

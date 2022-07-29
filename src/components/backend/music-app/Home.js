@@ -22,8 +22,10 @@ export default function Home() {
 
   // Global State
   const {
-    activePlaylist,
-    currentSong
+    musicSettings: {
+      currentSong,
+      activePlaylist,
+    },
   } = useContext(appContext)
 
 

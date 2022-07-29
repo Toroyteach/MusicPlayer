@@ -37,7 +37,7 @@ const ApplicationState = (props) => {
   // Set playing state of the audio
   //Audio state of item playing
   const audioCtx = new (window.AudioContext || window.webkitAudioContext);
-  const [audio] = useState(new Audio(state.activePlaylist[0].fileUrl));
+  const [audio] = useState(new Audio(state.musicSettings.activePlaylist[0].fileUrl));
   //sshsh
   // let audioSource = useRef();
   // let analyser = useRef();
@@ -50,7 +50,7 @@ const ApplicationState = (props) => {
   const togglePlaying = () =>  {
 
     //audio.oncanplay = () => {
-      state.playing ? audio.play() : audio.pause()
+      state.musicSettings.playing ? audio.play() : audio.pause()
     //}
 
   }
@@ -61,7 +61,7 @@ const ApplicationState = (props) => {
     console.log(id);
 
     //add the correct method to fetch the correct file path
-    audio.src = state.activePlaylist[id].fileUrl;
+    audio.src = state.musicSettings.activePlaylist[id].fileUrl;
 
     //dispatch({ type: SET_CURRENT_SONG, data: id })
 
@@ -69,26 +69,26 @@ const ApplicationState = (props) => {
 
   // Handle Next song
   const nextMix = () => {
-    if (state.currentSong === state.activePlaylist.length - 1) {
+    if (state.musicSettings.currentSong === state.musicSettings.activePlaylist.length - 1) {
 
       SetCurrent(0)
 
-    } else if (state.random) {
+    } else if (state.musicSettings.random) {
 
-      SetCurrent(Math.floor(Math.random() * state.activePlaylist.length));
+      SetCurrent(Math.floor(Math.random() * state.musicSettings.activePlaylist.length));
 
     } else {
 
-      SetCurrent(state.currentSong + 1)
+      SetCurrent(state.musicSettings.currentSong + 1)
     }
   }
 
 
   // Handle Random
-  const setFavouriteMix = () => dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: state.random ? false : true })
+  const setFavouriteMix = () => dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: state.musicSettings.random ? false : true })
 
   // Handle Random
-  const setMusicAppDarkTheme = () => dispatch({ type: SET_MUSIC_APP_DARKMODE, data: state.random ? false : true })
+  const setMusicAppDarkTheme = () => dispatch({ type: SET_MUSIC_APP_DARKMODE, data: state.musicSettings.random ? false : true })
 
   // End of Song
   const handleEndOfMix = () => {
@@ -191,13 +191,13 @@ const ApplicationState = (props) => {
 
     togglePlaying()
 
-  }, [state.playing])
+  }, [state.musicSettings.playing])
 
   //effect to handle changes to the current song
   useEffect(() => {
 
     //create a method to interact with audio object and hit next to play the next item
-    SetCurrent(state.currentSong)
+    SetCurrent(state.musicSettings.currentSong)
 
     audio.ontimeupdate = () => { 
       setCurrentTime( audio.currentTime ) 
@@ -213,14 +213,14 @@ const ApplicationState = (props) => {
       handleEndOfMix()
     }
 
-  }, [state.currentSong])
+  }, [state.musicSettings.currentSong])
 
   //effect to control the volume of the audio player
   useEffect(() => {
 
-    audio.volume = state.volume
+    audio.volume = state.musicSettings.volume
 
-  }, [state.volume])
+  }, [state.musicSettings.volume])
 
   //get and set the current language
   // useEffect(() => {
@@ -233,16 +233,15 @@ const ApplicationState = (props) => {
   return (
     <appContext.Provider
       value={{
-        currentSong: state.currentSong,
-        songs: state.activePlaylist,
-        activePlaylist: state.activePlaylist,
-        repeat: state.repeat,
-        random: state.random,
-        playing: state.playing,
-        astronomyPicture: state.astronomyPicture,
-        audioObject: audio,
-        volume: state.volume,
-        duration: duration,
+        currentSong: state.musicSettings.currentSong,
+        activePlaylist: state.musicSettings.activePlaylist,
+        repeat: state.musicSettings.repeat,
+        random: state.musicSettings.random,
+        playing: state.musicSettings.playing,
+        astronomyPicture: state.appSettings.astronomyPicture,
+        audioObject: state.musicSettings.audio,
+        volume: state.musicSettings.volume,
+        duration: state.musicSettings.duration,
         currentTime: currentTime,
         stateDispatch: dispatch,
         handleForward1Minute,

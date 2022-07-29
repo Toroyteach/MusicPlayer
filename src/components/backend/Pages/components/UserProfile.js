@@ -13,6 +13,7 @@ import swal from 'sweetalert';
 //import bootstrap toast
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
+import CustomToast from '../../toastComponent/CustomToast';
 
 //get the reducer types to help update the applcation states
 import {
@@ -71,6 +72,7 @@ export default function UserProfile() {
   //set the states to the toast to stack them
   const [show, setShow] = useState(false);
   //const [position, setPosition] = useState('top-start');
+  const InfoToast = CustomToast({ header: "Error" });
 
   //update show listeners my online status
   const updateShowMyOnlineStatus = () => {
@@ -139,7 +141,10 @@ export default function UserProfile() {
   return (
     <>
       <div className='toastUpdateNotification'>
-        <ToastContainer position="top-end" className="p-3">
+
+      <InfoToast>Something went wrong.</InfoToast>
+
+        {/* <ToastContainer position="top-end" className="p-3">
           <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
             <Toast.Header>
               <img
@@ -151,7 +156,7 @@ export default function UserProfile() {
             </Toast.Header>
             <Toast.Body><p className=''>You have set the Setting to True:False</p></Toast.Body>
           </Toast>
-        </ToastContainer>
+        </ToastContainer> */}
       </div>
 
       <div className="container-fluid px-0">

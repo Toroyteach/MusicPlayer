@@ -10,6 +10,7 @@ import {
   SET_FAVOURITE_MIX_ITEM,
   SET_MIX_ITEM_DURATION,
   SET_VOLUME,
+  SET_MIX_ITEM_LOADING_SPINNER,
 
   //admin states
   SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
@@ -69,49 +70,55 @@ export default (state, action) => {
     case SET_ACTIVE_PLAYLIST_ARRAY:
       return {
         ...state,
-        songs: action.data,
+        musicSettings: { ...state.musicSettings, activePlaylist: action.data }
       }
 
     case SET_CURRENT_SONG:
       return {
         ...state,
-        currentSong: action.data,
+        musicSettings: { ...state.musicSettings, currentSong: action.data }
       }
 
     case SET_TOGGLE_RANDOM:
       return {
         ...state,
-        random: action.data,
+        musicSettings: { ...state.musicSettings, random: action.data }
       }
 
     case SET_TOGGLE_REPEAT:
       return {
         ...state,
-        repeat: action.data,
+        musicSettings: { ...state.musicSettings, repeat: action.data }
       }
 
     case SET_TOGGLE_PLAYING:
       return {
         ...state,
-        playing: action.data,
+        musicSettings: { ...state.musicSettings, playing: action.data }
       }
 
     case SET_RECENT_SEEK_TIME:
       return {
         ...state,
-        seekTime: action.data,
+        musicSettings: { ...state.musicSettings, seekTime: action.data }
       }
 
     case SET_MIX_ITEM_DURATION:
       return {
         ...state,
-        duration: action.data,
+        musicSettings: { ...state.musicSettings, duration: action.data }
       }
 
     case SET_VOLUME:
       return {
         ...state,
-        volume: action.data,
+        musicSettings: { ...state.musicSettings, volume: action.data }
+      }
+
+    case SET_MIX_ITEM_LOADING_SPINNER:
+      return {
+        ...state,
+        musicSettings: { ...state.musicSettings, spinnerLoading: action.data }
       }
 
     case SET_FAVOURITE_MIX_ITEM:
@@ -350,6 +357,8 @@ export default (state, action) => {
       return {
         ...state,
         astronomyPicture: action.data,
+        ...state,
+        appSettings: { ...state.appSettings, astronomyPicture: action.data }
       }
 
     default:

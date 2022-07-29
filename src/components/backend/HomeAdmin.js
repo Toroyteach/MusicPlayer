@@ -37,11 +37,11 @@ import { useCookies } from 'react-cookie';
 // import About from './Pages/About';
 
 //import flag images
-import AU from '../../assets/backend/img/icons/flags/AU.png'
-import BR from '../../assets/backend/img/icons/flags/BR.png'
-import DE from '../../assets/backend/img/icons/flags/DE.png'
-import GB from '../../assets/backend/img/icons/flags/GB.png'
-import US from '../../assets/backend/img/icons/flags/US.png'
+// import AU from '../../assets/backend/img/icons/flags/AU.png'
+// import BR from '../../assets/backend/img/icons/flags/BR.png'
+// import DE from '../../assets/backend/img/icons/flags/DE.png'
+// import GB from '../../assets/backend/img/icons/flags/GB.png'
+// import US from '../../assets/backend/img/icons/flags/US.png'
 
 export default function Home() {
 
@@ -243,9 +243,10 @@ export default function Home() {
                   </a> */}
                   {/* <Select className='dropdown-item allow-focus ' options={languageOtions} /> */}
                   <div class="sl-nav">
-                    <i className="fa fa-language cursor-pointer"></i>
+                    {/* <i className="fa fa-language cursor-pointer"></i> */}
                     <ul>
                       <li>
+                      <i className="fa fa-language cursor-pointer"></i>
                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                         <div class="triangle"></div>
                         <ul>
@@ -259,7 +260,7 @@ export default function Home() {
                   </div>
                 </li>
 
-                <li className="nav-item dropdown pe-2 d-flex align-items-center">
+                <li className="nav-item dropdown pe-2 d-flex align-items-center" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Notifications">
                   <a href="/#" className="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i className="fa fa-bell cursor-pointer"></i>
                   </a>

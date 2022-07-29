@@ -99,10 +99,12 @@ const appSettings = {
   appDarkMode: false,
   activeSpectrum: false,
   musicAppDarkMode: false,
+  //added
+  astronomyPicture: '',
 }
 
-//the reducer states
-const defaultState = {
+//Music player states
+const musicSettings = {
   currentSong: 0,
   activePlaylist: song_list,
   repeat: false,
@@ -115,9 +117,27 @@ const defaultState = {
   musicAppTheme: 'default',
   favourite: false,
   audio: null,
+  spinnerLoading: false,
+}
+
+//the reducer states
+const defaultState = {
+  // currentSong: 0,
+  // activePlaylist: song_list,
+  // repeat: false,
+  // random: false,
+  // playing: false,
+  // seekTime: 0,
+  // duration: 0,
+  // volume: 0.3,
+  // mainAppTheme: 'default',
+  // musicAppTheme: 'default',
+  // favourite: false,
+  // audio: null,
   userData,
   appSettings,
-  astronomyPicture: '',
+  musicSettings,
+  //astronomyPicture: '',
 }
 
 export default defaultState

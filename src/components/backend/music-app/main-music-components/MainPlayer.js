@@ -6,6 +6,9 @@ import '../../../../assets/Users/style.css';
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
 
+//import bootstrap loading spinner for when loading audio
+import Spinner from 'react-bootstrap/Spinner'
+
 //import necessary files to make state and context consistent
 import appContext from '../../context/appContext'
 
@@ -23,19 +26,21 @@ export default function MainPlayer() {
 
   // Global State
   const {
-    currentSong,
-    songs,
-    repeat,
-    random,
-    playing,
-    activePlaylist,
     SetCurrent,
-    stateDispatch,
     handleForward1Minute,
     handleback30,
-    currentTime,
-    duration,
     handleProgress,
+    currentTime,
+    musicSettings: {
+      repeat,
+      duration,
+      currentSong,
+      playing,
+      activePlaylist,
+      stateDispatch,
+      random,
+      spinnerLoading
+    },
   } = useContext(appContext)
 
   const VisualizerOptions = [
@@ -199,7 +204,7 @@ export default function MainPlayer() {
 
           <div className="playback_blur"></div>
 
-          <Link to="/single">
+          <Link to="/single" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Leave Comment">
             <div className="playback_thumb"></div>
           </Link>
 
@@ -265,16 +270,23 @@ export default function MainPlayer() {
 
             <div className="p-2 playback_btn_wrapper">
 
-              <i className="btn-prev fa fa-step-backward" aria-hidden="true" onClick={prevMixItem}></i>
-              <i className="btn-prev fa fa-reply" aria-hidden="true" onClick={handleback30}></i>
+              <i className="btn-prev fa fa-step-backward" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Previous Mix" onClick={prevMixItem}></i>
+              <i className="btn-prev fa fa-reply" data-bs-toggle="tooltip" data-bs-placement="top" title="Back 30sec" aria-hidden="true" onClick={handleback30}></i>
 
-              <div className="btn-switch" onClick={handlePlayPause}>
-                <i className="btn-play fa fa-play" aria-hidden="true"></i>
-                <i className="btn-pause fa fa-pause" aria-hidden="true"></i>
+              <div className="btn-switch" onClick={handlePlayPause} data-bs-toggle="tooltip" data-bs-placement="top" title="Play Pause">
+
+              { spinnerLoading ? <Loader/> : <Player /> }
+                
+                {/* <i className="btn-play fa fa-play" style={{ display: "none" }} aria-hidden="true"></i>
+                <i className="btn-pause fa fa-pause" style={{ display: "none" }} aria-hidden="true"></i>
+
+                <Spinner className='mainPlayerSpinner' size="sm" animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner> */}
               </div>
 
-              <i className="btn-next fa fa-share" aria-hidden="true" onClick={handleForward1Minute}></i>
-              <i className="btn-next fa fa-step-forward" aria-hidden="true" onClick={nextMixItem}></i>
+              <i className="btn-next fa fa-share" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Forward 1min" onClick={handleForward1Minute}></i>
+              <i className="btn-next fa fa-step-forward" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Next Mix" onClick={nextMixItem}></i>
 
             </div>
 
@@ -302,5 +314,22 @@ export default function MainPlayer() {
 
       </div>
     </div>
+  )
+}
+
+function Player() {
+  return (
+    <>
+      <i className="btn-play fa fa-play footerPlayer" aria-hidden="true"></i>
+      <i className="btn-pause fa fa-pause footerPlayer" aria-hidden="true" ></i>
+    </>
+  )
+}
+
+function Loader() {
+  return (
+    <Spinner className='footerPlayerSpinner' size="sm" animation="border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
   )
 }

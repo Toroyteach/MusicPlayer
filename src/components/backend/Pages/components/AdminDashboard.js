@@ -6,7 +6,8 @@ import NeutralUsageStats from './NeutralUsageStats';
 import appContext from '../../context/appContext.js'
 
 //import the chart library
-import { Bar } from "react-chartjs-2";
+import { Bar } from 'react-chartjs-2';
+
 
 export default function AdminDashboard() {
 
@@ -206,6 +207,7 @@ export default function AdminDashboard() {
           <div className="card z-index-2 ">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
               <div className="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+
                 <div className="chart">
                   {/* <Bar
                     type="bar"
@@ -224,9 +226,12 @@ export default function AdminDashboard() {
                     }}
                     data={barChartData}
                   /> */}
+{/* <Bar options={options} data={data} /> */}
                 </div>
+
               </div>
             </div>
+
             <div className="card-body">
               <h6 className="mb-0 ">Mixes Listenes</h6>
               <p className="text-sm ">Music Mix Performance</p>
@@ -244,3 +249,34 @@ export default function AdminDashboard() {
     </>
   )
 }
+
+// export const options = {
+//   responsive: true,
+//   plugins: {
+//     legend: {
+//       position: 'top',
+//     },
+//     title: {
+//       display: true,
+//       text: 'Chart.js Bar Chart',
+//     },
+//   },
+// };
+
+// const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+// export const data = {
+//   labels,
+//   datasets: [
+//     {
+//       label: 'Dataset 1',
+//       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+//       backgroundColor: 'rgba(255, 99, 132, 0.5)',
+//     },
+//     {
+//       label: 'Dataset 2',
+//       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
+//     },
+//   ],
+// };
