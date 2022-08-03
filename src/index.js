@@ -7,7 +7,7 @@ import { CookiesProvider } from "react-cookie";
 
 import MusicApplication from './MusicApplication.js';
 
-import { AuthProvider } from './components/backend/authContext/AuthProvider.js';
+import { AuthProvider } from './subSrc/services/authContext/AuthProvider.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

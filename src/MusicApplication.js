@@ -2,46 +2,46 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 //application context and states for data persistence
-import ApplicationState from './components/backend/context/ApplicationState.js'
+import ApplicationState from './subSrc/services/context/ApplicationState.js'
 
 //check auth component
-import RequireAuth from './components/backend/authContext/RequireAuth.js';
+import RequireAuth from './subSrc/services/authContext/RequireAuth.js';
 
 //Main component
-import HomeAdmin from '../src/components/backend/HomeAdmin.js'
+import HomeAdmin from './subSrc/layouts/mainlayout/main/Home.js';
 
 //Guest Music Component
-import GuestPlayer from './components/guest/GuestPlayer.js';
+import GuestPlayer from './subSrc/pages/Guest/GuestPlayer.js';
 
-import SignIn from './components/backend/authContext/Auth/SignIn.js';
-import SignUp from './components/backend/authContext/Auth/SignUp.js';
+import SignIn from './subSrc/services/authContext/Auth/SignIn.js';
+import SignUp from './subSrc/services/authContext/Auth/SignUp.js';
 
 //import 404 page
-import Missing from './components/backend/authContext/Auth/Missing.js';
+import Missing from './subSrc/services/authContext/Auth/Missing.js';
 
 //Components
-import HomePlayer from './components/backend/music-app/Home.js';
-import AdminDashboard from './components/backend/Pages/components/AdminDashboard.js';
-import UsersMessages from './components/backend/Pages/components/UsersMessages.js';
-import About from './components/backend/Pages/About';
+import HomePlayer from './subSrc/pages/Music/Music.js';
+import AdminDashboard from './subSrc/pages/Admin/AdminDashboard.js';
+import UsersMessages from './subSrc/pages/Users/UsersMessages.js';
+//import AdminMessages from './subSrc/pages/Admin/AdminMessages.js';
+import About from './subSrc/pages/About';
 
-import UserDashboard from './components/backend/Pages/components/UserDashboard.js';
-import Map from './components/backend/Pages/Map'
-// import AdminMessages from './Pages/components/AdminMessages.js'
-import Notifications from './components/backend/Pages/Notifications';
-import UserProfile from './components/backend/Pages/components/UserProfile';
+// import UserDashboard from './subSrc/pages/Users/UserDashboard.js';
+import Map from './subSrc/pages/Admin/Map.js'
+import Notifications from './subSrc/pages/Notifications.js';
+import UserProfile from './subSrc/pages/Users/UserProfile.js';
 //okay google
 
 //import upload mix
-import UploadMix from './components/backend/Pages/UploadMix';
+import UploadMix from './subSrc/pages/Admin/UploadMix.js';
 
 //import upload Quiz
-import UploadQuiz from './components/backend/Pages/UploadQuiz';
+import UploadQuiz from './subSrc/pages/Admin/UploadQuiz.js';
 
 //import users List
-import UsersList from './components/backend/Pages/UsersList';
+import UsersList from './subSrc/pages/Admin/UsersList.js';
 
-import SingleAudio from './components/backend/Pages/SingleMusic';
+import SingleAudio from './subSrc/pages/SingleMusic.js';
 
 // import useAuth from "./useAuth";
 
@@ -58,7 +58,7 @@ function MusicApplication() {
                 <Route path="/" element={<GuestPlayer />} />
 
                 {/* Users Protected Page */}
-                <Route element={<RequireAuth />}>
+                {/* <Route element={<RequireAuth />}> */}
                     <Route element={<HomeAdmin />}>
                         <Route path="/dashboard" element={<AdminDashboard />} />
                         <Route path="/messages" element={<UsersMessages />} />
@@ -73,7 +73,7 @@ function MusicApplication() {
                         <Route path="/comments" element={<UploadQuiz />} />
                         <Route path="/users" element={<UsersList />} />
                     </Route>
-                </Route>
+                {/* </Route> */}
 
                 {/* Auth pages */}
                 <Route path="/login" element={<SignIn />} />
