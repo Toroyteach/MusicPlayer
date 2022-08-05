@@ -511,12 +511,12 @@ export default function UserProfile() {
                   </div>
 
                   <div className="col-6">
-                    <input type="email" id="orangeForm-email" className="form-control validate" />
+                    <input type="number" id="orangeForm-email" className="form-control validate" />
                     <label data-error="wrong" data-success="right" for="orangeForm-email">Your number</label>
                   </div>
 
                   <div className="col-6">
-                    <input type="email" id="orangeForm-email" className="form-control validate" />
+                    <input type="text" id="orangeForm-email" className="form-control validate" />
                     <label data-error="wrong" data-success="right" for="orangeForm-email">Username</label>
                   </div>
 

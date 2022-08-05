@@ -1,3 +1,27 @@
+#quizeSection input[type="text"] {
+  outline: rgb(5, 3, 3) auto 5px;
+}
+
+#uploadSection input[type="text"],
+textarea,
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input{
+  outline: rgb(5, 3, 3) auto 1px;
+}
+
+
 div.stars {
 
   display: inline-block;
@@ -224,22 +248,41 @@ label.star:before {
   background: url("../../users/img/icons/flags/DE.png");
 }
 
+/* css for the Chard js */
+.chart-container {
+  position: relative;
+  height: 40vh;
+  width: 80vw;
+}
+
 /* media queries fro the main landing page of backend */
 /* mostly for special phones */
+@media (max-width: 320px) { 
+  .changeView {
+    height: 75vh !important;
+  }
+}
+
 @media (max-width: 360px) {
   .changeView {
     height: 75vh !important;
   }
-
 }
 
 @media (max-width: 375px) and (min-height: 667px) {
   .changeView {
-    height: 73vh !important;
+    height: 75vh !important;
   }
 }
 
 @media (max-width: 375px) and (min-height: 812px) {
+  .changeView {
+    height: 80vh !important;
+  }
+
+}
+
+@media (max-width: 384px) and (min-height: 640px) {
   .changeView {
     height: 80vh !important;
   }
@@ -284,6 +327,13 @@ label.star:before {
 @media (max-width: 428px) and (min-height: 926px) {
   .changeView {
     height: 91vh !important;
+  }
+
+}
+
+@media (max-width: 432px) and (min-height: 836px) {
+  .changeView {
+    height: 79vh !important;
   }
 
 }

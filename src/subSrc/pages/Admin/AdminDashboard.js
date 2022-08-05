@@ -6,8 +6,9 @@ import NeutralUsageStats from '../../layouts/mainlayout/neutral/NeutralUsageStat
 import appContext from '../../services/context/appContext.js'
 
 //import the chart library
-import { Bar } from 'react-chartjs-2';
-
+import { Line } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 export default function AdminDashboard() {
 
@@ -22,20 +23,22 @@ export default function AdminDashboard() {
       shazamCounts,
       highestFavourite,
       cumulativeComments,
-    }
+    },
+    musicSettings: {
+      mixList,
+    },
   } = useContext(appContext);
 
   //chart data set
   const state = {
-    labels: ['January', 'February', 'March',
-      'April', 'May'],
+    labels: mixList,
     datasets: [
       {
-        label: 'Rainfall',
+        label: 'Plays',
         backgroundColor: 'rgba(75,192,192,1)',
         borderColor: 'rgba(0,0,0,1)',
         borderWidth: 2,
-        data: [65, 59, 80, 81, 56]
+        data: [12, 23, 53, 15, 35, 64, 14, 16, 27, 37, 48, 19, 29, 39, 16, 62, 25, 63, 23, 12, 13, 23, 41, 31, 14, 54, 23, 1, 12, 32, 24, 26, 17, 27]
       }
     ]
   }
@@ -198,37 +201,40 @@ export default function AdminDashboard() {
       </div>
 
       <div className="row mt-4">
-        <div className="col-lg-12 col-md-12 mt-4 mb-4">
+        <div className="col-lg-7 col-md-12 mt-4 mb-4">
           <div className="card z-index-2 ">
+            
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
               <div className="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
 
-                <div className="chart">
-                  {/* <Bar
-                    data={state}
-                    options={{
-                      title: {
-                        display: true,
-                        text: 'Average Rainfall per month',
-                        fontSize: 20
-                      },
-                      legend: {
-                        display: true,
-                        position: 'right'
-                      }
-                    }}
-                  /> */}
+                <div className="chart-co text-white" style={{   position: 'relative', height: '386px', width: '800px' }}>
+
+                  <Line options={{
+                    title: {
+                      display: true,
+                      text: 'Average Rainfall per month',
+                      fontSize: 20
+                    },
+                    legend: {
+                      display: true,
+                      position: 'right'
+                    },
+                    option: {
+                      maintainAspectRatio: true,
+                      responsive: true
+                    }
+                  }} data={state} />
                 </div>
 
               </div>
             </div>
 
             <div className="card-body">
-              <h6 className="mb-0 ">Mixes Listenes</h6>
+              <h6 className="mb-0 ">Mixes Listens</h6>
               <p className="text-sm ">Music Mix Performance</p>
               <hr className="dark horizontal" />
               <div className="d-flex ">
-                <i className="material-icons text-sm my-auto me-1">schedule</i>
+                <i className="material-icons text-sm my-auto me-1">Data</i>
                 <p className="mb-0 text-sm"> updated sent 2 days ago </p>
               </div>
             </div>
@@ -236,7 +242,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <NeutralUsageStats userData={userData} />
+      <NeutralUsageStats />
     </>
   )
 }

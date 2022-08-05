@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import NeutralUsageStats from '../../layouts/mainlayout/neutral/NeutralUsageStats';
 
 //user details context
-import appContext from '.../../services/context/appContext.js'
+import appContext from '../../services/context/appContext.js'
 
 //react tour import
 // import Tour from 'reactour'

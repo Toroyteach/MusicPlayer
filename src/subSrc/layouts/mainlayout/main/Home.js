@@ -25,7 +25,7 @@ import appContext from '../../../services/context/appContext.js';
 //notification images
 import messageImage from '../../../assets/users/img/team-2.jpg';
 import noticeImage from "../../../assets/users/img/small-logos/logo-spotify.svg";
-import musicNote from '../../../assets/users/animeHeadphones.png';
+import musicNote from '../../../assets/users/anime.svg';
 //sunsset image profile background
 import image from '../../../assets/users/img/logo-ct.png';
 

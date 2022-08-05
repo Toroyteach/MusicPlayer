@@ -3,7 +3,7 @@ import React from 'react'
 export default function UploadMix() {
   return (
     <>
-      <section className="container py-5" style={{ background: "#f4f4f4" }}>
+      <section className="container py-5" id='uploadSection'>
         <div className="container">
 
           <div className="row ">

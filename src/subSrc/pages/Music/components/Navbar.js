@@ -96,7 +96,7 @@ export default function Navbar() {
       <ul className="m-nav_main">
         <li> <a className="m-nav_link a" onClick={handleHomeClickAction}>Home	</a></li>
         <li> <a className="m-nav_link a" onClick={handleListnersClickAction}>Listeners	</a></li>
-        <li> <a className="m-nav_link a" onClick={handleAnxietyClickAction}>Calm Your Anxiety	</a></li>
+        <li> <a className="m-nav_link a" onClick={handleAnxietyClickAction}>Calming Loop	</a></li>
         <li> <a className="m-nav_link a" onClick={handleAstronomyClickAction}>Picture of the Day	</a></li>
       </ul>
     </div>

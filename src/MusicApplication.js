@@ -23,6 +23,7 @@ import Missing from './subSrc/services/authContext/Auth/Missing.js';
 import HomePlayer from './subSrc/pages/Music/Music.js';
 import AdminDashboard from './subSrc/pages/Admin/AdminDashboard.js';
 import UsersMessages from './subSrc/pages/Users/UsersMessages.js';
+import UsersDashboard from './subSrc/pages/Users/UserDashboard.js'
 //import AdminMessages from './subSrc/pages/Admin/AdminMessages.js';
 import About from './subSrc/pages/About';
 
@@ -69,7 +70,7 @@ function MusicApplication() {
                         <Route path="/about" element={<About />} />
                         <Route path="/map" element={<Map />} />
                         <Route path="/add-mix" element={<UploadMix />} />
-                        <Route path="/add-quiz" element={<UploadMix />} />
+                        <Route path="/add-quiz" element={<UploadQuiz />} />
                         <Route path="/comments" element={<UploadQuiz />} />
                         <Route path="/users" element={<UsersList />} />
                     </Route>

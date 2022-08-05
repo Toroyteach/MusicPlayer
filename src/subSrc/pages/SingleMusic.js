@@ -89,12 +89,12 @@ export default function SingleMusic() {
 
           <section className="border-bottom mb-4 py-3">
 
-            <div className="card mb-3">
+            <div className="card">
               <div className="row g-0">
-                <div className="col-md-4">
-                  <img src={coverImage} className="img-fluid rounded-start" alt="Magnifico" />
+                <div className="col-md-3">
+                  <img src={coverImage} className="img-responsive rounded-start" alt="Magnifico" style={{ maxWidth: "80%", maxHeight: "auto" }}/>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-9">
                   <div className="card-body">
                     <h5 className="card-title">Magnifico</h5>
                     <p className="card-text">I dont have any good descrioption to talk about this mix. While i was creating it i had thought of the word TNT to mean that it is an exploseive mix tape but
@@ -111,7 +111,7 @@ export default function SingleMusic() {
           </section>
 
 
-          <div className="container my-5 py-3">
+          <div className="container mb-4 py-3">
             <div className="row d-flex justify-content-center">
               <div className="col-md-12 col-lg-10">
                 <div className="card text-dark">

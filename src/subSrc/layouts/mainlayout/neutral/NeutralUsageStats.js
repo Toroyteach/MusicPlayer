@@ -13,12 +13,15 @@ export default function NeutralUsageStats() {
         userData: {
             history,
             favourite:{
+                favouriteCount,
                 favouriteItems
             },
             shazam: {
+                shazamCount,
                 shazamItems
             },
             comments: {
+                commentsCount,
                 commentsItems
             },
         },
@@ -65,7 +68,7 @@ export default function NeutralUsageStats() {
                             <h6>Favourites</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                                <span className="font-weight-bold">24</span>
+                                <span className="font-weight-bold">{favouriteCount}</span>
                             </p>
                         </div>
                         <div className="card-body p-3" style={{ overflow: "auto"}}>
@@ -96,7 +99,7 @@ export default function NeutralUsageStats() {
                             <h6>Identified Songs</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                                <span className="font-weight-bold">10</span>
+                                <span className="font-weight-bold">{shazamCount}</span>
                             </p>
                         </div>
                         <div className="card-body p-3">

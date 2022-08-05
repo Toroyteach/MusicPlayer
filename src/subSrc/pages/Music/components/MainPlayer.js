@@ -286,12 +286,12 @@ export default function MainPlayer() {
           </div>
 
           <div className='dropdownV icon btn-VisualizerIcon'>
-            <i className="cursor-pointer fa fa-bar-chart" aria-hidden="true"></i>
+            <i className="dropdownV cursor-pointer fa fa-bar-chart" aria-hidden="true"></i>
             <div className='dropdown-content'>
-              <span className="">Choose Visualizer</span>
+              <span className="modalIntro">Choose Visualizer</span>
               <ul class="dropdown-content">
-                <li className='selected'><a class="dropdown-item" href="/#">Bars</a></li>
-                <li><a class="dropdown-item" href="/#">Circular</a></li>
+                <li className='selected modalIntro'><a class="dropdown-item">Bars</a></li>
+                <li><a class="dropdown-item modalIntro">Circular</a></li>
               </ul>
             </div>
           </div>
@@ -313,7 +313,7 @@ export default function MainPlayer() {
             <div className="playback_timeline_start-time">{fmtMSS(currentTime)}</div>
 
             <div className="playback_timeline_slider">
-              <input onChange={handleProgress} value={duration ? (currentTime * 100) / duration : 0} type="range" name="progresBar" id="prgbar" style={{ width: "100%" }} />
+              <input onChange={handleProgress} value={duration ? (currentTime * 100) / duration : 0} className="cursor-pointer" type="range" name="progresBar" id="prgbar" style={{ width: "100%" }} />
             </div>
 
             <div className="playback_timeline_end-time">{fmtMSS(duration)}</div>

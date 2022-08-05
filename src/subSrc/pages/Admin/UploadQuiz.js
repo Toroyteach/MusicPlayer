@@ -3,7 +3,7 @@ import React from 'react'
 export default function UploadQuiz() {
   return (
     <>
-      <section className="container py-5"  style={{ background: "#f4f4f4" }}>
+      <section className="container py-5"  id="quizeSection">
         <div className="container">
           <div className="row ">
             <div className="col">
@@ -53,6 +53,7 @@ export default function UploadQuiz() {
           </div>
 
         </div>
+        
         <br />
         {/* <!-- Submit button --> */}
         <div className="row">

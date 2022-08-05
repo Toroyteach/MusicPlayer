@@ -1,5 +1,16 @@
 import { song_list } from '../../../pages/Music/music/songsList.js';
 
+const mixList = [
+  'QuePasa', 'Byte', 'Mamba', 'RecessTrance', 'JK', 'Angst', 'SwitchBack', 'Magnifico', 'HolyGrailH', 'Tonny', 
+  'Amelia', 'Cool_Jam', 
+  'Khalifa_kush', 'Step_up', 
+  'Bona', 'My_all_time', 
+  'DuranTonny', 'Tempted_to_say_sorry',
+  'Formula', 'Hocus',
+  'T_D', 'M10', 'Made_Up', 'Recess', 'Sweet', 'Ultimo', 'Intuition', 'Sensei', 'Hallows', 'Contengency', 'Aspire3', 
+  'DuranTonny', 'Tempted_to_say_sorry', 'Pilot', 'Prism', 'HolyGrainP',
+];
+
 //default user state
 const userData = {
   firstname: 'Anthony',
@@ -36,7 +47,7 @@ const userData = {
     },
   ],
   favourite: {
-    favrouriteCount: 2,
+    favouriteCount: 2,
     favouriteItems: [
       {
         "title": "Stay High",
@@ -99,7 +110,7 @@ const appSettings = {
   shazamCounts: 13,
   highestFavourite: 'Mamba',
   language: 'En',
-  appDarkMode: false,
+  appDarkMode: true,
   activeSpectrum: false,
   musicAppDarkMode: false,
   astronomyPicture: '',
@@ -121,6 +132,7 @@ const musicSettings = {
   likedItem: false,
   // audio: null,
   spinnerLoading: false,
+  mixList: mixList,
 }
 
 //the reducer states
@@ -130,4 +142,4 @@ const defaultState = {
   musicSettings,
 }
 
-export default defaultState
+export default defaultState;
