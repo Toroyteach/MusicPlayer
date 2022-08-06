@@ -1,6 +1,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+//import css here to have one source for all components
+import './subSrc/assets/users/css/nucleo-icons.css';
+import './subSrc/assets/users/css/nucleo-svg.css';
+import './subSrc/assets/users/css/material-dashboard.css?v=3.0.4';
+import './subSrc/assets/users/css/material-dashboard.css.map';
+import './subSrc/assets/users/css/style.css';
+import './subSrc/assets/users/mediaQueries.css';
+
 //application context and states for data persistence
 import ApplicationState from './subSrc/services/context/ApplicationState.js'
 

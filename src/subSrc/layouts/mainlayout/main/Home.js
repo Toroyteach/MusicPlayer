@@ -5,12 +5,6 @@ import { Link, useMatch, useResolvedPath, Outlet, useLocation, Navigate, } from 
 
 import Select from 'react-select'
 
-import '../../../assets/users/css/nucleo-icons.css';
-import '../../../assets/users/css/nucleo-svg.css';
-import '../../../assets/users/css/material-dashboard.css?v=3.0.4';
-import '../../../assets/users/css/material-dashboard.css.map';
-import '../../../assets/users/css/style.css';
-
 //use auth for logout
 import useAuth from '../../../services/authContext/useAuth.js';//'../backend/authContext/useAuth.js';
 
@@ -249,7 +243,7 @@ export default function Home() {
           </ul>
         </div>
 
-        <div className="">
+        <div className="sideNavAside">
           <img src={musicNote} class="card-img-top" alt="..." />
         </div>
 
@@ -352,7 +346,7 @@ export default function Home() {
             </div>
           </div>
         </nav>
-        <div className="container-fluid changeView" style={{ height: "85vh", overflow: "auto" }}>
+        <div className="container-fluid changeView">
 
           <button type="button" className="btn btn-primary buttnonChange" data-toggle="modal" data-target="#exampleModalCenter" onClick={() => setButtonCookie()} style={{ display: show ? "block" : "none" }}>
             Click Me
