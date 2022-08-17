@@ -110,7 +110,7 @@ const appSettings = {
   shazamCounts: 13,
   highestFavourite: 'Mamba',
   language: 'En',
-  appDarkMode: true,
+  appDarkMode: false,
   activeSpectrum: false,
   musicAppDarkMode: false,
   astronomyPicture: '',

@@ -119,7 +119,7 @@ export default function GuestPlayer() {
                     </div>
 
                     <div className="section-title footer-title">
-                        <Link to="/dashboard">
+                        <Link to="/users/dashboard">
                             <h2>CLick here to Demo the APP</h2>
                         </Link>
                     </div>

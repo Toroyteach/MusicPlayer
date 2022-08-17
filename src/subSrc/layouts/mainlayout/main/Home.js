@@ -2,24 +2,17 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import { Link, useMatch, useResolvedPath, Outlet, useLocation, Navigate, } from 'react-router-dom';
 
-
-import Select from 'react-select'
-
 //use auth for logout
 import useAuth from '../../../services/authContext/useAuth.js';//'../backend/authContext/useAuth.js';
 
 //import necessary files to make state and context consistent
 import appContext from '../../../services/context/appContext.js';
-// import {
-
-//   SET_NOTIFIATION_TEXT_ITEM,
-
-// } from './context/appState/stateTypes';
 
 //notification images
 import messageImage from '../../../assets/users/img/team-2.jpg';
 import noticeImage from "../../../assets/users/img/small-logos/logo-spotify.svg";
 import musicNote from '../../../assets/users/anime.svg';
+import animeImg from '../../../assets/users/animeHeadphones.png'
 //sunsset image profile background
 import image from '../../../assets/users/img/logo-ct.png';
 
@@ -28,21 +21,9 @@ import Footer from '../../components/footer/Footer.js';
 
 //import cookiee
 import { useCookies } from 'react-cookie';
-// import About from './Pages/About';
-
-//import flag images
-// import AU from '../../assets/backend/img/icons/flags/AU.png'
-// import BR from '../../assets/backend/img/icons/flags/BR.png'
-// import DE from '../../assets/backend/img/icons/flags/DE.png'
-// import GB from '../../assets/backend/img/icons/flags/GB.png'
-// import US from '../../assets/backend/img/icons/flags/US.png'
 
 //import custom toast component and its assets
 import CustomToast from '../../components/toast/CustomToast.js';
-// import checkIcon from './toastComponent/toastSvg/check.svg';
-// import errorIcon from './toastComponent/toastSvg/error.svg';
-// import infoIcon from './toastComponent/toastSvg/info.svg';
-// import warningIcon from './toastComponent/toastSvg/warning.svg';
 
 export default function Home() {
 
@@ -70,18 +51,13 @@ export default function Home() {
     },
   ];
 
+  //set the cookie for the button click
   //const ref = useRef(null);
   const [show, setShow] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies(['darkMode']);
 
-  // const WrapperClass = React.forwardRef((props, ref) => (
-  //   <input ref={ref} {...props} />
-  //  ));
-
   const setButtonCookie = () => {
     setShow(false)
-
-
   }
 
   //use to set the nav active or not on mobile view
@@ -89,6 +65,16 @@ export default function Home() {
   const openNavBar = (e) => {
     e.preventDefault();
     setIsActive(current => !current)
+  }
+  //set timeout function to take back navigation anchor back
+  const navigationTimeOut = () => {
+
+    setTimeout(() => {
+
+      setIsActive(current => !current)
+
+    }, 100);
+
   }
 
   //toast texts and description
@@ -102,7 +88,6 @@ export default function Home() {
   const logout = () => {
     //unset cookie
 
-    removeCookie("user");
     //setAuth({});
 
     //console.log(auth);
@@ -122,6 +107,7 @@ export default function Home() {
   }, [notificationText]);
 
 
+
   return (
     <div className={isActive ? 'g-sidenav-show g-sidenav-pinned' : 'g-sidenav-show'}>
 
@@ -130,48 +116,48 @@ export default function Home() {
       <aside className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
         <div className="sidenav-header">
           <i className="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-          <Link className="navbar-brand m-0" to="/dashboard">
+          <div className="navbar-brand m-0">
             <img src={image} className="navbar-brand-img h-100" alt="main_logo" />
             <span className="ms-1 font-weight-bold text-white">Toroyteach Exp</span>
-          </Link>
+          </div>
         </div>
         <hr className="horizontal light mt-0 mb-2" />
         <div className="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <CustomLink to="/dashboard" >
+            <li className="nav-item" id='dashboardIntro'>
+              <CustomLink to="/users/dashboard" onClick={navigationTimeOut} >
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">dashboard</i>
                 </div>
                 <span className="nav-link-text ms-1">Dashboard</span>
               </CustomLink>
             </li>
-            <li className="nav-item">
-              <CustomLink to="/music" >
+            <li className="nav-item" id='musicIntro'>
+              <CustomLink to="/music" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">library_music</i>
                 </div>
                 <span className="nav-link-text ms-1">Music</span>
               </CustomLink>
             </li>
-            <li className="nav-item">
-              <CustomLink to="/messages" >
+            <li className="nav-item" id='messagesIntro'>
+              <CustomLink to="/users/messages" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">receipt_long</i>
                 </div>
                 <span className="nav-link-text ms-1">Messages</span>
               </CustomLink>
             </li>
-            <li className="nav-item">
-              <CustomLink to="/notifications" >
+            <li className="nav-item" id='notificationsIntro'>
+              <CustomLink to="/notifications" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">notifications</i>
                 </div>
                 <span className="nav-link-text ms-1">Notifications</span>
               </CustomLink>
             </li>
-            <li className="nav-item">
-              <CustomLink to="/about" >
+            <li className="nav-item" id='aboutIntro'>
+              <CustomLink to="/about" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">info</i>
                 </div>
@@ -181,15 +167,15 @@ export default function Home() {
             <li className="nav-item mt-3">
               <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account</h6>
             </li>
-            <li className="nav-item">
-              <CustomLink to="/profile" >
+            <li className="nav-item" id='profileIntro'>
+              <CustomLink to="/profile" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">person</i>
                 </div>
                 <span className="nav-link-text ms-1">Profile</span>
               </CustomLink>
             </li>
-            <li className="nav-item" onClick={logout}>
+            <li className="nav-item" onClick={logout} id='logoutIntro'>
               <a className="nav-link text-white ">
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">logout</i>
@@ -201,7 +187,23 @@ export default function Home() {
               <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin Pages</h6>
             </li>
             <li className="nav-item">
-              <CustomLink to="/users" >
+              <CustomLink to="/admin/dashboard" onClick={navigationTimeOut}>
+                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i className="material-icons opacity-10">dashboard</i>
+                </div>
+                <span className="nav-link-text ms-1">Dashboard</span>
+              </CustomLink>
+            </li>
+            <li className="nav-item">
+              <CustomLink to="/admin/messages" onClick={navigationTimeOut}>
+                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i className="material-icons opacity-10">receipt_long</i>
+                </div>
+                <span className="nav-link-text ms-1">Messages</span>
+              </CustomLink>
+            </li>
+            <li className="nav-item">
+              <CustomLink to="/admin/users" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">people</i>
                 </div>
@@ -209,7 +211,7 @@ export default function Home() {
               </CustomLink>
             </li>
             <li className="nav-item">
-              <CustomLink to="/add-quiz" >
+              <CustomLink to="/admin/add-quiz" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">add</i>
                 </div>
@@ -217,7 +219,7 @@ export default function Home() {
               </CustomLink>
             </li>
             <li className="nav-item">
-              <CustomLink to="/add-mix" >
+              <CustomLink to="/admin/add-mix" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">add</i>
                 </div>
@@ -225,7 +227,7 @@ export default function Home() {
               </CustomLink>
             </li>
             <li className="nav-item">
-              <CustomLink to="/comments" >
+              <CustomLink to="/admin/comments" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">assignment</i>
                 </div>
@@ -233,7 +235,7 @@ export default function Home() {
               </CustomLink>
             </li>
             <li className="nav-item">
-              <CustomLink to="/map" >
+              <CustomLink to="/admin/map" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">people</i>
                 </div>
@@ -244,12 +246,12 @@ export default function Home() {
         </div>
 
         <div className="sideNavAside">
-          <img src={musicNote} class="card-img-top" alt="..." />
+          <img src={animeImg} className="card-img-top" alt="..." />
         </div>
 
       </aside>
 
-      <main className="main-content position-relative max-height-vh-120 h-120 border-radius-lg ">
+      <main className="main-content position-relative max-height-vh-120 h-120 border-radius-lg " id='main-section'>
         {/* <!-- Navbar --> */}
 
         <nav className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
@@ -265,30 +267,25 @@ export default function Home() {
               </div>
               <ul className="navbar-nav  justify-content-end">
 
-                <li className="nav-item d-flex align-items-center">
-                  {/* <a href="/#" className="nav-link text-body p-3" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i className="fa fa-language cursor-pointer"></i>
-                  </a> */}
-                  {/* <Select className='dropdown-item allow-focus ' options={languageOtions} /> */}
+                <li className="nav-item d-flex align-items-center" id='languageSelectorIntro'>
                   <div className="sl-nav">
-                    {/* <i className="fa fa-language cursor-pointer"></i> */}
                     <ul>
                       <li>
                         <i className="fa fa-language cursor-pointer"></i>
                         <i className="fa fa-angle-down" aria-hidden="true"></i>
                         <div className="triangle"></div>
                         <ul>
-                          <li><i className="sl-flag flag-de"><div id="germany"></div></i> <span>Deutsch</span></li>
-                          <li><i className="sl-flag flag-gb"><div id="germany"></div></i> <span>Englisch</span></li>
-                          <li><i className="sl-flag flag-au"><div id="germany"></div></i> <span>Australia</span></li>
-                          <li><i className="sl-flag flag-usa"><div id="germany"></div></i> <span>USA</span></li>
+                          <li><i className="sl-flag flag-gb"></i> <span>English</span></li>
+                          <li><i className="sl-flag flag-fr"></i> <span>French</span></li>
+                          <li><i className="sl-flag flag-sp"></i> <span>Spanish</span></li>
                         </ul>
                       </li>
                     </ul>
+
                   </div>
                 </li>
 
-                <li className="nav-item dropdown pe-2 d-flex align-items-center" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Notifications">
+                <li className="nav-item dropdown pe-2 d-flex align-items-center" id='shortNotificationIntro' aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Notifications">
                   <a href="/#" className="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i className="fa fa-bell cursor-pointer"></i>
                   </a>
@@ -348,6 +345,7 @@ export default function Home() {
         </nav>
         <div className="container-fluid changeView">
 
+
           <button type="button" className="btn btn-primary buttnonChange" data-toggle="modal" data-target="#exampleModalCenter" onClick={() => setButtonCookie()} style={{ display: show ? "block" : "none" }}>
             Click Me
           </button>
@@ -378,12 +376,15 @@ export default function Home() {
           </div>
 
 
+
           <Outlet />
 
 
         </div>
 
-        <Footer />
+        <div id='footerIntro'>
+          <Footer />
+        </div>
 
       </main>
     </div>

@@ -7,7 +7,8 @@ import './subSrc/assets/users/css/nucleo-svg.css';
 import './subSrc/assets/users/css/material-dashboard.css?v=3.0.4';
 import './subSrc/assets/users/css/material-dashboard.css.map';
 import './subSrc/assets/users/css/style.css';
-import './subSrc/assets/users/mediaQueries.css';
+import './subSrc/assets/users/mediaQ.css';
+import './subSrc/assets/users/style.css';
 
 //application context and states for data persistence
 import ApplicationState from './subSrc/services/context/ApplicationState.js'
@@ -15,42 +16,34 @@ import ApplicationState from './subSrc/services/context/ApplicationState.js'
 //check auth component
 import RequireAuth from './subSrc/services/authContext/RequireAuth.js';
 
-//Main component
-import HomeAdmin from './subSrc/layouts/mainlayout/main/Home.js';
+//Main Landing Component
+import Home from './subSrc/layouts/mainlayout/main/Home.js';
 
-//Guest Music Component
-import GuestPlayer from './subSrc/pages/Guest/GuestPlayer.js';
-
-import SignIn from './subSrc/services/authContext/Auth/SignIn.js';
-import SignUp from './subSrc/services/authContext/Auth/SignUp.js';
-
-//import 404 page
-import Missing from './subSrc/services/authContext/Auth/Missing.js';
-
-//Components
-import HomePlayer from './subSrc/pages/Music/Music.js';
-import AdminDashboard from './subSrc/pages/Admin/AdminDashboard.js';
-import UsersMessages from './subSrc/pages/Users/UsersMessages.js';
-import UsersDashboard from './subSrc/pages/Users/UserDashboard.js'
-//import AdminMessages from './subSrc/pages/Admin/AdminMessages.js';
-import About from './subSrc/pages/About';
-
-// import UserDashboard from './subSrc/pages/Users/UserDashboard.js';
+// Admin pages
+import Comments from './subSrc/pages/Admin/Comments.js';
+import UsersList from './subSrc/pages/Admin/UsersList.js';
+import UploadMix from './subSrc/pages/Admin/UploadMix.js';
+import UploadQuiz from './subSrc/pages/Admin/UploadQuiz.js';
 import Map from './subSrc/pages/Admin/Map.js'
 import Notifications from './subSrc/pages/Notifications.js';
-import UserProfile from './subSrc/pages/Users/UserProfile.js';
-//okay google
+import AdminMessages from './subSrc/pages/Admin/AdminMessages.js';
+import AdminDashboard from './subSrc/pages/Admin/AdminDashboard.js';
 
-//import upload mix
-import UploadMix from './subSrc/pages/Admin/UploadMix.js';
 
-//import upload Quiz
-import UploadQuiz from './subSrc/pages/Admin/UploadQuiz.js';
+// Users pages
+import UsersMessages from './subSrc/pages/Users/UsersMessages.js';
+import UsersDashboard from './subSrc/pages/Users/UserDashboard.js';
 
-//import users List
-import UsersList from './subSrc/pages/Admin/UsersList.js';
 
+// Nuetral pages
+import Profile from './subSrc/pages/Users/UserProfile.js';
 import SingleAudio from './subSrc/pages/SingleMusic.js';
+import About from './subSrc/pages/About';
+import MusicPlayer from './subSrc/pages/Music/Music.js';
+import SignIn from './subSrc/services/authContext/Auth/SignIn.js';
+import SignUp from './subSrc/services/authContext/Auth/SignUp.js';
+import Missing from './subSrc/services/authContext/Auth/Missing.js';
+import GuestPlayer from './subSrc/pages/Guest/GuestPlayer.js';
 
 // import useAuth from "./useAuth";
 
@@ -68,19 +61,29 @@ function MusicApplication() {
 
                 {/* Users Protected Page */}
                 {/* <Route element={<RequireAuth />}> */}
-                    <Route element={<HomeAdmin />}>
-                        <Route path="/dashboard" element={<AdminDashboard />} />
-                        <Route path="/messages" element={<UsersMessages />} />
-                        <Route path="/music" element={<HomePlayer />} />
+                    <Route element={<Home />}>
+
+                        {/* NEUTRAL PAGES */}
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/music" element={<MusicPlayer />} />
                         <Route path="/notifications" element={<Notifications />} />
-                        <Route path="/profile" element={<UserProfile />} />
                         <Route path="/single" element={<SingleAudio />} />
                         <Route path="/about" element={<About />} />
-                        <Route path="/map" element={<Map />} />
-                        <Route path="/add-mix" element={<UploadMix />} />
-                        <Route path="/add-quiz" element={<UploadQuiz />} />
-                        <Route path="/comments" element={<UploadQuiz />} />
-                        <Route path="/users" element={<UsersList />} />
+
+                        {/* USERS PAGES */}
+                        <Route path="/users/dashboard" element={<UsersDashboard />} />
+                        <Route path="/users/messages" element={<UsersMessages />} />
+
+
+                        {/* ADMIN PAGES */}
+                        <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
+                        <Route path="/admin/messages" element={<AdminMessages />} />
+                        <Route path="/admin/map" element={<Map />} />
+                        <Route path="/admin/add-mix" element={<UploadMix />} />
+                        <Route path="/admin/add-quiz" element={<UploadQuiz />} />
+                        <Route path="/admin/comments" element={<Comments />} />
+                        <Route path="/admin/users" element={<UsersList />} />
+
                     </Route>
                 {/* </Route> */}
 
@@ -91,7 +94,6 @@ function MusicApplication() {
                 <Route path='*' element={<Missing />} />
 
             </Routes>
-
 
         </ApplicationState>
     )

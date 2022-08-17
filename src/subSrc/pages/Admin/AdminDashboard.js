@@ -5,10 +5,16 @@ import NeutralUsageStats from '../../layouts/mainlayout/neutral/NeutralUsageStat
 //user details context
 import appContext from '../../services/context/appContext.js'
 
+//import sample user image
+import userImageTable1 from '../../assets/users/img/team-1.jpg';
+import userImageTable2 from '../../assets/users/img/team-2.jpg';
+import userImageTable3 from '../../assets/users/img/team-3.jpg';
+
 //import the chart library
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
+
 
 export default function AdminDashboard() {
 
@@ -203,11 +209,11 @@ export default function AdminDashboard() {
       <div className="row mt-4">
         <div className="col-lg-7 col-md-12 mt-4 mb-4">
           <div className="card z-index-2 ">
-            
+
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
               <div className="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
 
-                <div className="chart-co text-white" style={{   position: 'relative', height: '386px', width: '800px' }}>
+                <div className="chart-co text-white" style={{ position: 'relative', height: '386px', width: '800px' }}>
 
                   <Line options={{
                     title: {
@@ -230,19 +236,184 @@ export default function AdminDashboard() {
             </div>
 
             <div className="card-body">
-              <h6 className="mb-0 ">Mixes Listens</h6>
-              <p className="text-sm ">Music Mix Performance</p>
-              <hr className="dark horizontal" />
-              <div className="d-flex ">
-                <i className="material-icons text-sm my-auto me-1">Data</i>
-                <p className="mb-0 text-sm"> updated sent 2 days ago </p>
+              <h6 className="mb-0 ">Music Mix Performance</h6>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-md-12 mt-0 mb-4'>
+          <div className="row">
+            <div className="col-12">
+              <div className="card my-4">
+                <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                  <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                    <h6 className="text-white text-capitalize ps-3">New Users</h6>
+                  </div>
+                </div>
+                <div className="card-body px-0 pb-2">
+                  <div className="table-responsive p-0">
+                    <table className="table align-items-center mb-0">
+                      <thead>
+                        <tr>
+                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username</th>
+                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Joined</th>
+                          <th className="text-secondary opacity-7"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr>
+                          <td>
+                            <div className="d-flex px-2 py-1">
+                              <div>
+                                <img src={userImageTable1} className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
+                              </div>
+                              <div className="d-flex flex-column justify-content-center">
+                                <h6 className="mb-0 text-sm">Anthony Toroyteach</h6>
+                                <p className="text-xs text-secondary mb-0">john@creative-tim.com</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p className="text-xs font-weight-bold mb-0">Admin</p>
+                          </td>
+                          <td className="align-middle text-center text-sm">
+                            <span className="badge badge-sm bg-gradient-success">Online</span>
+                          </td>
+                          <td className="align-middle text-center">
+                            <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            <div className="d-flex px-2 py-1">
+                              <div>
+                                <img src={userImageTable3} className="avatar avatar-sm me-3 border-radius-lg" alt="user3" />
+                              </div>
+                              <div className="d-flex flex-column justify-content-center">
+                                <h6 className="mb-0 text-sm">Santa Clause</h6>
+                                <p className="text-xs text-secondary mb-0">santa@creativetim.com</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p className="text-xs font-weight-bold mb-0">User</p>
+                          </td>
+                          <td className="align-middle text-center text-sm">
+                            <span className="badge badge-sm bg-gradient-success">Online</span>
+                          </td>
+                          <td className="align-middle text-center">
+                            <span className="text-secondary text-xs font-weight-bold">19/09/17</span>
+                          </td>
+                        </tr>
+
+
+                        <tr>
+                          <td>
+                            <div className="d-flex px-2 py-1">
+                              <div>
+                                <img src={userImageTable2} className="avatar avatar-sm me-3 border-radius-lg" alt="user2" />
+                              </div>
+                              <div className="d-flex flex-column justify-content-center">
+                                <h6 className="mb-0 text-sm">Emms Kachems</h6>
+                                <p className="text-xs text-secondary mb-0">ems@creativetim.com</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p className="text-xs font-weight-bold mb-0">User</p>
+                          </td>
+                          <td className="align-middle text-center text-sm">
+                            <span className="badge badge-sm bg-gradient-secondary">Offline</span>
+                          </td>
+                          <td className="align-middle text-center">
+                            <span className="text-secondary text-xs font-weight-bold">11/01/19</span>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            <div className="d-flex px-2 py-1">
+                              <div>
+                                <img src={userImageTable1} className="avatar avatar-sm me-3 border-radius-lg" alt="user3" />
+                              </div>
+                              <div className="d-flex flex-column justify-content-center">
+                                <h6 className="mb-0 text-sm">Biyenda Scofield</h6>
+                                <p className="text-xs text-secondary mb-0">brenda@creativetim.com</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p className="text-xs font-weight-bold mb-0">User</p>
+                          </td>
+                          <td className="align-middle text-center text-sm">
+                            <span className="badge badge-sm bg-gradient-success">Online</span>
+                          </td>
+                          <td className="align-middle text-center">
+                            <span className="text-secondary text-xs font-weight-bold">19/09/17</span>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            <div className="d-flex px-2 py-1">
+                              <div>
+                                <img src={userImageTable3} className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
+                              </div>
+                              <div className="d-flex flex-column justify-content-center">
+                                <h6 className="mb-0 text-sm">Rose Toroyteach</h6>
+                                <p className="text-xs text-secondary mb-0">rose@creativetim.com</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p className="text-xs font-weight-bold mb-0">User</p>
+                          </td>
+                          <td className="align-miuserImageTable1ddle text-center text-sm">
+                            <span className="badge badge-sm bg-gradient-success">Online</span>
+                          </td>
+                          <td className="align-middle text-center">
+                            <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            <div className="d-flex px-2 py-1">
+                              <div>
+                                <img src={userImageTable1} className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
+                              </div>
+                              <div className="d-flex flex-column justify-content-center">
+                                <h6 className="mb-0 text-sm">Sam Toroyteach</h6>
+                                <p className="text-xs text-secondary mb-0">sam@creativetim.com</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p className="text-xs font-weight-bold mb-0">User</p>
+                          </td>
+                          <td className="align-middle text-center text-sm">
+                            <span className="badge badge-sm bg-gradient-success">Online</span>
+                          </td>
+                          <td className="align-middle text-center">
+                            <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
+                          </td>
+                        </tr>
+ 
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <NeutralUsageStats />
+
+      </div>
     </>
   )
 }

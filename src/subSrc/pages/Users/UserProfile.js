@@ -75,7 +75,7 @@ export default function UserProfile() {
 
     let data = {
       type: 'Success',
-      text: 'Successfully made your Online Status '+(!allowOnlineStatus ? 'Enabled' : 'Disabled'),
+      text: 'Successfully made your Online Status ' + (!allowOnlineStatus ? 'Enabled' : 'Disabled'),
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -89,7 +89,7 @@ export default function UserProfile() {
 
     let data = {
       type: 'Success',
-      text: 'Successfully made your Comments '+(!allowComments ? 'Visible' : 'Hidden'),
+      text: 'Successfully made your Comments ' + (!allowComments ? 'Visible' : 'Hidden'),
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -104,7 +104,7 @@ export default function UserProfile() {
 
     let data = {
       type: 'Success',
-      text: 'Successfully '+(!allowQuize ? 'Enabled' : 'Disabled')+' Random Quize',
+      text: 'Successfully ' + (!allowQuize ? 'Enabled' : 'Disabled') + ' Random Quize',
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -119,7 +119,7 @@ export default function UserProfile() {
 
     let data = {
       type: 'Success',
-      text: 'Successfully '+(!allowWeather ? 'Enabled' : 'Disabled')+' Artifical Weather',
+      text: 'Successfully ' + (!allowWeather ? 'Enabled' : 'Disabled') + ' Artifical Weather',
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -135,7 +135,7 @@ export default function UserProfile() {
 
     let data = {
       type: 'Success',
-      text: 'Successfully '+(!appDarkMode ? 'Enabled' : 'Disabled')+' Dark Mode',
+      text: 'Successfully ' + (!appDarkMode ? 'Enabled' : 'Disabled') + ' Dark Mode',
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -151,7 +151,7 @@ export default function UserProfile() {
 
     let data = {
       type: 'Success',
-      text: 'Successfully '+(!activeSpectrum ? 'Activiated' : 'Diactivated')+' Audio Visualizers',
+      text: 'Successfully ' + (!activeSpectrum ? 'Activiated' : 'Diactivated') + ' Audio Visualizers',
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -161,34 +161,34 @@ export default function UserProfile() {
 
   //update enable global visualizer
   const updateEnableGlobalVisualizer = () => {
-    
+
     stateDispatch({ type: SET_ENABLE_GLOBAL_AUDIO_VISUALIZER, data: visualizerActive ? false : true })
 
     let data = {
       type: 'Warning',
-      text: 'Successfully '+(!visualizerActive ? 'Enabled' : 'Disabled')+' Visualizers for the application',
+      text: 'Successfully ' + (!visualizerActive ? 'Enabled' : 'Disabled') + ' Visualizers for the application',
       icon: warningIcon,
       bgColour: '#f0ad4e',
     }
 
     dispatchNotification(data)
-  
+
   }
 
   //update enable global astronomy picture
   const updateEnableGlobalAstronomyPic = () => {
-    
+
     stateDispatch({ type: SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE, data: astronomyActive ? false : true })
 
     let data = {
       type: 'Warning',
-      text: 'Successfully '+(!astronomyActive ? 'Enabled' : 'Disabled')+' Astronomy for the application',
+      text: 'Successfully ' + (!astronomyActive ? 'Enabled' : 'Disabled') + ' Astronomy for the application',
       icon: warningIcon,
       bgColour: '#f0ad4e',
     }
 
     dispatchNotification(data)
-  
+
   }
 
   //update enable global shazam requests
@@ -198,67 +198,67 @@ export default function UserProfile() {
 
     let data = {
       type: 'Warning',
-      text: 'Successfully '+(!shazamActive ? 'Enabled' : 'Disabled')+' Shazam for the application',
+      text: 'Successfully ' + (!shazamActive ? 'Enabled' : 'Disabled') + ' Shazam for the application',
       icon: warningIcon,
       bgColour: '#f0ad4e',
     }
 
     dispatchNotification(data)
-  
+
   }
 
   //update enable global dowbload option
   const updateEnableGlobalDownload = () => {
-    
+
     stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
 
     let data = {
       type: 'Warning',
-      text: 'Successfully '+(!downloadActive ? 'Enabled' : 'Disabled')+' Download Option for the application',
+      text: 'Successfully ' + (!downloadActive ? 'Enabled' : 'Disabled') + ' Download Option for the application',
       icon: warningIcon,
       bgColour: '#f0ad4e',
     }
 
     dispatchNotification(data)
-  
+
   }
 
   //update enable anxiety video
   const updateEnableGlobalAnxietyVideo = () => {
-    
+
     stateDispatch({ type: SET_ENABLE_GLOBAL_CALM_ANXIETY, data: anxietyVideos ? false : true })
 
     let data = {
       type: 'Warning',
-      text: 'Successfully '+(!anxietyVideos ? 'Enabled' : 'Disabled')+' Anxiety video for the Entire application',
+      text: 'Successfully ' + (!anxietyVideos ? 'Enabled' : 'Disabled') + ' Anxiety video for the Entire application',
       icon: warningIcon,
       bgColour: '#f0ad4e',
     }
 
     dispatchNotification(data)
-  
+
   }
 
   //update enable see other users online status
   const updateEnableGlobalUsersToViewOtherUsersOnlineActivity = () => {
-    
+
     stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
 
     let data = {
       type: 'Warning',
-      text: 'Successfully '+(!viewOtherUsers ? 'Enabled' : 'Disabled')+' View Online Users for the Entire application',
+      text: 'Successfully ' + (!viewOtherUsers ? 'Enabled' : 'Disabled') + ' View Online Users for the Entire application',
       icon: warningIcon,
       bgColour: '#f0ad4e',
     }
 
     dispatchNotification(data)
-  
+
   }
 
   //handle delete users account
-  //variable for the cool thanos animation disappearance
+  //variable for the cool thanos animation disappearance effect
   const navigate = useNavigate();
-  const [ visible, setVisible ] = useState(false)
+  const [visible, setVisible] = useState(false)
   const deleteUsersAccount = () => {
 
     swal({
@@ -314,8 +314,8 @@ export default function UserProfile() {
           <img src={image} alt="profile_image" className="background_image" />
           <span className="mask  bg-gradient-primary  opacity-3"></span>
         </div>
-        <div className="card card-body mx-md-4 mt-n6">
-          <div className={ visible ? 'row gx-4 mb-2 fadeOut':'row gx-4 mb-2'} id="fadeOut">
+        <div className="card card-body mx-md-1 mt-n6">
+          <div className={visible ? 'row gx-4 mb-2 fadeOut' : 'row gx-4 mb-2'} id="fadeOut">
             <div className="col-auto">
               <div className="avatar avatar-xl position-relative">
                 <img src={profileImage} alt="profile_image" className="w-100 border-radius-lg shadow-sm" />
@@ -332,7 +332,7 @@ export default function UserProfile() {
               </div>
             </div>
           </div>
-          <div  className={ visible ? 'row fadeOutTheRest':'row'} id="fadeOutTheRest">
+          <div className={visible ? 'row fadeOutTheRest' : 'row'} id="fadeOutTheRest">
             <div className="row">
               <div className="col-12 col-xl-4">
                 <div className="card card-plain h-100">
@@ -365,7 +365,7 @@ export default function UserProfile() {
                   </div>
                 </div>
               </div>
-              <div className={ visible ? 'col-12 col-xl-4 fadeOutPlatformSettings':'col-12 col-xl-4'} id="fadeOutPlatformSettings">
+              <div className={visible ? 'col-12 col-xl-4 fadeOutPlatformSettings' : 'col-12 col-xl-4'} id="fadeOutPlatformSettings">
                 <div className="card card-plain h-100">
                   <div className="card-header pb-0 p-3">
                     <h6 className="mb-0">Platform Settings</h6>
@@ -375,51 +375,47 @@ export default function UserProfile() {
                     <ul className="list-group">
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={allowOnlineStatus} onChange={updateShowMyOnlineStatus} />
-                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault">Show other Listeners my online status</label>
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={appDarkMode} onChange={updateEnableAppDarkMode} />
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault2"> &ensp;Dark Theme</label>
                         </div>
                       </li>
+
+                      <li className="list-group-item border-0 px-0">
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={allowOnlineStatus} onChange={updateShowMyOnlineStatus} />
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault">&ensp;Publicize my Online Activity</label>
+                        </div>
+                      </li>
+
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={allowComments} onChange={updateShowMyComments} />
-                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault1">Show others my comment on Mix Item</label>
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault1">&ensp;Publicize My Comments</label>
                         </div>
                       </li>
+
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowQuize} onChange={updateAllowRandomQuizes} />
-                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault2">Allow Random Music Quizes</label>
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault2">&ensp;Allow Random Music Quizes</label>
                         </div>
                       </li>
+
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowWeather} onChange={updateEnableArtificalWeather} />
-                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault2">Enable Artificial Weather</label>
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault2">&ensp;Enable Artificial Weather</label>
                         </div>
                       </li>
-                    </ul>
-                    <ul className="list-group">
+
                       <li className="list-group-item border-0 px-0">
-                        <div className="row">
-
-                          <div className="col-6">
-                            <h6 className="text-uppercase text-body text-xs font-weight-bolder mt-4">Application Dark Theme</h6>
-                            <div className="form-check form-switch ps-0">
-                              <input className="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" checked={appDarkMode} onChange={updateEnableAppDarkMode} />
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            <h6 className="text-uppercase text-body text-xs font-weight-bolder mt-4">Music Player Visualization</h6>
-                            <div className="form-check form-switch ps-0">
-
-                              <input className="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" checked={activeSpectrum} onChange={handleChooseVisualizer} />
-
-                            </div>
-                          </div>
-
+                        <div className="form-check form-switch ps-0">
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault12" checked={activeSpectrum} onChange={handleChooseVisualizer} />
+                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault12">&ensp;Music Visualizer</label>
                         </div>
                       </li>
                     </ul>
+
                   </div>
                 </div>
               </div>
@@ -433,43 +429,43 @@ export default function UserProfile() {
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={visualizerActive} onChange={updateEnableGlobalVisualizer} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault">Enable Audio Visualizer</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault">&ensp;Enable Audio Visualizer</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={astronomyActive} onChange={updateEnableGlobalAstronomyPic} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault1">Enable Astronmy Picture</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault1">&ensp;Enable Astronmy Picture</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={shazamActive} onChange={updateEnableGlobalShazam} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable Shazam search</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable Shazam search</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={downloadActive} onChange={updateEnableGlobalDownload} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable Download options</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable Download options</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={anxietyVideos} onChange={updateEnableGlobalAnxietyVideo} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable Calm Anxiety Video</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable Calm Anxiety Video</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={viewOtherUsers} onChange={updateEnableGlobalUsersToViewOtherUsersOnlineActivity} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable users to see what others are Listening</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable users to see what others are Listening</label>
                         </div>
                       </li>
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
                           <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">Enable Direct Commenting</label>
+                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable Direct Commenting</label>
                         </div>
                       </li>
                     </ul>

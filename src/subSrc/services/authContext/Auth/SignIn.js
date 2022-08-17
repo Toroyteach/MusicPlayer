@@ -12,13 +12,13 @@ import {
   SET_USER_USERNAME,
 } from '../../context/appState/stateTypes.js';
 
+//custom input validation with Regular Expressions
+import useEmailValidation from '../../hooks/formValidation/useEmailValidation';
+import usePasswordValidation from '../../hooks/formValidation/usePasswordValidation';
+
 export default function SignIn() {
 
   const { setAuth } = useAuth();
-
-  //Regex to validate the username
-  const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
   //global states
     // Global State
@@ -33,54 +33,22 @@ export default function SignIn() {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  //Refs to the inputs
-  const userEmailRef = useRef();
-  const userPasswordRef = useRef();
-
   const errRef = useRef();
 
   //Email
-  const [email, setEmail] = useState('');
-  const [validEmail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
+  const { email, setEmail, validEmail } = useEmailValidation();
 
   //Password
-  const [password, setPassword] = useState('');
-  const [validPassword, setValidPassword] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
+  const { password, setPassword, validPassword } = usePasswordValidation();
 
   const [errMsg, setErrMsg] = useState('');
-
-  //set focus to firstname on load
-  useEffect(() => {
-    userEmailRef.current.focus();
-  }, []);
-
-  //check valid email with Regex
-  useEffect(() => {
-    setValidEmail(EMAIL_REGEX.test(email));
-  }, [email])
-
-  //check valid Password with Regex
-  useEffect(() => {
-    setValidPassword(PWD_REGEX.test(password));
-  }, [password])
-
-  useEffect(() => {
-    setErrMsg('');
-  }, [email, password])
   
   //const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const v1 = EMAIL_REGEX.test(email);
-    const v2 = PWD_REGEX.test(password);
-
-    if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
-      return;
-    }
+    console.log(email, validEmail);
+    console.log(password, validPassword);
 
     //set cookier
     setCookie("user", email , {   path: "/"  });
@@ -93,38 +61,7 @@ export default function SignIn() {
 
     //console.log(email, password);
 
-    navigate("/dashboard");
-    
-    //setAuth({ email, password });
-
-    // try {
-    //   const response = await axios.post(LOGIN_URL,
-    //     JSON.stringify({ user, pwd }),
-    //     {
-    //       headers: { 'Content-Type': 'application/json' },
-    //       withCredentials: true
-    //     }
-    //   );
-    //   console.log(JSON.stringify(response?.data));
-    //   //console.log(JSON.stringify(response));
-    //   const accessToken = response?.data?.accessToken;
-    //   const roles = response?.data?.roles;
-    //   setAuth({ user, pwd, roles, accessToken });
-    //   setUser('');
-    //   setPwd('');
-    //   setSuccess(true);
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg('No Server Response');
-    //   } else if (err.response?.status === 400) {
-    //     setErrMsg('Missing Username or Password');
-    //   } else if (err.response?.status === 401) {
-    //     setErrMsg('Unauthorized');
-    //   } else {
-    //     setErrMsg('Login Failed');
-    //   }
-    //   errRef.current.focus();
-    // }
+    //navigate("/dashboard");
 
   }
 
@@ -164,10 +101,10 @@ export default function SignIn() {
                       <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                       <div className="input-group input-group-outline my-3">
 
-                        <input placeholder='Email' ref={userEmailRef} value={email} onFocus={() => setEmailFocus(true)} onBlur={() => setEmailFocus(false)} onChange={(e) => setEmail(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="email" className="form-control" required />
+                        <input placeholder='Email' onChange={(e) => setEmail(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="email" className="form-control" required />
                       </div>
                       <div className="input-group input-group-outline mb-3">
-                        <input placeholder='Password' ref={userPasswordRef} value='Password!@#123' onFocus={() => setPasswordFocus(true)} onBlur={() => setEmailFocus(false)} onChange={(e) => setPassword(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="password" className="form-control" required />
+                        <input placeholder='Password' onChange={(e) => setPassword(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="password" className="form-control" required />
                       </div>
                       <div className="form-check form-switch d-flex align-items-center mb-3">
                         <input className="form-check-input" type="checkbox" id="rememberMe" checked />

@@ -5,9 +5,6 @@ import NeutralUsageStats from '../../layouts/mainlayout/neutral/NeutralUsageStat
 //user details context
 import appContext from '../../services/context/appContext.js'
 
-//react tour import
-// import Tour from 'reactour'
-
 export default function UserDashboard() {
 
   const {
@@ -17,29 +14,8 @@ export default function UserDashboard() {
     },
   } = useContext(appContext);
 
-
-  //the steps that will be undertaken in the tour
-  const [isTourOpen, setIsTourOpen] = useState(true);
-  const steps = [
-    {
-      selector: "#TotalPlaysCount",
-      content: "This is the number of times you have listened to my mixes.",
-    },
-    {
-      selector: "#TotalMinutesListened",
-      content: "This is the total minutes you have listened to this application",
-    },
-  ];
-
-
-
   return (
     <>
-      {/* <Tour
-        steps={steps}
-        isOpen={isTourOpen}
-        onRequestClose={() => setIsTourOpen(false)}
-      /> */}
       <div className="row" style={{ marginTop: "20px" }}>
 
         <div className="col-xl-6 col-sm-6 mb-xl-0 mb-4" id="TotalPlaysCount">

@@ -2,8 +2,7 @@ import React from 'react'
 
 export default function UsersMessages() {
   return (
-      <section>
-        <div className="container py-5">
+        <div className="container_fluid">
 
           <div className="row justify-content-center">
             <div className="col-md-10 col-lg-10 col-xl-10">
@@ -114,6 +113,5 @@ export default function UsersMessages() {
           </div>
 
         </div>
-      </section>
   )
 }

@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 export default function Notifications() {
   return (
-    <>
+    <div className="container_fluid">
       <div className="row">
-        <div className="col-lg-8 col-md-10 mx-auto">
+        <div className="col-lg-10 col-md-10 mx-auto">
           <div className="card mt-4">
             <div className="card-header p-3">
               <h5 className="mb-0">Notifications</h5>
@@ -149,6 +149,6 @@ export default function Notifications() {
         </div> --> */}
 
       </div>
-    </>
+    </div>
   )
 }

@@ -158,7 +158,7 @@ export default function Footer() {
             <div className="copyright text-center text-sm text-muted text-lg-start">
               ©
               Created with <i className="fa fa-heart"></i> by
-              <a href="https://bellenorthedynamics.com" className="font-weight-bold" target="_blank" rel="noreferrer"> Toroyteach </a>
+              <a href="https://toroyteach.com" className="font-weight-bold" target="_blank" rel="noreferrer"> Toroyteach </a>
               for a cool {username}.
             </div>
           </div>

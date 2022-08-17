@@ -6,7 +6,7 @@ import Tabs from 'react-bootstrap/Tabs';
 
 export default function About() {
     return (
-        <div style={{ height: "88vh", overflow: "auto" }}>
+        <div style={{ height: "86vh", overflow: "auto" }}>
             <Tabs
                 defaultActiveKey="fans"
                 id="justify-tab-example"

@@ -41,8 +41,9 @@
   --primary-modal-text: #000;
   --primary-modal-updatebacground: #d0c9c9;
   --primary-toast-text: rgb(70, 67, 67);
-
   --primary-messages-p-bg: #f5f6f7;
+  --primary-introjs-bg: #ececec;
+  --primary-animeHeadPhones: contrast( 50%);
 }
 
 .dark-version{
@@ -57,22 +58,18 @@
   --primary-player-playback-icons: #f7f7f7;
   --primary-background-nav: #2d2929;
   --primary-nav-a: #f4f4f4;
-
   --primary-listners-users-title: #f1dfdd;
-
   --primary-nav-a-item: #b0adad; 
   --primary-music-burger: #fff9f8;
-
-
   --primary-header-text: #ddceca;
   --primary-main-text-span: #ceaea6;
   --primary-listners-title-span: #e6c4bb;
   --primary-modal-text: #000;
   --primary-modal-updatebacground: #423c3c;
   --primary-toast-text: rgb(255, 255, 255);
-
   --primary-messages-p-bg: rgb(38, 46, 53);
-
+  --primary-introjs-bg: #000;
+  --primary-animeHeadPhones: contrast(100%);
 }
 
 .modalIntro {
@@ -97,6 +94,21 @@
 
 .userMessagesBG {
   background-color: var(--primary-messages-p-bg);
+}
+
+/* into js background dark color */
+.introjs-tooltip,  .introjs-button {
+  background-color: var(--primary-introjs-bg) !important;
+}
+
+/* intro js button dark mode */
+.introjs-button:hover {
+  background-color: var(--primary-introjs-bg);
+}
+
+/* anime headphones  */
+.card-img-top {
+  filter: var(--primary-animeHeadPhones);
 }
 
 
