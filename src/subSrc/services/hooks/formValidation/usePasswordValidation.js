@@ -4,7 +4,7 @@ import {
 
     PWD_REGEX,
 
-} from '../regex'
+} from './regex'
 
 const usePasswordValidation = (value) => {
 

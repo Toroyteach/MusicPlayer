@@ -4,7 +4,7 @@ import {
 
     EXCERPT_REGEX,
 
-} from '../regex'
+} from './regex'
 
 const useExcerptValidation = (value) => {
 

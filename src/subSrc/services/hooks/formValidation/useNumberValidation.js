@@ -4,7 +4,7 @@ import {
 
     PHONE_REGEX,
 
-} from '../regex'
+} from './regex'
 
 const useNumberValidation = (value) => {
 

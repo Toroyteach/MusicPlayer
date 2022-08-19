@@ -4,7 +4,7 @@ import {
 
     NAME_REGEX,
 
-} from '../regex'
+} from './regex'
 
 const useLastnameValidation = (value) => {
 

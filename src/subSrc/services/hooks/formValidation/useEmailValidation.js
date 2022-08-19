@@ -4,7 +4,7 @@ import {
 
     EMAIL_REGEX,
 
-} from '../regex'
+} from './regex'
 
 const useEmailValidation = (value) => {
 
