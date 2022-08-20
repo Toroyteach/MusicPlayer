@@ -9,7 +9,7 @@ export default function GuestPlayer() {
 
     //Shows hides Playlist
     const handleToggleList = () => {
-        $(".lists, .list").toggleClass("active");
+        $(".lists, .listG").toggleClass("active");
     };
 
     //Handles PlayPause
@@ -56,70 +56,72 @@ export default function GuestPlayer() {
                 </div>
             </header>
 
-            <section id="mixes" className="section services section-show" style={{ overflow: "auto" }}>
-                <div className="container" style={{ height: "600px" }}>
+            <section id="mixes" className="section services section-show">
+                <div className="container guestContainer">
                     <div className="section-title">
                         <h2>House Music Mixes</h2>
                     </div>
 
-                    <div className="music-box">
-                        <div className="album">
-                            <div className="photo">
-                            </div>
-                            <div className="infos">
-                                <div className="song">
-                                    <span>Intuition</span><small>Toroyteach</small>
+                    <div className='upperBox'>
+                        <div className="music-box">
+                            <div className="album">
+                                <div className="photo">
+                                </div>
+                                <div className="infos">
+                                    <div className="song">
+                                        <span>Intuition</span><small>Toroyteach</small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="dashboard">
-                            <div className="list">
-                                <div className="list-btn" onClick={handleToggleList}><span></span>
+                            <div className="dashboard">
+                                <div className="listG">
+                                    <div className="list-btn" onClick={handleToggleList}><span></span>
+                                    </div>
+                                </div>
+                                <div className="player">
+                                    <div className="time">
+                                        <small className="current">0:56</small> / <small className="duration">1:12:04</small>
+                                    </div>
+                                    <div className="time-rail">
+                                        <div className="thumb"></div>
+                                        <div className="track"></div>
+                                    </div>
+                                </div>
+                                <div className="action-button">
+                                    <a href="#about" className="prev">
+                                        <i className="fa fa-step-backward"></i>
+                                    </a>
+                                    <a href="#about" className="play-pause" onClick={handlePlayPauseAction}>
+                                        <i className="fa fa-pause"></i>
+                                    </a>
+                                    <a href="#about" className="next">
+                                        <i className="fa fa-step-forward"></i>
+                                    </a>
+                                    <a href="#about" className="repeat" onClick={handleReplayAction}>
+                                        <i className="fa fa-repeat"></i>
+                                    </a>
+                                    <a href="#about" className="volume">
+                                        <i className="fa fa-volume-up"></i>
+                                    </a>
                                 </div>
                             </div>
-                            <div className="player">
-                                <div className="time">
-                                    <small className="current">0:56</small> / <small className="duration">1:12:04</small>
-                                </div>
-                                <div className="time-rail">
-                                    <div className="thumb"></div>
-                                    <div className="track"></div>
-                                </div>
-                            </div>
-                            <div className="action-button">
-                                <a href="#about" className="prev">
-                                    <i className="fa fa-step-backward"></i>
-                                </a>
-                                <a href="#about" className="play-pause" onClick={handlePlayPauseAction}>
-                                    <i className="fa fa-pause"></i>
-                                </a>
-                                <a href="#about" className="next">
-                                    <i className="fa fa-step-forward"></i>
-                                </a>
-                                <a href="#about" className="repeat" onClick={handleReplayAction}>
-                                    <i className="fa fa-repeat"></i>
-                                </a>
-                                <a href="#about" className="volume">
-                                    <i className="fa fa-volume-up"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="lists">
-                            <div className="label">Playlist</div>
-                            <div className="box">
+                            <div className="lists">
+                                <div className="label">Playlist</div>
+                                <div className="box">
 
+                                </div>
+                                <ul>
+                                    <li><span>Magnifico<small>Toroyteach</small></span><em>1:13:59</em></li>
+                                    <li><span>QuePasa<small>Toroyteach</small></span><em>1:13:59</em></li>
+                                    <li><span>Byte<small>Toroyteach</small></span><em>1:13:59</em></li>
+                                    <li><span>Mamba<small>Toroyteach</small></span><em>1:13:59</em></li>
+                                </ul>
                             </div>
-                            <ul>
-                                <li><span>Magnifico<small>Toroyteach</small></span><em>1:13:59</em></li>
-                                <li><span>QuePasa<small>Toroyteach</small></span><em>1:13:59</em></li>
-                                <li><span>Byte<small>Toroyteach</small></span><em>1:13:59</em></li>
-                                <li><span>Mamba<small>Toroyteach</small></span><em>1:13:59</em></li>
-                            </ul>
                         </div>
                     </div>
 
                     <div className="section-title footer-title">
-                        <Link to="/users/dashboard">
+                        <Link to="/music">
                             <h2>CLick here to Demo the APP</h2>
                         </Link>
                     </div>

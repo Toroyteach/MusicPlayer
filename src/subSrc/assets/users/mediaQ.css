@@ -746,8 +746,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -755,14 +754,17 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
+    .music-box {
+        width: 300px !important;
+        height: 75% !important;
     }
 
-    .music-box {
-        position: relative;
-        width: 338px;
+    .music-box .album .photo {
+        height: 150px !important;
+    }
+
+    .music-box .dashboard .listG.active .list-btn {
+        top: -175px !important;
     }
 
     .section-title h2 {
@@ -2256,8 +2258,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -2265,14 +2266,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -2444,8 +2440,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -2453,14 +2448,13 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
+    .music-box {
+        width: 300px !important;
+        height: 75% !important;
     }
 
-    .music-box {
-        position: relative;
-        width: 338px;
+    .music-box .album .photo {
+        height: 200px !important;
     }
 
     .section-title h2 {
@@ -2633,8 +2627,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -2642,14 +2635,13 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
+    .music-box {
+        width: 300px !important;
+        height: 75% !important;
     }
 
-    .music-box {
-        position: relative;
-        width: 338px;
+    .music-box .album .photo {
+        height: 200px;
     }
 
     .section-title h2 {
@@ -2822,8 +2814,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -2831,14 +2822,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -2847,9 +2833,7 @@
 
 }
 
-@media (min-width: 384px) and (max-height: 726px) {
-    
-}
+@media (min-width: 384px) and (max-height: 726px) {}
 
 @media (min-width: 384px) and (max-height: 854px) {
 
@@ -3015,8 +2999,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -3024,14 +3007,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -3205,8 +3183,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -3214,14 +3191,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -3395,8 +3367,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -3404,14 +3375,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -3584,8 +3550,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -3593,14 +3558,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -3773,8 +3733,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -3782,14 +3741,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -3962,8 +3916,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -3971,14 +3924,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -4151,8 +4099,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -4160,14 +4107,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -4340,8 +4282,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -4349,14 +4290,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -4529,8 +4465,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -4538,14 +4473,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -4718,8 +4648,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -4727,14 +4656,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -4907,8 +4831,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -4916,14 +4839,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -5097,8 +5015,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -5106,14 +5023,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -5287,8 +5199,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -5296,14 +5207,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -5854,8 +5760,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -5863,14 +5768,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -6042,8 +5942,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -6051,14 +5950,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -6421,8 +6315,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -6430,14 +6323,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -6609,8 +6497,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -6618,14 +6505,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -6799,8 +6681,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -6808,14 +6689,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -6989,8 +6865,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -6998,14 +6873,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -7178,8 +7048,7 @@
     /* mostly for special phones */
 
     .section-title h2::after {
-        height: 1px;
-        margin: 5px 10px;
+        display: none !important;
     }
 
     .footer-title {
@@ -7187,14 +7056,9 @@
         top: 50px;
     }
 
-    .footer-title h2::after {
-        height: 1px;
-        margin: 10px 10px;
-    }
-
     .music-box {
-        position: relative;
-        width: 338px;
+        width: 300px !important;
+        height: 75% !important;
     }
 
     .section-title h2 {
@@ -7970,6 +7834,7 @@
 
     .mini-player {
         left: 0vw !important;
+        top: 1vw !important;
     }
 
     .miniPlayer {
@@ -7982,7 +7847,107 @@
 
     .playback_info {
         left: 0px;
-        top:  0px;
+        top: 0px;
+    }
+
+    /* Guest player */
+    .section-title h2::after {
+        display: block !important;
+        margin: 14px 10px !important;
+    }
+
+    .music-box .dashboard .listG.active .list-btn {
+        top: -322px;
+        transition: top 0.3s 0.6s;
+    }
+
+    /* Music player default to original dimenrsions */
+    .player {
+        width: 600px !important;
+    }
+
+    .playback_thumb {
+        width: 250px !important;
+        height: 250px !important;
+    }
+
+    .playback_info {
+        left: 250px !important;
+        top: 0px !important;
+    }
+
+    .playback_info .title {
+        font-size: 30px !important;
+    }
+
+    .playback_timeline_slider {
+        position: relative;
+        width: 78% !important;
+    }
+
+    .playback_timeline {
+        position: absolute;
+        width: 93% !important;
+        left: 10px !important;
+        top: 300px !important;
+    }
+
+    .playback_btn_wrapper {
+        width: 250px !important;
+        left: 130px !important;
+        top: 350px !important;
+    }
+
+    .playback_extras {
+        position: relative;
+        width: 45px;
+        height: 320px;
+        float: right;
+        margin-right: 10px;
+        margin-top: 3px;
+        z-index: 11;
+    }
+
+    .playback_timeline_start-time,
+    .playback_timeline_end-time {
+        font-size: 16px !important;
+    }
+
+    .list .thumb {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .selected .info .title {
+        font-size: 16px;
+    }
+
+    #curator .curator_title_wrapper {
+        margin-top: 17.55vh !important;
+        width: 100% !important;
+    }
+
+    .curator_list_content {
+        top: 56% !important;
+    }
+
+    .curator_list_content .item {
+        height: 25vh !important;
+    }
+
+    .line {
+        position: absolute;
+        left: 50% !important;
+        width: 2px !important;
+        height: 80px !important;
+    }
+
+    .text-wrap {
+        width: 100% !important;
+    }
+
+    .text-wrap span {
+        font-size: 100px !important;
     }
 
 }
