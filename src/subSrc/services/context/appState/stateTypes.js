@@ -64,3 +64,6 @@ export const SET_ARTIFICIAL_WEATHER = 'SET_ARTIFICIAL_WEATHER';
 //other global state type
 export const SET_ASTRONOMY_PICTURE = 'SET_ASTRONOMY_PICTURE';
 export const SET_GLOBAL_LANGUAGE = 'SET_GLOBAL_LANGUAGE';
+
+//Intro JS allow the aside navigation to be drawn when its mobile device
+export const SET_ASIDE_NAVIGATION_OPEN_APP_TOUR = 'SET_ASIDE_NAVIGATION_OPEN_APP_TOUR';

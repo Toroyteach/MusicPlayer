@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 //import css here to have one source for all components
@@ -51,6 +51,22 @@ function MusicApplication() {
 
     //const { auth } = useAuth();
 
+    //warn the user before unloading or closing tab of the application
+    useEffect(() => {
+        
+        window.addEventListener('beforeunload', alertUser)
+
+        return () => {
+            window.removeEventListener('beforeunload', alertUser)
+        }
+
+    }, [])
+
+    const alertUser = e => {
+        e.preventDefault()
+        e.returnValue = ''
+    }
+
     return (
         <ApplicationState>
 
@@ -61,30 +77,30 @@ function MusicApplication() {
 
                 {/* Users Protected Page */}
                 {/* <Route element={<RequireAuth />}> */}
-                    <Route element={<Home />}>
+                <Route element={<Home />}>
 
-                        {/* NEUTRAL PAGES */}
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/music" element={<MusicPlayer />} />
-                        <Route path="/notifications" element={<Notifications />} />
-                        <Route path="/single" element={<SingleAudio />} />
-                        <Route path="/about" element={<About />} />
+                    {/* NEUTRAL PAGES */}
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/music" element={<MusicPlayer />} />
+                    <Route path="/notifications" element={<Notifications />} />
+                    <Route path="/single" element={<SingleAudio />} />
+                    <Route path="/about" element={<About />} />
 
-                        {/* USERS PAGES */}
-                        <Route path="/users/dashboard" element={<UsersDashboard />} />
-                        <Route path="/users/messages" element={<UsersMessages />} />
+                    {/* USERS PAGES */}
+                    <Route path="/users/dashboard" element={<UsersDashboard />} />
+                    <Route path="/users/messages" element={<UsersMessages />} />
 
 
-                        {/* ADMIN PAGES */}
-                        <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
-                        <Route path="/admin/messages" element={<AdminMessages />} />
-                        <Route path="/admin/map" element={<Map />} />
-                        <Route path="/admin/add-mix" element={<UploadMix />} />
-                        <Route path="/admin/add-quiz" element={<UploadQuiz />} />
-                        <Route path="/admin/comments" element={<Comments />} />
-                        <Route path="/admin/users" element={<UsersList />} />
+                    {/* ADMIN PAGES */}
+                    <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/messages" element={<AdminMessages />} />
+                    <Route path="/admin/map" element={<Map />} />
+                    <Route path="/admin/add-mix" element={<UploadMix />} />
+                    <Route path="/admin/add-quiz" element={<UploadQuiz />} />
+                    <Route path="/admin/comments" element={<Comments />} />
+                    <Route path="/admin/users" element={<UsersList />} />
 
-                    </Route>
+                </Route>
                 {/* </Route> */}
 
                 {/* Auth pages */}

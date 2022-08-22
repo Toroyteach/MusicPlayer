@@ -37,6 +37,7 @@ import {
   SET_HIGEST_FAVOURITES,
   SET_CUMMULATIVE_DOWNLOADS,
   SET_CUMMULATIVE_QUIZ_ATTEMPTS,
+  SET_ASIDE_NAVIGATION_OPEN_APP_TOUR,
 
   //user profile states
   SET_USER_USERNAME,
@@ -414,6 +415,12 @@ export default (state, action) => {
       return {
         ...state,
         appSettings: { ...state.appSettings, notificationText: action.data }
+      }
+
+    case SET_ASIDE_NAVIGATION_OPEN_APP_TOUR:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, asideNavigation: action.data }
       }
 
     default:

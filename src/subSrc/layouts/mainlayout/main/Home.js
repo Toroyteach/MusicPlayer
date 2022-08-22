@@ -34,6 +34,7 @@ export default function Home() {
     },
     appSettings: {
       notificationText,
+      asideNavigation,
     },
     // stateDispatch,
   } = useContext(appContext)
@@ -50,15 +51,6 @@ export default function Home() {
 
     },
   ];
-
-  //set the cookie for the button click
-  //const ref = useRef(null);
-  const [show, setShow] = useState(true);
-  const [cookies, setCookie, removeCookie] = useCookies(['darkMode']);
-
-  const setButtonCookie = () => {
-    setShow(false)
-  }
 
   //use to set the nav active or not on mobile view
   const [isActive, setIsActive] = useState(false);
@@ -106,6 +98,12 @@ export default function Home() {
 
   }, [notificationText]);
 
+  //use effect to check state changes in the Application tour to launch/remove Aside Navigation state
+  useEffect( () => {
+
+    asideNavigation ? setIsActive(true) : setIsActive(false)
+
+  }, [ asideNavigation ])
 
 
   return (
@@ -344,38 +342,6 @@ export default function Home() {
           </div>
         </nav>
         <div className="container-fluid changeView">
-
-
-          <button type="button" className="btn btn-primary buttnonChange" data-toggle="modal" data-target="#exampleModalCenter" onClick={() => setButtonCookie()} style={{ display: show ? "block" : "none" }}>
-            Click Me
-          </button>
-          <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title modalIntro" id="exampleModalCenterTitle">Thank you so much.</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <p className='modalIntro'> I would like to take this modal chance and opportunity to thank you for taking this effort to come check out my Application. I have great passion for music and like coding, i have a little
-                    fan base of house music listners and i decided to reward them with this application. it will be hosting all of my mixes. so they can access them together with any new listners. Its all about spreading love.
-                    This application is still in beta mode and soon more updates shall be made in coming versions which also comes packed with features. You will be able to listen to my mixes and also have a little fun
-                    around the entire application. I have included one house mix i finshed making recently and thought why not tease the application with a reward. note only the play pause button will be working
-                    for now. I have much development to do, and am excited to start this project and soon i know itl be function to all my features expectations
-                    i intend to have the following features as a final product. you will notice some section missing content or looking odd. i intend to use this section for the same.<br />
-                    Enjoy this UX/UI demo. and soon we shall launch it. More updates shall follow soon
-                  </p>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
 
           <Outlet />
 

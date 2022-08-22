@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { Steps } from 'intro.js-react';
 import 'intro.js/introjs.css';
@@ -6,21 +6,31 @@ import 'intro.js/introjs.css';
 
 import appContext from '../context/appContext.js';
 
+//import the reducer function states to make consistent states
+import {
+
+    SET_ASIDE_NAVIGATION_OPEN_APP_TOUR,
+
+} from '../context/appState/stateTypes';
+
 
 export default function ApplicationTour() {
 
     const {
+        stateDispatch,
         userData: {
             username,
         },
+        appSettings: {
+            asideNavigation,
+        },
     } = useContext(appContext)
-
 
     //the steps in the application
     const steps = [
         {
             title: 'Welcome ' + username,
-            intro: 'I am so happy to see you here. Theres a lot Exciting things in-store for you. Please take this tour for it will appear once on initial load.',
+            intro: 'I am so happy to see you. Theres a lot of Exciting things in-store for you here. Please take this tour for its quite informative and will appear once on initial loading.',
         },
         {
             element: '#wrapper',
@@ -30,21 +40,16 @@ export default function ApplicationTour() {
         {
             element: '#musicSubNavIntro',
             title: 'Music Section Navigation',
-            intro: 'This is the sub Navigation inside the music section that you can use to explore other sections inside this section.',
+            intro: 'This is the sub Navigation inside the music section that you can use to explore other cool sections inside it.',
         },
         {
             element: '#musicPlayerIntro',
             title: 'Main Music Player',
-            intro: 'Here you will be able to launch and view the main music player which has even more selection of features for the music mix items and the playlist.',
-        },
-        {
-            element: '#sidenav-main',
-            title: 'Main Navigation',
-            intro: 'This is the side Navigation to help you move around the entire application.',
+            intro: 'Here you will be able to launch and view the main music player which has even more selection of controls for the mix items and its playlist.',
         },
         {
             element: '#shortNotificationIntro',
-            title: 'Quick Nitifications',
+            title: 'Quick Notifications',
             intro: 'Here you will be briefed on the top latest notifications on any new events that occur in the application.',
         },
         {
@@ -55,11 +60,16 @@ export default function ApplicationTour() {
         {
             element: '#footerIntro',
             title: 'Footer Section',
-            intro: 'In here the Footer you will be able to use a couple of extra features among quick music controls, Song recognition engine and volume of the mix item playing.',
+            intro: 'In here the Footer section you will be able to use a couple of extra features among quick music controls, Song recognition engine and volume of the mix item playing.',
+        },
+        {
+            element: '#sidenav-main',
+            title: 'Main Navigation',
+            intro: 'This is the side Navigation to help you move around the entire application. This can be launched from the top Launcher in Mobile View',
         },
         {
             element: '#dashboardIntro',
-            title: 'Dashboard',
+            title: 'Dashboard Page',
             intro: 'In here you will be able to see your usage statistics in the application.',
         },
         {
@@ -84,20 +94,66 @@ export default function ApplicationTour() {
         },
         {
             element: '#logoutIntro',
-            title: 'Logout Button',
+            title: 'Log Out Button',
             intro: 'Well this is self explanatory hahah.',
         },
         {
             title: 'Lastly',
-            intro: 'Take your time and enjoy this master piece i have created for you. Have a great time and Shout me out whenever and wherever you can.',
+            intro: 'Take your time and enjoy this master piece i have created for you. Have a great time and Shout me out whenever and wherever you can. Saisere!!',
         },
     ];
 
 
-    const onExit = () => { };
+    //sets the intro js to disabled after finishing and exiting the tour
+    const [enabled, setEnabled] = useState(true)
+
+    const onExit = () => {
+        setEnabled(false)
+        // console.log(enabled)
+    };
+
+    //check the next step so we can activate the aside if mobile device
+    const checkNextItem = (nextStepIndex) => {
+
+        switch (nextStepIndex) {
+            case 6:
+
+                stateDispatch({ type: SET_ASIDE_NAVIGATION_OPEN_APP_TOUR, data: true })
+
+                break;
+            case 14:
+
+                //dispatch set aside navigation to false
+                stateDispatch({ type: SET_ASIDE_NAVIGATION_OPEN_APP_TOUR, data: false })
+                break;
+        }
+    }
+
+    const whenTourCompleted = () => {
+
+        //console.log('tour has been completed')
+        //Set cookie so that the next time the tour does not load
+
+    }
+
+    //default otions for the tour
+    const options =
+    {
+        doneLabel: "Complete",
+        exitOnOverlayClick: false,
+        overlayOpacity: 0.8,
+    };
 
 
     return (
-        <Steps enabled={true} steps={steps} initialStep={0} onExit={onExit} />
+        <Steps
+            enabled={true}
+            steps={steps}
+            initialStep={0}
+            onExit={onExit}
+            onAfterChange={checkNextItem}
+            onComplete={whenTourCompleted}
+            options={options}
+        />
     )
 }

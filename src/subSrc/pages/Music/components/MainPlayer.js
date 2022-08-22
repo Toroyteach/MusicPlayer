@@ -21,8 +21,12 @@ import {
   SET_USER_FAVOURITE_LIST_ADD,
   SET_USER_FAVOURITE_LIST_REMOVE,
   SET_FAVOURITE_MIX_ITEM,
+  SET_NOTIFIATION_TEXT_ITEM,
 
 } from '../../../services/context/appState/stateTypes';
+
+//import check icon to use in the custom toast icon
+import checkIcon from '../../../layouts/components/toast/toastSvg/check.svg';
 
 export default function MainPlayer() {
 
@@ -133,10 +137,6 @@ export default function MainPlayer() {
 
     if (likedItem) {
 
-      // setLiked(false)
-      //gsap.to($(".btn-heartOn"), { x: 0, opacity: 0, scale: 0.3, display: "none" });
-      //gsap.fromTo($(".btn-heartOff"), { duration: 0.2, opacity: 1, display: "none", x: 10 }, { x: 0, y: 10, duration: 0.2, opacity: 1, display: "block" });
-
       //get the current item from active playlist and remove it from the list
       const idx = favouriteItems.find((match) => match.id === activePlaylist[currentSong].id);
       const oldList = Object.assign([], favouriteItems);
@@ -147,16 +147,21 @@ export default function MainPlayer() {
 
     } else {
 
-      // setLiked(true)
-      //gsap.to($(".btn-heartOff"), { duration: 0.5, opacity: 1, display: "none", x: 70 });
-      //gsap.fromTo($(".btn-heartOn"), { x: -20, opacity: 0, scale: 0.3, display: "none" }, { duration: 0.5, x: 0, opacity: 1, scale: 1, display: "block", ease: "elastic.inOut(1, 0.3)", y: 6 });
-      //dispatch add to liked items
-
       //get the active playlist item and add to the favourite
       const newMixItem = activePlaylist[currentSong];
 
       //will add to the list
       stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: newMixItem })
+
+      //show the toast of the added mix item
+      let data = {
+        type: 'Success',
+        text: 'Successfully added ' + activePlaylist[currentSong].title + ' to your favourites list',
+        icon: checkIcon,
+        bgColour: '#5cb85c',
+      }
+
+      dispatchNotification(data)
 
     }
 
@@ -221,6 +226,21 @@ export default function MainPlayer() {
       stateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
 
     }
+
+  }
+
+  //function to set or show cutsom toast notification
+  const dispatchNotification = (data) => {
+
+    const notice = {
+      id: Math.floor((Math.random() * 101) + 1),
+      title: data.type,
+      description: data.text,
+      backgroundColor: data.bgColour,
+      icon: data.icon
+    };
+
+    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
   }
 
@@ -329,9 +349,9 @@ export default function MainPlayer() {
               {/* {spinnerLoading ? <Loader /> : <Player />} */}
 
               <i className="btn-play fa fa-play" aria-hidden="true"></i>
-                <i className="btn-pause fa fa-pause" aria-hidden="true"></i>
+              <i className="btn-pause fa fa-pause" aria-hidden="true"></i>
 
-                {/* <Spinner className='mainPlayerSpinner' size="sm" animation="border" role="status">
+              {/* <Spinner className='mainPlayerSpinner' size="sm" animation="border" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </Spinner> */}
             </div>

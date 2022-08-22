@@ -41,23 +41,6 @@ export default function Music() {
     gsap.to($(".line"), { duration: 0.5, css: { scaleY: 1, transformOrigin: "center center" }, ease: Expo.easeOut });
   }
 
-  //handles the main play button in the middle. use thos to initiate the music quiz
-  const handleStartListeningAction = () => {
-    //edit this to resume playback from initial play or start  playing..
-    let homeToMain = gsap;
-
-    // Hide
-    $(".logo-text").css("display", "none");
-    homeToMain.to($(".line, .text-wrap"), 0.5, { display: "none", opacity: 0, y: -20, ease: Power2.easeInOut }, 0);
-    // Background down
-    homeToMain.to($(".wave-container"), 1, { yPercent: 30, ease: Power2.easeInOut }, 0);
-    // Show
-    $("#curator").css("display", "block");
-    homeToMain.fromTo($(".back_btn"), 0.8, { x: 15 }, { display: "flex", opacity: 1, x: 0, ease: Power2.easeInOut }, 1);
-    homeToMain.fromTo($(".curator_title_wrapper"), 0.8, { opacity: 0, x: 30 }, { opacity: 1, x: 0, ease: Power2.easeInOut }, 1);
-    homeToMain.fromTo($(".curator_list"), 0.8, { opacity: 0, display: "none", x: 30 }, { opacity: 1, x: 0, display: "block", ease: Power2.easeInOut }, 1.2);
-  }
-
   //handles opening of the navigation bar
   const handlePlayerMenuAction = () => {
     // ===== Toggle the oppening and closing of the users nav bar
@@ -187,7 +170,7 @@ export default function Music() {
       <div className="text-wrap">
         <div className="text" onMouseEnter={handleMouseEnterTextHoverAction} onMouseLeave={handleMouseExitTextHoverAction}>
           <span>L</span><span>I</span><span>S</span><span>T</span><span>E</span><span>N</span>
-          <div className="main-btn_wrapper" onClick={handleStartListeningAction}>
+          <div className="main-btn_wrapper">
             <i className="main-btn fa fa-play" aria-hidden="true"></i>
           </div>
         </div>

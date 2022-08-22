@@ -110,11 +110,12 @@ const appSettings = {
   shazamCounts: 13,
   highestFavourite: 'Mamba',
   language: 'En',
-  appDarkMode: false,
+  appDarkMode: true,
   activeSpectrum: false,
   musicAppDarkMode: false,
   astronomyPicture: '',
   notificationText: [],
+  asideNavigation: false,
 }
 
 //Music player states
