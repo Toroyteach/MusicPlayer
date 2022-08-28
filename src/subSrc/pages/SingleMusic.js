@@ -126,7 +126,7 @@ export default function SingleMusic() {
                       <div class="row">
                         <div class="col">
 
-                          <Comments commentsUrl="http://localhost:3004/comments" currentUserId="1"/>
+                          <Comments commentsUrl="http://localhost:3004/comments" currentUserId="1" />
 
                         </div>
                       </div>

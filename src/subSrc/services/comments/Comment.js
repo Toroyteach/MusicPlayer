@@ -31,22 +31,20 @@ const Comment = ({
     const createdAt = new Date(comment.createdAt).toLocaleDateString();
 
     return (
-        <>
+        <div key={comment.id} class="d-flex flex-start">
 
-            {/* <div key={comment.id} className="comment">
+            <img class="rounded-circle shadow-1-strong me-3" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(10).webp" alt="avatar" width="65" height="65" />
 
-                <div className="comment-image-container">
-                    <img src="/user-icon.png" />
-                </div>
-
-                <div className="comment-right-part">
-
-                    <div className="comment-content">
-                        <div className="comment-author">{comment.username}</div>
-                        <div>{createdAt}</div>
+            <div class="flex-grow-1 flex-shrink-1">
+                <div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-1">{comment.username} <span class="small">- {createdAt}</span> </p>
+                        {canReply && (<a href="#!" onClick={() => setActiveComment({ id: comment.id, type: "replying" })} ><i class="fas fa-reply fa-xs"></i><span class="small"> Reply</span></a>)}
+                        {canEdit && (<a href="#!" onClick={() => setActiveComment({ id: comment.id, type: "editing" })}><i class="fas fa-reply fa-xs"></i><span class="small"> Edit</span></a>)}
+                        {canDelete && (<a href="#!" onClick={() => deleteComment(comment.id)}><i class="fas fa-reply fa-xs"></i><span class="small"> Delete</span></a>)}
                     </div>
 
-                    {!isEditing && <div className="comment-text">{comment.body}</div>}
+                    {!isEditing && <p class="small mb-0">{comment.body}</p>}
 
                     {isEditing && (
                         <CommentForm
@@ -60,146 +58,38 @@ const Comment = ({
                         />
                     )}
 
-                    <div className="comment-actions">
-
-                        {canReply && (
-                            <div
-                                className="comment-action"
-                                onClick={() =>
-                                    setActiveComment({ id: comment.id, type: "replying" })
-                                }
-                            >
-                                Reply
-                            </div>
-                        )}
-
-                        {canEdit && (
-                            <div
-                                className="comment-action"
-                                onClick={() =>
-                                    setActiveComment({ id: comment.id, type: "editing" })
-                                }
-                            >
-                                Edit
-                            </div>
-                        )}
-
-                        {canDelete && (
-                            <div
-                                className="comment-action"
-                                onClick={() => deleteComment(comment.id)}
-                            >
-                                Delete
-                            </div>
-                        )}
-
-                    </div>
-
-                    {isReplying && (
-                        <CommentForm
-                            submitLabel="Reply"
-                            handleSubmit={(text) => addComment(text, replyId)}
-                        />
-                    )}
-
-                    {replies.length > 0 && (
-                        <div className="replies">
-                            {replies.map((reply) => (
-                                <Comment
-                                    comment={reply}
-                                    key={reply.id}
-                                    setActiveComment={setActiveComment}
-                                    activeComment={activeComment}
-                                    updateComment={updateComment}
-                                    deleteComment={deleteComment}
-                                    addComment={addComment}
-                                    parentId={comment.id}
-                                    replies={[]}
-                                    currentUserId={currentUserId}
-                                />
-                            ))}
-                        </div>
-                    )}
-
                 </div>
-            </div> */}
 
+                {isReplying && (
+                    <CommentForm
+                        submitLabel="Reply"
+                        handleSubmit={(text) => addComment(text, replyId)}
+                    />
+                )}
 
+                {replies.length > 0 && (
 
-            <div className="d-flex flex-start" key={comment.id} >
-
-                <img className="rounded-circle shadow-1-strong me-3"
-                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(10).webp" alt="avatar" width="65"
-                    height="65" />
-
-                <div className="flex-grow-1 flex-shrink-1">
-                    <div>
-
-                        <div className="d-flex justify-content-between align-items-center">
-
-                            <p className="mb-1">
-                                {comment.username} <span className="small">- {createdAt}</span>
-                            </p>
-
-                            {canReply && (<a href="#!" onClick={() => setActiveComment({ id: comment.id, type: "replying" })}><i className="fas fa-reply fa-xs"></i><span className="small"> reply</span></a>)}
-
-                            {canEdit && (<a href="#!" onClick={() => setActiveComment({ id: comment.id, type: "editing" })} ><i className="fas fa-pencil fa-xs"></i><span className="small"> Edit</span> </a>)}
-
-                            {canDelete && (<a href="#!" onClick={() => deleteComment(comment.id)} ><i className="fas fa-trash fa-xs"></i><span className="small"> Delete</span> </a>)}
-
-                        </div>
-
-                        {!isEditing && <p className="small mb-0">{comment.body}</p>}
-
-                        {isEditing && (
-                            <CommentForm
-                                submitLabel="Update"
-                                hasCancelButton
-                                initialText={comment.body}
-                                handleSubmit={(text) => updateComment(text, comment.id)}
-                                handleCancel={() => {
-                                    setActiveComment(null);
-                                }}
+                    <div class="d-flex flex-start mt-4">
+                        {replies.map((reply) => (
+                            <Comment
+                                comment={reply}
+                                key={reply.id}
+                                setActiveComment={setActiveComment}
+                                activeComment={activeComment}
+                                updateComment={updateComment}
+                                deleteComment={deleteComment}
+                                addComment={addComment}
+                                parentId={comment.id}
+                                replies={[]}
+                                currentUserId={currentUserId}
                             />
-                        )}
-
+                        ))}
                     </div>
 
-                    <div className="d-flex flex-start mt-4">
+                )}
 
-                        {isReplying && (
-                            <CommentForm
-                                submitLabel="Reply"
-                                handleSubmit={(text) => addComment(text, replyId)}
-                            />
-                        )}
-
-                        {replies.length > 0 && (
-                            <div className="d-flex flex-start mt-4">
-                                {replies.map((reply) => (
-                                    <Comment
-                                        comment={reply}
-                                        key={reply.id}
-                                        setActiveComment={setActiveComment}
-                                        activeComment={activeComment}
-                                        updateComment={updateComment}
-                                        deleteComment={deleteComment}
-                                        addComment={addComment}
-                                        parentId={comment.id}
-                                        replies={[]}
-                                        currentUserId={currentUserId}
-                                    />
-                                ))}
-                            </div>
-                        )}
-
-                    </div>
-
-                </div>
             </div>
-
-
-        </>
+        </div>
     );
 };
 

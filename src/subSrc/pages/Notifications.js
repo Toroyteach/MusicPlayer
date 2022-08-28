@@ -19,7 +19,7 @@ export default function Notifications() {
                 </button>
               </div>
               <div className="alert alert-secondary alert-dismissible text-white" role="alert">
-                <span className="text-sm">You have a message from Toroyteach <Link to="/messages"> <a href="/#" className="alert-link text-white">Click to read</a> </Link>.</span>
+                <span className="text-sm">You have a message from Toroyteach <Link to="/users/messages"> <a href="/#" className="alert-link text-white">Click to read</a> </Link>.</span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>

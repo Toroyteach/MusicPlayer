@@ -1,10 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { Steps } from 'intro.js-react';
 import 'intro.js/introjs.css';
 
 
 import appContext from '../context/appContext.js';
+
+//import cookies to stop showing the tour
+import Cookies from 'universal-cookie';
 
 //import the reducer function states to make consistent states
 import {
@@ -22,7 +25,7 @@ export default function ApplicationTour() {
             username,
         },
         appSettings: {
-            asideNavigation,
+            enableApplicationTour,
         },
     } = useContext(appContext)
 
@@ -105,11 +108,13 @@ export default function ApplicationTour() {
 
 
     //sets the intro js to disabled after finishing and exiting the tour
-    const [enabled, setEnabled] = useState(true)
+    const [stepsEnabled, setStepsEnabled] = useState(true)
+
+    //cookie to check if user hase already seen the tour for a day
+    const cookies = new Cookies();
 
     const onExit = () => {
-        setEnabled(false)
-        // console.log(enabled)
+
     };
 
     //check the next step so we can activate the aside if mobile device
@@ -117,12 +122,11 @@ export default function ApplicationTour() {
 
         switch (nextStepIndex) {
             case 6:
-
+                //sispactch to set the navigation to true and show it
                 stateDispatch({ type: SET_ASIDE_NAVIGATION_OPEN_APP_TOUR, data: true })
-
                 break;
-            case 14:
 
+            case 14:
                 //dispatch set aside navigation to false
                 stateDispatch({ type: SET_ASIDE_NAVIGATION_OPEN_APP_TOUR, data: false })
                 break;
@@ -133,6 +137,10 @@ export default function ApplicationTour() {
 
         //console.log('tour has been completed')
         //Set cookie so that the next time the tour does not load
+        //setEnabled(false)
+        let expires = new Date()
+        cookies.set('showTour', 'show', { path: '/', expires: expires });
+        console.log('completed tour and set cookie to', cookies.get('showTour'))
 
     }
 
@@ -147,7 +155,7 @@ export default function ApplicationTour() {
 
     return (
         <Steps
-            enabled={true}
+            enabled={enableApplicationTour}
             steps={steps}
             initialStep={0}
             onExit={onExit}

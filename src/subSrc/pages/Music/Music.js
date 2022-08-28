@@ -1,4 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
+
+//cookie for enabling and disabling application tour
+import Cookies from 'universal-cookie';
 
 // import '../../assets/users/style.css';
 import $ from 'jquery';
@@ -10,6 +13,7 @@ import MainPlayer from './components/MainPlayer.js';
 import Navbar from './components/Navbar';
 // import Weather from'./components/Weather';
 import Visualizer from './components/Visualizer';
+import PlainWaves from './components/PlainWaves.js';
 // import SongQuiz from './sub-components/SongQuiz';
 import Astronomy from './pages/Astronomy';
 import CalmAnxiety from './pages/CalmAnxiety';
@@ -20,10 +24,18 @@ import appContext from '../../services/context/appContext.js';
 //import custom component for intro js dependecies
 import ApplicationTour from '../../services/intro-tour/ApplicationTour.js';
 
+//import the reducer function states to make consistent states
+import {
+
+  SET_ENABLE_APPLICATION_TOUR,
+
+} from '../../services/context/appState/stateTypes';
+
 export default function Music() {
 
   // Global State
   const {
+    stateDispatch,
     musicSettings: {
       currentSong,
       activePlaylist,
@@ -118,11 +130,25 @@ export default function Music() {
     $(".logo-text").css("display", "block");
   }
 
+  //cookie to check if user hase already seen the tour for a day
+  const cookies = new Cookies();
+
+  //create an effect to start the application tour
+  useEffect(() => {
+
+    if (cookies.get('showTour') != 'show') {
+
+      stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: true })
+
+    }
+
+  }, [])
+
   return (
 
     <div className="container_fluid wrapper" id="wrapper">
 
-      <ApplicationTour/>
+      <ApplicationTour />
 
       <div className='container_fluid'>
         <div className='row'>
@@ -133,8 +159,8 @@ export default function Music() {
                 <div className="burger"></div>
               </div>
               <div className="back_btn" onClick={handleHomeClickActionBack}>
-                <div className="circle"></div>
-                <div className="text">Home</div>
+                <div className=""><i className="fa fa-home" aria-hidden="true"></i></div>
+                <div className="text"> &nbsp; Home</div>
               </div>
             </div>
           </div>
@@ -161,9 +187,8 @@ export default function Music() {
       </div>
 
       {/* Waves and Audio Soectryum Visualizer Canvas Component */}
-      <div>
-        <Visualizer />
-      </div>
+      {/* <PlainWaves/> */}
+      <Visualizer />
 
       <div className="line"></div>
 
@@ -179,27 +204,20 @@ export default function Music() {
       {/* Music Page Sub-Navbar Component */}
       <Navbar />
 
+      {/* USe to redurn the navigation and music player back after launched */}
       <div className="dim" onClick={handlePlayerDimAction}></div>
 
       {/* Sliding in Music Player Component */}
-      <div>
-        <MainPlayer />
-      </div>
+      <MainPlayer />
 
       {/* this section Online Active Listeners Component*/}
-      <div>
-        <OnlineListeners />
-      </div>
+      <OnlineListeners />
 
       {/* this section will have the calm your anxiety pictures */}
-      <div>
-        <CalmAnxiety />
-      </div>
+      <CalmAnxiety />
 
       {/* this section will host the astronomy picture of the day */}
-      <div>
-        <Astronomy />
-      </div>
+      <Astronomy />
 
     </div>
   )

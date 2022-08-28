@@ -27,6 +27,7 @@ import {
 
 //import check icon to use in the custom toast icon
 import checkIcon from '../../../layouts/components/toast/toastSvg/check.svg';
+import PlayLoad from './loader/PlayLoad.js';
 
 export default function MainPlayer() {
 
@@ -45,7 +46,7 @@ export default function MainPlayer() {
     stateDispatch,
     random,
     musicSettings: {
-      spinnerLoading,
+      playOrLoading,
       likedItem,
     },
     userData: {
@@ -346,14 +347,8 @@ export default function MainPlayer() {
 
             <div className="btn-switch" onClick={handlePlayPause} data-bs-toggle="tooltip" data-bs-placement="top" title="Play Pause">
 
-              {/* {spinnerLoading ? <Loader /> : <Player />} */}
+              <PlayLoad isLoading={playOrLoading} sourceButton={'main'}/>
 
-              <i className="btn-play fa fa-play" aria-hidden="true"></i>
-              <i className="btn-pause fa fa-pause" aria-hidden="true"></i>
-
-              {/* <Spinner className='mainPlayerSpinner' size="sm" animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner> */}
             </div>
 
             <i className="btn-next fa fa-share" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Forward 1min" onClick={handleForward1Minute}></i>
@@ -385,22 +380,5 @@ export default function MainPlayer() {
 
     </div>
 
-  )
-}
-
-function Player() {
-  return (
-    <>
-      <i className="btn-play fa fa-play footerPlayer" aria-hidden="true"></i>
-      <i className="btn-pause fa fa-pause footerPlayer" aria-hidden="true" ></i>
-    </>
-  )
-}
-
-function Loader() {
-  return (
-    <Spinner className='footerPlayerSpinner' size="sm" animation="border" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </Spinner>
   )
 }

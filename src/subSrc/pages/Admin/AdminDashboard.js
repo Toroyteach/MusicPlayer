@@ -1,7 +1,5 @@
 import React, { useContext } from 'react'
 
-import NeutralUsageStats from '../../layouts/mainlayout/neutral/NeutralUsageStats.js'
-
 //user details context
 import appContext from '../../services/context/appContext.js'
 
@@ -402,7 +400,7 @@ export default function AdminDashboard() {
                             <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
                           </td>
                         </tr>
- 
+
                       </tbody>
                     </table>
                   </div>

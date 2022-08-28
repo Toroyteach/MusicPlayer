@@ -15,41 +15,41 @@ import {
   SET_MUSIC_APP_DARKMODE,
   SET_FAVOURITE_MIX_ITEM,
   SET_ASTRONOMY_PICTURE,
+  SET_ABLE_TO_PLAY_OR_LOADING,
+  SET_NOTIFIATION_TEXT_ITEM
 } from './appState/stateTypes.js';
 
 import defaultState from './appState/defaultState.js';
 
+import warningIcon from '../../layouts/components/toast/toastSvg/warning.svg';
 
-const ThemeUpdateContext = createContext();
+//import cookie to set the last timeline playing
+//cookie for enabling and disabling application tour
+import Cookies from 'universal-cookie';
+
+
+//const ThemeUpdateContext = createContext();
 
 const ApplicationState = (props) => {
 
   // initialize the reducer with the default state of the application
   const [state, dispatch] = useReducer(appReducer, defaultState)
 
+  //cookie to set the timeline seek items for mixes
+  const cookies = new Cookies();
+
   // Set songs array
   //const playlistSet = (songArr) => dispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: songArr })
 
-  // Set playing state of the audio
-  //Audio state of item playing
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext);
+  // Set audio playing element
   const [audio] = useState(new Audio(state.musicSettings.activePlaylist[0].fileUrl));
-  // const audioSource =  audioCtx.createMediaElementSource(audio);
-  // const analyser = audioCtx.createAnalyser();
-  //sshsh
-  // let audioSource = useRef();
-  // let analyser = useRef();
-  // let bufferLength = useRef();
-  // const [dataArray, setDataArray] = useState([]);
 
   //handles the playing and pausing of the audio object
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const togglePlaying = () => {
 
-    //audio.oncanplay = () => {
     state.musicSettings.playing ? audio.play() : audio.pause()
-    //}
 
   }
 
@@ -119,6 +119,11 @@ const ApplicationState = (props) => {
 
   }
 
+  //set the current time from cookie the when application loads
+  // const setCurrentTimeFromCookie = (data) => {
+  //   setCurrentTime(data)
+  // }
+
   //handle go back 30sec
   const handleback30 = () => {
 
@@ -175,7 +180,7 @@ const ApplicationState = (props) => {
 
   }, [state.musicSettings.playing])
 
-  //effect to handle changes to the current song
+  //effect to handle changes to the current song including errors and setting of cookies and any audio issues
   useEffect(() => {
 
     //create a method to interact with audio object and hit next to play the next item
@@ -187,20 +192,84 @@ const ApplicationState = (props) => {
     //dispatch set favourite icon to true
     dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: result ? true : false })
 
+    //dispatch the the browser is loading the music item.
+    audio.onloadstart = () => {
+      dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
+    }
 
+
+    //
+    audio.onplaying = () => {
+
+    }
+
+    //set call back to set cookie of timeline after 1min
     audio.ontimeupdate = () => {
+
       setCurrentTime(audio.currentTime)
+
+      //set the call back to set cookie for previous timeline after every 1min
+      // setTimeout(() => {
+
+      //   cookies.set('mixPreviousTimeline', audio.currentTime, { path: '/', maxAge: 10  });
+
+      // }, 60000);
+
       dispatch({ type: SET_RECENT_SEEK_TIME, data: audio.currentTime })
     }
 
     audio.oncanplay = () => {
       setDuration(audio.duration)
       dispatch({ type: SET_MIX_ITEM_DURATION, data: audio.duration })
+      dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
     }
 
     audio.onended = () => {
+      cookies.remove('mixPreviousTimeline', { path: '/', maxAge: 10  })
       handleEndOfMix()
     }
+
+
+    //implement for when there is an error get the data
+    //show a warning toast
+    audio.onerror = () => {
+
+      const notice = {
+        id: Math.floor((Math.random() * 101) + 1),
+        title: 'Warning',
+        description: 'There is an error accessing the Mix Item',
+        backgroundColor: '#f0ad4e',
+        icon: warningIcon
+      };
+
+      dispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+
+      cookies.remove('mixPreviousTimeline', { path: '/', maxAge: 10 })
+
+    }
+
+    //
+    audio.onprogess = () => {
+
+    }
+
+    //called when the loading of the item has finished or will not happen any more
+    audio.onsuspend = () => {
+
+      //show the toast of the added mix item
+      // const notice = {
+      //   id: Math.floor((Math.random() * 101) + 1),
+      //   title: 'Warning',
+      //   description: 'There is an issue accessing the Mix Item. Please check your connection and Reload',
+      //   backgroundColor: '#f0ad4e',
+      //   icon: warningIcon
+      // };
+
+      // dispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+      // console.log('on suspended')
+      cookies.remove('mixPreviousTimeline', { path: '/', maxAge: 10  })
+    }
+
 
   }, [state.musicSettings.currentSong])
 
@@ -218,24 +287,19 @@ const ApplicationState = (props) => {
 
   // }, [state.appSettings.language])
 
-  // const [ testAudioCtx, setTestAudioCtx] = useState([]);
-  // const [ testAudioSource, setTestAudioSource] = useState([]);
-  // const [ testAnalyser, setTestAnalyser] = useState([]);
-  // const [ testBufferLength, setTestBufferLength ] = useState([]);
-  // const [ testDataArray, setTestDataArray ] = useState([]);
 
-  // useEffect(() => {
+  //set the current timeline from the cookie that was set from previou
+  useEffect(() => {
 
-  //   setTestAudioCtx(window.AudioContext || window.webkitAudioContext);
-  //   setTestAudioSource(testAudioCtx.createMediaElementSource(audio));
-  //   setTestAnalyser(testAudioCtx.createAnalyser());
-  //   setTestBufferLength(testAnalyser.frequencyBinCount);
-  //   setTestDataArray(new Uint8Array(testBufferLength))
+    if (cookies.get('mixPreviousTimeline')) {
 
-  //   testAudioSource.connect(testAnalyser)
-  //   testAnalyser.connect(testAudioCtx)
+      let cookieTime = cookies.get('mixPreviousTimeline')
+      setCurrentTime(cookieTime)
 
-  // }, [])
+    }
+
+
+  }, [])
 
   return (
     <appContext.Provider
@@ -249,11 +313,6 @@ const ApplicationState = (props) => {
         volume: state.musicSettings.volume,
         duration: state.musicSettings.duration,
         audioObject: audio,
-        audioContext: audioCtx,
-        // audioSource: audioSourceT,
-        // analyser: testAnalyser,
-        // dataArray: testDataArray,
-        // bufferLength: testBufferLength,
         currentTime: currentTime,
         stateDispatch: dispatch,
         handleForward1Minute,

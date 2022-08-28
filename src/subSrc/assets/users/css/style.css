@@ -1,9 +1,14 @@
-#quizeSection input[type="text"] {
+.quizeSection 
+input[type="text"],
+input[type="date"],
+input[type="number"],
+textarea {
   outline: rgb(5, 3, 3) auto 5px;
 }
 
-#uploadSection input[type="text"],
+#uploadSection:has(
 textarea,
+input[type="text"],
 input[type="password"],
 input[type="datetime"],
 input[type="datetime-local"],
@@ -16,7 +21,7 @@ input[type="email"],
 input[type="url"],
 input[type="search"],
 input[type="tel"],
-input[type="color"],
+input[type="color"] ),
 .uneditable-input{
   outline: rgb(5, 3, 3) auto 1px;
 }

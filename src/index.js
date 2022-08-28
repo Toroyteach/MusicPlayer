@@ -9,6 +9,8 @@ import MusicApplication from './MusicApplication.js';
 
 import { AuthProvider } from './subSrc/services/authContext/AuthProvider.js';
 
+import MusicContextState from './subSrc/services/music/MusicContextState.js';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -16,7 +18,9 @@ root.render(
     <CookiesProvider>
       <BrowserRouter>
         <AuthProvider>
-          <MusicApplication />
+          <MusicContextState>
+            <MusicApplication/>
+          </MusicContextState>
         </AuthProvider>
       </BrowserRouter>
     </CookiesProvider>

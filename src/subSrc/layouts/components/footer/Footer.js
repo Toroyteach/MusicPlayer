@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react'
+import React, { useContext } from 'react'
 
 import { Link } from 'react-router-dom';
 
@@ -27,6 +27,7 @@ import {
   SET_VOLUME
 
 } from '../../../services/context/appState/stateTypes';
+import PlayLoad from '../../../pages/Music/components/loader/PlayLoad.js';
 
 export default function Footer() {
 
@@ -42,7 +43,7 @@ export default function Footer() {
     random,
     volume,
     musicSettings: {
-      spinnerLoading
+      playOrLoading
     },
   } = useContext(appContext)
 
@@ -187,15 +188,7 @@ export default function Footer() {
                 <div className="btn-switch" onClick={playAndPause} data-bs-toggle="tooltip" data-bs-placement="top" title="Play Pause">
 
 
-                  {/* {spinnerLoading ? <Loader /> : <Player />} */}
-
-
-                      <i className="btn-play fa fa-play footerPlayer" aria-hidden="true"></i>
-                      <i className="btn-pause fa fa-pause footerPlayer" aria-hidden="true" ></i>
-
-                    {/* <Spinner className='footerPlayerSpinner' size="sm" animation="border" role="status">
-                      <span className="visually-hidden">Loading...</span>
-                    </Spinner> */}
+                  <PlayLoad isLoading={playOrLoading} sourceButton={'footer'}/>
 
                 </div>
 

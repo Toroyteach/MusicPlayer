@@ -8,6 +8,7 @@ export const SET_RECENT_SEEK_TIME = 'SET_RECENT_SEEK_TIME';
 export const SET_FAVOURITE_MIX_ITEM = 'SET_FAVOURITE_MIX_ITEM';
 export const SET_VOLUME = 'SET_VOLUME';
 export const SET_MIX_ITEM_DURATION = 'SET_MIX_ITEM_DURATION';
+export const SET_ABLE_TO_PLAY_OR_LOADING = 'SET_ABLE_TO_PLAY_OR_LOADING'
 
 //Main Application theme state type
 export const SET_MAIN_APP_DARKMODE = 'SET_MAIN_APP_DARKMODE';
@@ -67,3 +68,4 @@ export const SET_GLOBAL_LANGUAGE = 'SET_GLOBAL_LANGUAGE';
 
 //Intro JS allow the aside navigation to be drawn when its mobile device
 export const SET_ASIDE_NAVIGATION_OPEN_APP_TOUR = 'SET_ASIDE_NAVIGATION_OPEN_APP_TOUR';
+export const SET_ENABLE_APPLICATION_TOUR = 'SET_ENABLE_APPLICATION_TOUR'

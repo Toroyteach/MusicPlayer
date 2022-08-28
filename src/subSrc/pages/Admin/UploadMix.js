@@ -3,7 +3,7 @@ import React from 'react'
 export default function UploadMix() {
   return (
     <>
-      <section className="container py-5" id='uploadSection'>
+      <section className="container py-5 quizeSection" id="">
         <div className="container">
 
           <div className="row ">

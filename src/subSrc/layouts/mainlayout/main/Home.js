@@ -11,16 +11,12 @@ import appContext from '../../../services/context/appContext.js';
 //notification images
 import messageImage from '../../../assets/users/img/team-2.jpg';
 import noticeImage from "../../../assets/users/img/small-logos/logo-spotify.svg";
-import musicNote from '../../../assets/users/anime.svg';
 import animeImg from '../../../assets/users/animeHeadphones.png'
 //sunsset image profile background
 import image from '../../../assets/users/img/logo-ct.png';
 
 //import the footer section of the application
 import Footer from '../../components/footer/Footer.js';
-
-//import cookiee
-import { useCookies } from 'react-cookie';
 
 //import custom toast component and its assets
 import CustomToast from '../../components/toast/CustomToast.js';

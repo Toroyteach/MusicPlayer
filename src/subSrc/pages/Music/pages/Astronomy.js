@@ -12,19 +12,17 @@ export default function Astronomy() {
 
   //check is image is loaded
   const [ exist, setExist ] = useState(false);
+  const [ astronomyUrl, setAstronomyUrl ] = useState('')  
 
   useEffect( () =>{
 
-    let text = astronomyPicture.url
+    setAstronomyUrl(astronomyPicture.url)
 
-    let searchYoutube = text.search(/youtube/);
-
-    if(searchYoutube != -1){
+    if(astronomyUrl.search(/youtube/) != -1){
       setExist(true)
     }
 
-
-  }, [astronomyPicture])
+  }, [])
 
   return (
     <>

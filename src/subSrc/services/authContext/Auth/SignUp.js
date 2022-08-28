@@ -12,6 +12,9 @@ import usePasswordValidation from '../../hooks/formValidation/usePasswordValidat
 import useNumberValidation from '../../hooks/formValidation/useNumberValidation';
 import useUsernameValidation from '../../hooks/formValidation/useUsernameValidation';
 
+//import captcher from google to help deter robots
+import ReCAPTCHA from 'react-google-recaptcha'
+
 export default function SignUp() {
 
   const errRef = useRef();
@@ -52,6 +55,14 @@ export default function SignUp() {
     console.log(username, validUsername);
     console.log(number, validNumber);
 
+  }
+
+  //captcher function
+  const capchaKey = '6LckD6MhAAAAAGQ4akjQtUX0uW7cDzs6_Hu4ED1P' //get this from the backend
+  const [isRobot, setIsRobot] = useState(true);
+  const onCaptchaChange = (value) => {
+    console.log('Captcha value:', value)
+    setIsRobot(false)
   }
 
   return (
@@ -101,8 +112,11 @@ export default function SignUp() {
                             I agree the <a href="/#" className="text-dark font-weight-bolder">Terms and Conditions</a>
                           </label>
                         </div>
+                        <div className="d-flex justify-content-center">
+                          <ReCAPTCHA sitekey={capchaKey} onChange={onCaptchaChange}/>
+                        </div>
                         <div className="text-center">
-                          <button type="submit" className="btn btn-lg bg-gradient-secondary btn-lg w-100 mt-4 mb-0" disabled={!validFirstname || !validLastname || !validEmail || !validPassword || !validNumber || !validUsername ? true : false}>Sign Up</button>
+                          <button type="submit" className="btn btn-lg bg-gradient-secondary btn-lg w-100 mt-4 mb-0" disabled={!validFirstname || !validLastname || !validEmail || !validPassword || !validNumber || !validUsername || !isRobot ? true : false}>Sign Up</button>
                         </div>
                       </form>
                     </div>

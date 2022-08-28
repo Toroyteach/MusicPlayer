@@ -10,7 +10,7 @@ import {
   SET_FAVOURITE_MIX_ITEM,
   SET_MIX_ITEM_DURATION,
   SET_VOLUME,
-  SET_MIX_ITEM_LOADING_SPINNER,
+  SET_ABLE_TO_PLAY_OR_LOADING,
 
   //admin states
   SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
@@ -27,6 +27,7 @@ import {
   SET_MUSIC_APP_DARKMODE,
   SET_ASTRONOMY_PICTURE,
   SET_NOTIFIATION_TEXT_ITEM,
+  SET_ENABLE_APPLICATION_TOUR,
 
   //Application stats
   SET_CUMMULATIVE_MINUTES_LISTENED,
@@ -121,16 +122,16 @@ export default (state, action) => {
         musicSettings: { ...state.musicSettings, volume: action.data }
       }
 
-    case SET_MIX_ITEM_LOADING_SPINNER:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, spinnerLoading: action.data }
-      }
-
     case SET_FAVOURITE_MIX_ITEM:
       return {
         ...state,
         musicSettings: { ...state.musicSettings, likedItem: action.data }
+      }
+
+    case SET_ABLE_TO_PLAY_OR_LOADING:
+      return {
+        ...state,
+        musicSettings: { ...state.musicSettings, playOrLoading: action.data }
       }
 
     //User states
@@ -421,6 +422,12 @@ export default (state, action) => {
       return {
         ...state,
         appSettings: { ...state.appSettings, asideNavigation: action.data }
+      }
+
+    case SET_ENABLE_APPLICATION_TOUR:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, enableApplicationTour: action.data }
       }
 
     default:

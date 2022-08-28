@@ -95,7 +95,7 @@ const userData = {
 
 //default application state settings
 const appSettings = {
-  visualizerActive: false,
+  visualizerActive: true,
   astronomyActive: false,
   shazamActive: false,
   downloadActive: false,
@@ -111,11 +111,12 @@ const appSettings = {
   highestFavourite: 'Mamba',
   language: 'En',
   appDarkMode: true,
-  activeSpectrum: false,
+  activeSpectrum: true,
   musicAppDarkMode: false,
   astronomyPicture: '',
   notificationText: [],
   asideNavigation: false,
+  enableApplicationTour: false,
 }
 
 //Music player states
@@ -127,13 +128,12 @@ const musicSettings = {
   playing: false,
   seekTime: 0,
   duration: 0,
-  volume: 0.3,
+  volume: 0.1,
   mainAppTheme: 'default',
   musicAppTheme: 'default',
   likedItem: false,
-  // audio: null,
-  spinnerLoading: false,
   mixList: mixList,
+  playOrLoading: false,
 }
 
 //the reducer states
