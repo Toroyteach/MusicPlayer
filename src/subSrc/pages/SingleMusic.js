@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef, useEffect, useState } from 'react'
 
 import coverImage from './Music/music/Cover-Image.jpg'
 
@@ -8,12 +8,70 @@ import appContext from '../services/context/appContext.js'
 //import custom coments
 import Comments from "../services/comments/Comments.js"
 
+//waveform for the cool audio seek
+import WaveSurfer from "wavesurfer.js";
+//import WebAudio from 'wavesurfer.js/src/webaudio';
+
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+
+
 export default function SingleMusic() {
 
   // Global State
   const {
-    astronomyPicture,
+    audioObject,
+    currentTime,
+    playing,
+    duration,
   } = useContext(appContext)
+
+  //initiate tge translator
+  const { t } = useTranslation();
+
+  const waveformRef = useRef();
+
+  useEffect(() => {
+
+    const waveSurfer = WaveSurfer.create({
+      container: waveformRef.current,
+      barWidth: 2,
+      barHeight: 1, // the height of the wave
+      barGap: null,
+      responsive: true,
+      splitChannels: false,
+      waveColor: "#7a0909",
+      interact: false
+    });
+
+    if (waveformRef.current) {
+
+      //check if audio is null
+      if (Object.keys(audioObject).length != 0) {
+
+        waveSurfer.load(audioObject)
+
+        //set volume to 0
+        waveSurfer.setVolume(0)
+
+        //set mute to true
+        waveSurfer.setMute(true)
+
+      }
+    }
+
+    waveSurfer.on('ready', function () {
+
+      //set the wave surfer to play
+      let newTime = (currentTime / duration)
+      waveSurfer.seekTo(newTime)
+      waveSurfer.seekAndCenter(newTime)
+      // console.log('audio time on ready state and playing', (currentTime / duration))
+
+    });
+
+    return () => waveSurfer.destroy()
+  }, []);
 
 
   return (
@@ -22,16 +80,16 @@ export default function SingleMusic() {
 
         <section>
           <div className="card-body">
-            <h4 className="card-title">Comments</h4>
+            <h4 className="card-title">{t("comments")}</h4>
           </div>
         </section>
 
         <div className="mb-4">
 
           <section className="border-bottom mb-4">
-            <div className='d-flex justify-content-center'>
-              <img src={astronomyPicture.url} alt={astronomyPicture.title}
-                className="img-fluid shadow-2-strong rounded-5 mb-4" />
+
+            <div className='container_fluid'>
+              <div ref={waveformRef}></div>
             </div>
 
           </section>
@@ -40,8 +98,8 @@ export default function SingleMusic() {
           <section className="text-center border-top border-bottom py-3 mb-4 card">
 
             <div className="row">
-              <div className="col-md-4">
-                <p><strong>Share with your friends:</strong></p>
+              <div className="col-md-4 col-sm-12">
+                <p><strong>{t("share-with-friends")}:</strong></p>
 
                 <button type="button" className="btn btn-primary me-1" style={{ backgroundColor: "#3b5998" }}>
                   <i className="fab fa-facebook-f"></i>
@@ -56,7 +114,7 @@ export default function SingleMusic() {
                   <i className="fab fa-whatsapp"></i>
                 </button>
               </div>
-              <div className="col-md-8">
+              <div className="col-md-8 col-sm-12">
                 <div className="stars">
 
                   <form action="">
@@ -114,17 +172,17 @@ export default function SingleMusic() {
           </section>
 
 
-          <section class="gradient-custom">
-            <div class="container my-5 py-5">
-              <div class="row d-flex justify-content-center">
+          <section className="gradient-custom">
+            <div className="container my-5 py-5">
+              <div className="row d-flex justify-content-center">
 
-                <div class="col-md-12 col-lg-10 col-xl-10">
-                  <div class="card">
-                    <div class="card-body p-4">
-                      <h4 class="text-center mb-4 pb-2">Liked what you heard? Leave a comment</h4>
+                <div className="col-md-12 col-lg-10 col-xl-10">
+                  <div className="card">
+                    <div className="card-body p-4">
+                      <h4 className="text-center mb-4 pb-2">{t("liked-the-mix-leave-comment")}</h4>
 
-                      <div class="row">
-                        <div class="col">
+                      <div className="row">
+                        <div className="col">
 
                           <Comments commentsUrl="http://localhost:3004/comments" currentUserId="1" />
 

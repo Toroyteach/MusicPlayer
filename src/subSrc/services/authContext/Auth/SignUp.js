@@ -101,7 +101,7 @@ export default function SignUp() {
                           <input placeholder='Confirm Password' id='confirm-password' aria-invalid={validPassword ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" type="password" className="form-control" required />
                         </div>
                         <div className="input-group input-group-outline mb-3">
-                          <input placeholder='Phone' id='phonenumber' aria-invalid={validNumber ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setNumber(e.target.value)} type="number" className="form-control" required />
+                          <input placeholder='Number' id='phonenumber' aria-invalid={validNumber ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setNumber(e.target.value)} type="number" className="form-control" required />
                         </div>
                         <div className="input-group input-group-outline mb-3">
                           <input placeholder='username' id='username' aria-invalid={validUsername ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setUsername(e.target.value)} type="text" className="form-control" required />
@@ -116,15 +116,15 @@ export default function SignUp() {
                           <ReCAPTCHA sitekey={capchaKey} onChange={onCaptchaChange}/>
                         </div>
                         <div className="text-center">
-                          <button type="submit" className="btn btn-lg bg-gradient-secondary btn-lg w-100 mt-4 mb-0" disabled={!validFirstname || !validLastname || !validEmail || !validPassword || !validNumber || !validUsername || !isRobot ? true : false}>Sign Up</button>
+                          <button type="submit" className="btn btn-lg bg-gradient-success btn-lg w-100 mt-4 mb-0" disabled={!validFirstname || !validLastname || !validEmail || !validPassword || !validNumber || !validUsername || !isRobot ? true : false}>Sign Up</button>
                         </div>
                       </form>
                     </div>
                     <div className="card-footer text-center pt-0 px-lg-2 px-1">
                       <p className="mb-2 text-md mx-auto">
                         Already have an account? Or sign in with Social Accounts<br />
-                        <Link to="/login">
-                          <a className="text-primary text-gradient font-weight-bold">Sign in</a>
+                        <Link to="/users/dashboard">
+                          <a className="text-primary text-gradient font-weight-bold">Demo Here</a>
                         </Link>
                       </p>
                     </div>

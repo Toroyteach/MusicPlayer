@@ -7,12 +7,15 @@ import appContext from '../../../services/context/appContext.js'
 import imageBadge from '../../../assets/users/img/small-logos/logo-xd.svg'
 import userImageTable from '../../../assets/users/img/team-1.jpg'
 
+//react translator hook
+import { useTranslation } from "react-i18next";
+
 export default function NeutralUsageStats() {
 
     const {
         userData: {
             history,
-            favourite:{
+            favourite: {
                 favouriteCount,
                 favouriteItems
             },
@@ -27,13 +30,16 @@ export default function NeutralUsageStats() {
         },
     } = useContext(appContext);
 
+    //initiate tge translator
+    const { t } = useTranslation();
+
     return (
         <>
             <div className="row mt-0">
                 <div className="col-lg-4 col-md-6 mt-4 mb-4">
                     <div className="card h-100">
                         <div className="card-header pb-0">
-                            <h6>History Plays</h6>
+                            <h6>{t("history-plays")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
                             </p>
@@ -63,13 +69,13 @@ export default function NeutralUsageStats() {
                 <div className="col-lg-4 col-md-6 mt-4 mb-4">
                     <div className="card h-100">
                         <div className="card-header pb-0">
-                            <h6>Favourites</h6>
+                            <h6>{t("favourites")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
                                 <span className="font-weight-bold">{favouriteCount}</span>
                             </p>
                         </div>
-                        <div className="card-body p-3" style={{ overflow: "auto"}}>
+                        <div className="card-body p-3" style={{ overflow: "auto" }}>
                             <div className="timeline timeline-one-side">
 
                                 {(favouriteItems || []).map((song, i) => (
@@ -94,7 +100,7 @@ export default function NeutralUsageStats() {
                 <div className="col-lg-4 mt-4 mb-3">
                     <div className="card h-100">
                         <div className="card-header pb-0">
-                            <h6>Identified Songs</h6>
+                            <h6>{t("identified-songs")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
                                 <span className="font-weight-bold">{shazamCount}</span>
@@ -129,11 +135,7 @@ export default function NeutralUsageStats() {
                         <div className="card-header pb-0">
                             <div className="row">
                                 <div className="col-lg-6 col-7">
-                                    <h6>Quiz Stats Points</h6>
-                                    <p className="text-sm mb-0">
-                                        <i className="fa fa-check text-info" aria-hidden="true"></i>
-                                        <span className="font-weight-bold ms-1">You have 40 points</span>
-                                    </p>
+                                    <h6>{t("quiz-stats-points")}</h6>
                                 </div>
                             </div>
                         </div>
@@ -142,10 +144,10 @@ export default function NeutralUsageStats() {
                                 <table className="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Username</th>
-                                            <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Badge</th>
-                                            <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Points</th>
-                                            <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Completion</th>
+                                            <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{t("name")}</th>
+                                            <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Genre</th>
+                                            <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{t("songs-count")}</th>
+                                            <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{t("duration")}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -154,33 +156,25 @@ export default function NeutralUsageStats() {
                                         <tr>
                                             <td>
                                                 <div className="d-flex px-2 py-1">
-                                                    <div>
-                                                        <img src={userImageTable} alt="team1" className="avatar avatar-xs rounded-circle" />
-                                                    </div>
                                                     <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">Toroyteach</h6>
+                                                        <h6 className="mb-0 text-sm">QuePasa</h6>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div className="avatar-group mt-2">
-                                                    <a href="/#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                                                        <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
-                                                    </a>
+                                                    House/EDM
                                                 </div>
                                             </td>
                                             <td className="align-middle text-center text-sm">
-                                                <span className="text-xs font-weight-bold"> 40 </span>
+                                                <span className="text-xs font-weight-bold"> 50 </span>
                                             </td>
                                             <td className="align-middle">
-                                                <div className="progress-wrapper w-75 mx-auto">
+                                                <div className="progress-wrapper w-20 mx-auto">
                                                     <div className="progress-info">
                                                         <div className="progress-percentage">
-                                                            <span className="text-xs font-weight-bold">60%</span>
+                                                            <span className="text-xs font-weight-bold">1:12:22</span>
                                                         </div>
-                                                    </div>
-                                                    <div className="progress">
-                                                        <div className="progress-bar bg-gradient-info w-60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -189,33 +183,25 @@ export default function NeutralUsageStats() {
                                         <tr>
                                             <td>
                                                 <div className="d-flex px-2 py-1">
-                                                    <div>
-                                                        <img src={userImageTable} alt="team1" className="avatar avatar-xs rounded-circle" />
-                                                    </div>
                                                     <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">Kiplagat</h6>
+                                                        <h6 className="mb-0 text-sm">Amelia</h6>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div className="avatar-group mt-2">
-                                                    <a href="/#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                                                        <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
-                                                    </a>
+                                                    R&B/Slow Jams
                                                 </div>
                                             </td>
                                             <td className="align-middle text-center text-sm">
-                                                <span className="text-xs font-weight-bold"> 35 </span>
+                                                <span className="text-xs font-weight-bold"> 65 </span>
                                             </td>
                                             <td className="align-middle">
-                                                <div className="progress-wrapper w-75 mx-auto">
+                                                <div className="progress-wrapper w-20 mx-auto">
                                                     <div className="progress-info">
                                                         <div className="progress-percentage">
-                                                            <span className="text-xs font-weight-bold">50%</span>
+                                                            <span className="text-xs font-weight-bold">1:32:22</span>
                                                         </div>
-                                                    </div>
-                                                    <div className="progress">
-                                                        <div className="progress-bar bg-gradient-info w-60" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -224,33 +210,25 @@ export default function NeutralUsageStats() {
                                         <tr>
                                             <td>
                                                 <div className="d-flex px-2 py-1">
-                                                    <div>
-                                                        <img src={userImageTable} alt="team1" className="avatar avatar-xs rounded-circle" />
-                                                    </div>
                                                     <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">Alex</h6>
+                                                        <h6 className="mb-0 text-sm">Angst</h6>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div className="avatar-group mt-2">
-                                                    <a href="/#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                                                        <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
-                                                    </a>
+                                                    House/EDM
                                                 </div>
                                             </td>
                                             <td className="align-middle text-center text-sm">
-                                                <span className="text-xs font-weight-bold"> 20 </span>
+                                                <span className="text-xs font-weight-bold"> 47 </span>
                                             </td>
                                             <td className="align-middle">
-                                                <div className="progress-wrapper w-75 mx-auto">
+                                                <div className="progress-wrapper w-20 mx-auto">
                                                     <div className="progress-info">
                                                         <div className="progress-percentage">
-                                                            <span className="text-xs font-weight-bold">30%</span>
+                                                            <span className="text-xs font-weight-bold">1:01:22</span>
                                                         </div>
-                                                    </div>
-                                                    <div className="progress">
-                                                        <div className="progress-bar bg-gradient-info w-60" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -259,33 +237,25 @@ export default function NeutralUsageStats() {
                                         <tr>
                                             <td>
                                                 <div className="d-flex px-2 py-1">
-                                                    <div>
-                                                        <img src={userImageTable} alt="team1" className="avatar avatar-xs rounded-circle" />
-                                                    </div>
                                                     <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">Kiplagat</h6>
+                                                        <h6 className="mb-0 text-sm">SwitchBack</h6>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div className="avatar-group mt-2">
-                                                    <a href="/#" className="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                                                        <img src={imageBadge} className="avatar avatar-sm me-3" alt="xd" />
-                                                    </a>
+                                                    House/EDM
                                                 </div>
                                             </td>
                                             <td className="align-middle text-center text-sm">
-                                                <span className="text-xs font-weight-bold"> 35 </span>
+                                                <span className="text-xs font-weight-bold"> 41 </span>
                                             </td>
                                             <td className="align-middle">
-                                                <div className="progress-wrapper w-75 mx-auto">
+                                                <div className="progress-wrapper w-20 mx-auto">
                                                     <div className="progress-info">
                                                         <div className="progress-percentage">
-                                                            <span className="text-xs font-weight-bold">50%</span>
+                                                            <span className="text-xs font-weight-bold">1:19:22</span>
                                                         </div>
-                                                    </div>
-                                                    <div className="progress">
-                                                        <div className="progress-bar bg-gradient-info w-60" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -300,7 +270,7 @@ export default function NeutralUsageStats() {
                 <div className="col-lg-4 col-md-6">
                     <div className="card h-100">
                         <div className="card-header pb-0">
-                            <h6>My Commnets</h6>
+                            <h6>{t("my-comments")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
                                 <span className="font-weight-bold">24%</span> this month

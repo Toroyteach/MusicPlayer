@@ -6,6 +6,9 @@ import appContext from './appContext.js';
 //librarty from axios to fetch the data
 import axios from 'axios';
 
+//set the active language
+import '../../services/localization/i18n'
+
 import {
   SET_CURRENT_SONG,
   SET_TOGGLE_PLAYING,
@@ -27,10 +30,16 @@ import warningIcon from '../../layouts/components/toast/toastSvg/warning.svg';
 //cookie for enabling and disabling application tour
 import Cookies from 'universal-cookie';
 
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+import i18n from 'i18next';
 
 //const ThemeUpdateContext = createContext();
 
 const ApplicationState = (props) => {
+
+  //initiate tge translator
+  const { t } = useTranslation();
 
   // initialize the reducer with the default state of the application
   const [state, dispatch] = useReducer(appReducer, defaultState)
@@ -55,55 +64,45 @@ const ApplicationState = (props) => {
 
   // Set current song
   const SetCurrent = (id) => {
-
-    // console.log(id);
+    //set the dispatch playing to false
+    dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
 
     //add the correct method to fetch the correct file path
     audio.src = state.musicSettings.activePlaylist[id].fileUrl;
 
-    //dispatch({ type: SET_CURRENT_SONG, data: id })
+    //set the secleted song in dispatch
+    dispatch({ type: SET_CURRENT_SONG, data: id })
 
-  }
-
-  // Handle Next song
-  const nextMix = () => {
-    if (state.musicSettings.currentSong === state.musicSettings.activePlaylist.length - 1) {
-
-      SetCurrent(0)
-
-    } else if (state.musicSettings.random) {
-
-      SetCurrent(Math.floor(Math.random() * state.musicSettings.activePlaylist.length));
-
-    } else {
-
-      SetCurrent(state.musicSettings.currentSong + 1)
-    }
   }
 
   // End of Song
   const handleEndOfMix = () => {
+    //clear cookie
+    cookies.remove('mixPreviousTimeline', { path: '/' })
     // Check for random and repeat options
-    if (state.random) {
+    // and set the next mix
+    //set the dispatch playing to false
+    dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
 
-      return dispatch({ type: SET_CURRENT_SONG, data: ~~(Math.floor(Math.random() * state.activePlaylist.length)), })
+    if (state.musicSettings.random) {
+
+      dispatch({ type: SET_CURRENT_SONG, data: ~~(Math.floor(Math.random() * state.musicSettings.activePlaylist.length)), })
 
     } else {
 
-      if (state.repeat) {
+      if (state.musicSettings.repeat) {
 
-        nextMix()
+        console.log('repeat')
 
-      } else if (state.currentSong === state.activePlaylist.length - 1) {
+        SetCurrent(state.musicSettings.currentSong)
 
+      } else if (state.musicSettings.currentSong === state.musicSettings.activePlaylist.length - 1) {
 
-        dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
-
-        return
+        SetCurrent(0)
 
       } else {
 
-        nextMix()
+        SetCurrent(state.musicSettings.currentSong + 1)
 
       }
 
@@ -118,11 +117,6 @@ const ApplicationState = (props) => {
     audio.currentTime = compute
 
   }
-
-  //set the current time from cookie the when application loads
-  // const setCurrentTimeFromCookie = (data) => {
-  //   setCurrentTime(data)
-  // }
 
   //handle go back 30sec
   const handleback30 = () => {
@@ -141,6 +135,8 @@ const ApplicationState = (props) => {
     audio.currentTime = time
 
   }
+
+
   //load the image only once from Nasa and use reducer to main state of it.
   const NASA_API_KEY = '';
   const END_POINT = 'https://api.nasa.gov/planetary/apod?api_key=aQK0MCbvf5b9EN5j1ZSr0mKnxKH3ZAB9VLvhbit0';
@@ -180,6 +176,9 @@ const ApplicationState = (props) => {
 
   }, [state.musicSettings.playing])
 
+  const [cookieSeekTime, setCookieSeekTime] = useState(10);
+
+
   //effect to handle changes to the current song including errors and setting of cookies and any audio issues
   useEffect(() => {
 
@@ -197,9 +196,9 @@ const ApplicationState = (props) => {
       dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
     }
 
-
     //
     audio.onplaying = () => {
+
 
     }
 
@@ -208,27 +207,44 @@ const ApplicationState = (props) => {
 
       setCurrentTime(audio.currentTime)
 
-      //set the call back to set cookie for previous timeline after every 1min
-      // setTimeout(() => {
+      //if ((Math.trunc(audio.currentTime) % 60 === 0)) {
+        console.log(audio.currentTime)
+        //set the cookie here
+        let time = audio.currentTime
 
-      //   cookies.set('mixPreviousTimeline', audio.currentTime, { path: '/', maxAge: 10  });
+        const date = new Date()
+        date.setFullYear(date.getFullYear() + 1)
 
-      // }, 60000);
+        cookies.set('mixPreviousTimeline', time, { path: '/', secure: true, sameSite: 'none', expires: date });
+      //}
 
       dispatch({ type: SET_RECENT_SEEK_TIME, data: audio.currentTime })
     }
 
     audio.oncanplay = () => {
+
       setDuration(audio.duration)
       dispatch({ type: SET_MIX_ITEM_DURATION, data: audio.duration })
       dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
+
+    }
+
+    audio.oncanplaythrough = () => {
+      //check if the cookie for previous time was set
+      // if (cookies.get('mixPreviousTimeline')) {
+
+      //   let cookieTime = cookies.get('mixPreviousTimeline')
+
+      //   //setCurrentTime(cookieTime)
+
+      //   audio.currentTime = cookieTime
+
+      // }
     }
 
     audio.onended = () => {
-      cookies.remove('mixPreviousTimeline', { path: '/', maxAge: 10  })
       handleEndOfMix()
     }
-
 
     //implement for when there is an error get the data
     //show a warning toast
@@ -236,19 +252,19 @@ const ApplicationState = (props) => {
 
       const notice = {
         id: Math.floor((Math.random() * 101) + 1),
-        title: 'Warning',
-        description: 'There is an error accessing the Mix Item',
+        title: t("warning"),
+        description: t("There-is-an-error-accessing-the-Mix-Item"),
         backgroundColor: '#f0ad4e',
         icon: warningIcon
       };
 
       dispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
-      cookies.remove('mixPreviousTimeline', { path: '/', maxAge: 10 })
+      cookies.remove('mixPreviousTimeline', { path: '/' })
 
     }
 
-    //
+    //this means the browser is downloading the audio obj
     audio.onprogess = () => {
 
     }
@@ -267,9 +283,8 @@ const ApplicationState = (props) => {
 
       // dispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
       // console.log('on suspended')
-      cookies.remove('mixPreviousTimeline', { path: '/', maxAge: 10  })
+      cookies.remove('mixPreviousTimeline', { path: '/' })
     }
-
 
   }, [state.musicSettings.currentSong])
 
@@ -280,24 +295,12 @@ const ApplicationState = (props) => {
 
   }, [state.musicSettings.volume])
 
-  //get and set the current language
-  // useEffect(() => {
-
-  //   console.log('languge has changed to ', state.appSettings.language)
-
-  // }, [state.appSettings.language])
-
-
-  //set the current timeline from the cookie that was set from previou
+  //gets the user set languagefrom db and sets it
   useEffect(() => {
 
-    if (cookies.get('mixPreviousTimeline')) {
+    const defLang = state.appSettings.language
 
-      let cookieTime = cookies.get('mixPreviousTimeline')
-      setCurrentTime(cookieTime)
-
-    }
-
+    i18n.changeLanguage(defLang)
 
   }, [])
 

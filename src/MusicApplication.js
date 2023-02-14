@@ -33,6 +33,7 @@ import AdminDashboard from './subSrc/pages/Admin/AdminDashboard.js';
 // Users pages
 import UsersMessages from './subSrc/pages/Users/UsersMessages.js';
 import UsersDashboard from './subSrc/pages/Users/UserDashboard.js';
+import { ChatRoom } from './subSrc/pages/Users/chat/ChatRoom';
 
 
 // Nuetral pages
@@ -89,6 +90,7 @@ function MusicApplication() {
                     {/* USERS PAGES */}
                     <Route path="/users/dashboard" element={<UsersDashboard />} />
                     <Route path="/users/messages" element={<UsersMessages />} />
+                    <Route path="/users/messages/room/:id" element={<ChatRoom />} />
 
 
                     {/* ADMIN PAGES */}

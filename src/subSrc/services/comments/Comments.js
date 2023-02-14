@@ -8,7 +8,13 @@ import {
     deleteComment as deleteCommentApi,
 } from "./api";
 
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+
 const Comments = ({ commentsUrl, currentUserId }) => {
+
+    //initiate tge translator
+    const { t } = useTranslation();
 
     const [backendComments, setBackendComments] = useState([]);
 
@@ -19,11 +25,11 @@ const Comments = ({ commentsUrl, currentUserId }) => {
     );
 
     const getReplies = (commentId) => backendComments
-            .filter((backendComment) => backendComment.parentId === commentId)
-            .sort(
-                (a, b) =>
-                    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-            );
+        .filter((backendComment) => backendComment.parentId === commentId)
+        .sort(
+            (a, b) =>
+                new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
 
     const addComment = (text, parentId) => {
         createCommentApi(text, parentId).then((comment) => {
@@ -64,22 +70,22 @@ const Comments = ({ commentsUrl, currentUserId }) => {
 
     return (
         <>
-            <CommentForm submitLabel="Comment" handleSubmit={addComment} />
+            <CommentForm submitLabel={t("comment")} handleSubmit={addComment} />
             {/* <div className="comments-container"> */}
 
-                {rootComments.map((rootComment) => (
-                    <Comment
-                        key={rootComment.id}
-                        comment={rootComment}
-                        replies={getReplies(rootComment.id)}
-                        activeComment={activeComment}
-                        setActiveComment={setActiveComment}
-                        addComment={addComment}
-                        deleteComment={deleteComment}
-                        updateComment={updateComment}
-                        currentUserId={currentUserId}
-                    />
-                ))}
+            {rootComments.map((rootComment) => (
+                <Comment
+                    key={rootComment.id}
+                    comment={rootComment}
+                    replies={getReplies(rootComment.id)}
+                    activeComment={activeComment}
+                    setActiveComment={setActiveComment}
+                    addComment={addComment}
+                    deleteComment={deleteComment}
+                    updateComment={updateComment}
+                    currentUserId={currentUserId}
+                />
+            ))}
 
             {/* </div> */}
         </>

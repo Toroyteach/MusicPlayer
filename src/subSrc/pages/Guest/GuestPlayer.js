@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import '../../assets/guest/style.css'
 import $ from 'jquery';
 
+import { useTranslation } from "react-i18next";
+// import "../../services/localization/i18n";
+
 import { Link } from 'react-router-dom';
 
 export default function GuestPlayer() {
+
+    //initiate tge translator
+    const { t } = useTranslation();
 
     //Shows hides Playlist
     const handleToggleList = () => {
@@ -42,13 +48,13 @@ export default function GuestPlayer() {
 
                     <nav id="navbarg" className="navbarg">
                         <ul>
-                            <li><a className="nav-link" href="/#">Home</a></li>
-                            <li><a className="nav-link" href="/#">About</a></li>
-                            <li><a className="nav-link" href="/#">Resume</a></li>
-                            <li><a className="nav-link" href="/#">Services</a></li>
-                            <li><a className="nav-link" href="/#">Portfolio</a></li>
-                            <li><a className="nav-link active" href="/#">Music</a></li>
-                            <li><a className="nav-link" href="/#">Contact</a></li>
+                            <li><a className="nav-link" href="/#">{t("home")}</a></li>
+                            <li><a className="nav-link" href="/#">{t("about")}</a></li>
+                            <li><a className="nav-link" href="/#">{t("resume")}</a></li>
+                            <li><a className="nav-link" href="/#">{t("services")}</a></li>
+                            <li><a className="nav-link" href="/#">{t("portfolio")}</a></li>
+                            <li><a className="nav-link active" href="/#">{t("music")}</a></li>
+                            <li><a className="nav-link" href="/#">{t("contact")}</a></li>
                         </ul>
                         <i className="bi bi-list mobile-nav-toggle"></i>
                     </nav>
@@ -59,7 +65,7 @@ export default function GuestPlayer() {
             <section id="mixes" className="section services section-show">
                 <div className="container guestContainer">
                     <div className="section-title">
-                        <h2>House Music Mixes</h2>
+                        <h2>{t("house-music-mix")}</h2>
                     </div>
 
                     <div className='upperBox'>
@@ -106,7 +112,7 @@ export default function GuestPlayer() {
                                 </div>
                             </div>
                             <div className="lists">
-                                <div className="label">Playlist</div>
+                                <div className="label">{t("playlist")}</div>
                                 <div className="box">
 
                                 </div>
@@ -122,7 +128,7 @@ export default function GuestPlayer() {
 
                     <div className="section-title footer-title">
                         <Link to="/music">
-                            <h2>CLick here to Demo the APP</h2>
+                            <h2>{t("click-here-to-sign-in")}</h2>
                         </Link>
                     </div>
 
@@ -130,7 +136,7 @@ export default function GuestPlayer() {
             </section>
 
             <div className="credits">
-                Designed by <a href="https://bellenorthedynamics.com/">Toroyteach</a>
+                {t("designed-by")}<a href="https://bellenorthedynamics.com/"> Toroyteach</a>
             </div>
 
 

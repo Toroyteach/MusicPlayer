@@ -338,7 +338,7 @@
 
 @media (max-width: 768px) {
   section {
-    top: 120px;
+    /* top: 120px; */
   }
 
   section.section-show {

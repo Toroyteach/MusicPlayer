@@ -6,6 +6,10 @@ import appContext from '../../../services/context/appContext.js';
 //import music context to call the audio context object methods
 import musicContext from '../../../services/music/musicContext.js';
 
+//import gsap for smooth waves fade away on play
+import $ from 'jquery';
+import { gsap, Power2 } from 'gsap';
+
 // Component that is going to house Audio Visualizer and the Spectrum waves
 const Visualizer = () => {
 
@@ -48,11 +52,14 @@ const Visualizer = () => {
 
         analyser.getByteFrequencyData(dataArray);
 
+        //console.log(dataArray)
+
         for (let i = 0; i < bufferLength; i++) {
 
             let barHeight = dataArray[i];
 
             //context.fillStyle = "black";
+            //console.log(dataArray)
             let r = barHeight + (25 * (i / bufferLength));
             let g = 250 * (i / bufferLength);
             let b = 50;
@@ -82,7 +89,6 @@ const Visualizer = () => {
 
             if (renderCtx) {
                 setContext(renderCtx);
-                //console.log(context)
             }
 
         }
@@ -97,6 +103,8 @@ const Visualizer = () => {
         if (playing) {
 
             if (audioContext.state === 'suspended') {
+
+                gsap.to($(".wave-container"), 1, { yPercent: 60, ease: Power2.easeOut }, 0);
 
                 audioContext.resume()
 
@@ -119,6 +127,12 @@ const Visualizer = () => {
         } else {
 
             if (audioContext.state === 'running') {
+
+                setTimeout(() => {
+
+                    gsap.to($(".wave-container"), 1, { yPercent: 0, ease: Power2.easeInOut }, 1);
+
+                }, 5000);
 
                 audioSource.disconnect()
 
@@ -149,13 +163,13 @@ const Visualizer = () => {
 
     return (
         <>
-            <div className="wave-container" style={{ visibility: visualizerActive ? 'hidden' : '' }}>
+            <div className="wave-container">
                 <div className="wave -one"></div>
                 <div className="wave -two"></div>
                 <div className="wave -three"></div>
             </div>
 
-            <div className="custom-spectrum-container" style={{ visibility: visualizerActive ? '' : 'hidden' }}>
+            <div className="custom-spectrum-container">
                 <canvas ref={canvasRef} />
             </div>
         </>

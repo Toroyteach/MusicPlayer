@@ -3,10 +3,17 @@ import React from 'react'
 import $ from 'jquery';
 import { gsap, Power2, Expo } from 'gsap';
 
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+
 export default function Navbar() {
+
+  //initiate tge translator
+  const { t } = useTranslation();
 
   // In the Music player navigation
   const handleHomeClickAction = ({ currentTarget }) => {
+
     //edit this to resume playback from initial play or start  playing..
     let homeToMain = gsap;
 
@@ -94,10 +101,10 @@ export default function Navbar() {
   return (
     <div className="m-nav">
       <ul className="m-nav_main">
-        <li> <a className="m-nav_link a" onClick={handleHomeClickAction}>Home	</a></li>
-        <li> <a className="m-nav_link a" onClick={handleListnersClickAction}>Listeners	</a></li>
-        <li> <a className="m-nav_link a" onClick={handleAnxietyClickAction}>Calming Loop	</a></li>
-        <li> <a className="m-nav_link a" onClick={handleAstronomyClickAction}>Picture of the Day	</a></li>
+        <li> <a className="m-nav_link a" onClick={handleHomeClickAction}>{t("home")}</a></li>
+        <li> <a className="m-nav_link a" onClick={handleListnersClickAction}>{t("listeners")}</a></li>
+        <li> <a className="m-nav_link a" onClick={handleAnxietyClickAction}>{t("calm-your-anxiety")}</a></li>
+        <li> <a className="m-nav_link a" onClick={handleAstronomyClickAction}>{t("astronomy-picture-of-the-day")}</a></li>
       </ul>
     </div>
   )

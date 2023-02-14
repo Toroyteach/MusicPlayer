@@ -336,7 +336,7 @@ body {
   cursor: pointer;
   position: relative;
   color: var(--primary-header-back);
-  font-size: 18px;
+  font-size: 17px;
   display: flex;
   align-items: center;
   display: none;

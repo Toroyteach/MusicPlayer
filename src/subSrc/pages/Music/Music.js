@@ -31,6 +31,9 @@ import {
 
 } from '../../services/context/appState/stateTypes';
 
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+
 export default function Music() {
 
   // Global State
@@ -41,6 +44,9 @@ export default function Music() {
       activePlaylist,
     },
   } = useContext(appContext)
+
+  //initiate tge translator
+  const { t } = useTranslation();
 
   //handles mouse on hover of the text "LISTEN"
   const handleMouseEnterTextHoverAction = () => {
@@ -160,7 +166,7 @@ export default function Music() {
               </div>
               <div className="back_btn" onClick={handleHomeClickActionBack}>
                 <div className=""><i className="fa fa-home" aria-hidden="true"></i></div>
-                <div className="text"> &nbsp; Home</div>
+                <div className="text"> &nbsp;{t("home")}</div>
               </div>
             </div>
           </div>
@@ -187,8 +193,8 @@ export default function Music() {
       </div>
 
       {/* Waves and Audio Soectryum Visualizer Canvas Component */}
-      {/* <PlainWaves/> */}
-      <Visualizer />
+      <PlainWaves/>
+      {/* <Visualizer /> */}
 
       <div className="line"></div>
 

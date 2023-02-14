@@ -16,8 +16,8 @@ import { TbBrandShazam } from 'react-icons/tb';
 //import cool alerts from sweetalerts
 import swal from 'sweetalert';
 
-//import bootstrap loading spinner for when loading audio
-import Spinner from 'react-bootstrap/Spinner'
+//import axios for the shazam api
+import axios from 'axios';
 
 //import the reducer function states to make consistent states
 import {
@@ -28,6 +28,7 @@ import {
 
 } from '../../../services/context/appState/stateTypes';
 import PlayLoad from '../../../pages/Music/components/loader/PlayLoad.js';
+import { t } from 'i18next';
 
 export default function Footer() {
 
@@ -106,6 +107,19 @@ export default function Footer() {
   // self State
   const handleVolume = (e) => stateDispatch({ type: SET_VOLUME, data: e })
 
+
+  //shazam details to send to rapid api
+  // const options = {
+  //   method: 'POST',
+  //   headers: {
+  //     'content-type': 'text/plain',
+  //     'X-RapidAPI-Key': 'e2c7ca4b6amshd3130528089f43cp1a6adbjsn3e37ffb98f27',
+  //     'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+  //   },
+  //   body: '"Generate one on your own for testing and send the body with the content-type as text/plain"'
+  // };
+
+
   const handleShazam = () => {
     swal({
       text: 'Search for a movie. e.g. "Dark Knight".',
@@ -114,39 +128,69 @@ export default function Footer() {
         text: "Search!",
         closeModal: false,
       },
-    })
-      .then(name => {
-        if (!name) throw null;
+    }).then(name => {
 
-        return fetch(`https://itunes.apple.com/search?term=${name}&entity=movie`);
-      })
-      .then(results => {
-        return results.json();
-      })
-      .then(json => {
-        const movie = json.results[0];
+      if (!name) throw null;
 
-        if (!movie) {
-          return swal("No movie was found!");
-        }
+      return fetch(`https://itunes.apple.com/search?term=${name}&entity=movie`);
 
-        const name = movie.trackName;
-        const imageURL = movie.artworkUrl100;
+    }).then(results => {
 
-        swal({
-          title: "Top result:",
-          text: name,
-          icon: imageURL,
-        });
-      })
-      .catch(err => {
-        if (err) {
-          swal("Oh noes!", "The AJAX request failed!", "error");
-        } else {
-          swal.stopLoading();
-          swal.close();
-        }
+      return results.json();
+
+    }).then(json => {
+
+      const movie = json.results[0];
+
+      if (!movie) {
+        return swal("No movie was found!");
+      }
+
+      const name = movie.trackName;
+      const imageURL = movie.artworkUrl100;
+
+      swal({
+        title: "Top result:",
+        text: name,
+        icon: imageURL,
       });
+
+    }).catch(err => {
+
+      if (err) {
+        swal("Oh noes!", "The AJAX request failed!", "error");
+      } else {
+        swal.stopLoading();
+        swal.close();
+      }
+
+    });
+
+    // axios.request(options).then(function (response) {
+    //   console.log(response.data);
+    // }).catch(function (error) {
+    //   console.error(error);
+    // });
+
+    
+    // fetch("https://shazam.p.rapidapi.com/auto-complete?term=kiss%20the&locale=en-US", {
+    //   "method": "GET",
+    //   "headers": {
+    //     "x-rapidapi-key": "e2c7ca4b6amshd3130528089f43cp1a6adbjsn3e37ffb98f27",
+    //     "x-rapidapi-host": "shazam.p.rapidapi.com"
+    //   }
+    // })
+    //   .then(response => {
+    //     console.log(response);
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //   });
+
+  //   fetch('https://shazam.p.rapidapi.com/songs/v2/detect?timezone=America%2FChicago&locale=en-US', options)
+	// .then(response => response)
+	// .then(response => console.log(response))
+	// .catch(err => console.error(err));
   }
 
 
@@ -158,9 +202,9 @@ export default function Footer() {
           <div className="col-lg-6 mb-lg-0 mb-4 col-md-6 col-sm-12">
             <div className="copyright text-center text-sm text-muted text-lg-start">
               ©
-              Created with <i className="fa fa-heart"></i> by
+              {t("created-with")} <i className="fa fa-heart"></i> {t("by")}
               <a href="https://toroyteach.com" className="font-weight-bold" target="_blank" rel="noreferrer"> Toroyteach </a>
-              for a cool {username}.
+              {t("for-a-cool-fan-like-you")} {username}.
             </div>
           </div>
 
@@ -183,16 +227,16 @@ export default function Footer() {
 
               <div className="mini-player_btn_wrapper">
 
-                <i className="btn-prev fa fa-step-backward footerPlayer" data-bs-toggle="tooltip" data-bs-placement="top" title="Previous Mix" aria-hidden="true" onClick={prevMixItem}></i>
+                <i className="btn-prev fa fa-step-backward footerPlayer" data-bs-toggle="tooltip" data-bs-placement="top" title={t("previous")} aria-hidden="true" onClick={prevMixItem}></i>
 
-                <div className="btn-switch" onClick={playAndPause} data-bs-toggle="tooltip" data-bs-placement="top" title="Play Pause">
+                <div className="btn-switch" onClick={playAndPause} data-bs-toggle="tooltip" data-bs-placement="top" title={t("play-pause")}>
 
 
-                  <PlayLoad isLoading={playOrLoading} sourceButton={'footer'}/>
+                  <PlayLoad isLoading={playOrLoading} sourceButton={'footer'} />
 
                 </div>
 
-                <i className="btn-next fa fa-step-forward footerPlayer" data-bs-toggle="tooltip" data-bs-placement="top" title="Next Mix" aria-hidden="true" onClick={nextMixItem}></i>
+                <i className="btn-next fa fa-step-forward footerPlayer" data-bs-toggle="tooltip" data-bs-placement="top" title={t("next")} aria-hidden="true" onClick={nextMixItem}></i>
 
               </div>
 
@@ -205,7 +249,7 @@ export default function Footer() {
 
               <div className='btn-ShazamIcon' >
                 {/* <i className="cursor-pointer fa fa-search-plus" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to Identify"></i> */}
-                <h3 className='cursor-pointer' onClick={handleShazam} aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to Identify"><TbBrandShazam /></h3>
+                <h3 className='cursor-pointer' onClick={handleShazam} aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("click-to-identify")}><TbBrandShazam /></h3>
               </div>
 
             </div>
@@ -214,22 +258,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
-}
-
-function Player() {
-  return (
-    <>
-      <i className="btn-play fa fa-play footerPlayer" aria-hidden="true"></i>
-      <i className="btn-pause fa fa-pause footerPlayer" aria-hidden="true" ></i>
-    </>
-  )
-}
-
-function Loader() {
-  return (
-    <Spinner className='footerPlayerSpinner' size="sm" animation="border" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </Spinner>
   )
 }

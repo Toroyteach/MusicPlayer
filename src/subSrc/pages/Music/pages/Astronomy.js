@@ -12,15 +12,20 @@ export default function Astronomy() {
 
   //check is image is loaded
   const [ exist, setExist ] = useState(false);
-  const [ astronomyUrl, setAstronomyUrl ] = useState('')  
+  const [ astronomyUrl, setAstronomyUrl ] = useState(astronomyPicture.url)  
 
   useEffect( () =>{
 
-    setAstronomyUrl(astronomyPicture.url)
+    //setAstronomyUrl(astronomyPicture.url)
 
-    if(astronomyUrl.search(/youtube/) != -1){
-      setExist(true)
-    }
+    // const youtubeRegext = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
+
+    // if(astronomyUrl.match(youtubeRegext)){
+
+    //   console.log(exist)
+
+    //   setExist(true)
+    // }
 
   }, [])
 
@@ -41,7 +46,6 @@ export default function Astronomy() {
               <div className="card-body">
                 <h5 className="card-title">{astronomyPicture.title}</h5>
                 <p className="card-text">{astronomyPicture.explanation}</p>
-                <p className="card-text">Last updated {astronomyPicture.date}</p>
               </div>
             </div>
           </div>

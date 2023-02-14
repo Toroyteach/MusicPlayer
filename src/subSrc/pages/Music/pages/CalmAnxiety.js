@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 // import '../../../../assets/Users/style.css';
 // import $ from 'jquery';
 
-// import anxietVideo from './World.mp4'
+//import anxietVideo from '../music/'
 
 export default class CalmAnxiety extends PureComponent {
   render() {

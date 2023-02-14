@@ -1,5 +1,7 @@
-
 import { useState } from "react";
+
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
 
 const CommentForm = ({
     handleSubmit,
@@ -8,6 +10,9 @@ const CommentForm = ({
     handleCancel,
     initialText = "",
 }) => {
+
+    //initiate tge translator
+    const { t } = useTranslation();
 
     const [text, setText] = useState(initialText);
 
@@ -31,15 +36,15 @@ const CommentForm = ({
                     <div className="form-outline w-100">
                         <textarea className="form-control" id="textAreaExample" rows="4"
                             style={{ boxShadow: "2px 5px 8px #888888" }} value={text} onChange={(e) => setText(e.target.value)} />
-                        <label className="form-label" htmlFor="textAreaExample">Message</label>
+                        <label className="form-label" htmlFor="textAreaExample">{t("your-comment")}</label>
                     </div>
                 </div>
 
                 <div className="float-end mt-2 pt-1">
-                    
-                    <button type="button" className="btn btn-primary btn-sm" disabled={isTextareaDisabled}>{submitLabel}</button>
 
-                    {hasCancelButton && (<button type="button" className="btn btn-outline-primary btn-sm" onClick={handleCancel} >Cancel</button>)}
+                    <button type="submit" className="btn btn-primary btn-sm" disabled={isTextareaDisabled}>{submitLabel}</button>
+
+                    {hasCancelButton && (<button type="button" className="btn btn-outline-primary btn-sm" onClick={handleCancel} >{t("cancel")}</button>)}
 
                 </div>
 

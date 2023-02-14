@@ -2467,7 +2467,7 @@
     /* media queries fro the main landing page of backend */
     /* mostly for special phones and mobile Devices */
     .changeView {
-        height: 80vh;
+        height: 77vh;
     }
 
     .breadcrumb>.text-sm {
@@ -2833,7 +2833,9 @@
 
 }
 
-@media (min-width: 384px) and (max-height: 726px) {}
+@media (min-width: 384px) and (max-height: 726px) {
+    
+}
 
 @media (min-width: 384px) and (max-height: 854px) {
 
@@ -3023,7 +3025,7 @@
     /* media queries fro the main landing page of backend */
     /* mostly for special phones and mobile Devices */
     .changeView {
-        height: 80vh;
+        height: 75vh;
     }
 
     .breadcrumb>.text-sm {
@@ -5601,7 +5603,7 @@
     /* media queries fro the main landing page of backend */
     /* mostly for special phones and mobile Devices */
     .changeView {
-        height: 82vh;
+        height: 76vh;
     }
 
     .breadcrumb>.text-sm {

@@ -8,16 +8,34 @@ import userImageTable1 from '../../assets/users/img/team-1.jpg';
 import userImageTable2 from '../../assets/users/img/team-2.jpg';
 import userImageTable3 from '../../assets/users/img/team-3.jpg';
 
+//get the reducer types to help update the applcation states
+import {
+
+  SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
+  SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE,
+  SET_ENABLE_GLOBAL_SHAZAM_SEARCH,
+  SET_ENABLE_GLOBAL_DOWNLOAD_OPTION,
+  SET_ENABLE_GLOBAL_CALM_ANXIETY,
+  SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY,
+  SET_NOTIFIATION_TEXT_ITEM,
+
+} from '../../services/context/appState/stateTypes';
+
+import warningIcon from '../../layouts/components/toast/toastSvg/warning.svg';
+
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+
 //import the chart library
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 
+
 export default function AdminDashboard() {
 
   const {
-    userData,
     appSettings: {
       cumulativeMinutesListened,
       cumulativeDownloaded,
@@ -27,11 +45,21 @@ export default function AdminDashboard() {
       shazamCounts,
       highestFavourite,
       cumulativeComments,
+      visualizerActive,
+      astronomyActive,
+      shazamActive,
+      downloadActive,
+      anxietyVideos,
+      viewOtherUsers,
     },
     musicSettings: {
       mixList,
     },
+    stateDispatch
   } = useContext(appContext);
+
+  //initiate tge translator
+  const { t } = useTranslation();
 
   //chart data set
   const state = {
@@ -45,6 +73,118 @@ export default function AdminDashboard() {
         data: [12, 23, 53, 15, 35, 64, 14, 16, 27, 37, 48, 19, 29, 39, 16, 62, 25, 63, 23, 12, 13, 23, 41, 31, 14, 54, 23, 1, 12, 32, 24, 26, 17, 27]
       }
     ]
+  }
+
+  //admin application settings
+  //update enable global visualizer
+  const updateEnableGlobalVisualizer = () => {
+
+    stateDispatch({ type: SET_ENABLE_GLOBAL_AUDIO_VISUALIZER, data: visualizerActive ? false : true })
+
+    let data = {
+      type: 'Warning',
+      text: 'Successfully ' + (!visualizerActive ? t("enabled") : t("disabled")) + ' Visualizers for the application',
+      icon: warningIcon,
+      bgColour: '#f0ad4e',
+    }
+
+    dispatchNotification(data)
+
+  }
+
+  //update enable global astronomy picture
+  const updateEnableGlobalAstronomyPic = () => {
+
+    stateDispatch({ type: SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE, data: astronomyActive ? false : true })
+
+    let data = {
+      type: 'Warning',
+      text: 'Successfully ' + (!astronomyActive ? t("enabled") : t("disabled")) + ' Astronomy for the application',
+      icon: warningIcon,
+      bgColour: '#f0ad4e',
+    }
+
+    dispatchNotification(data)
+
+  }
+
+  //update enable global shazam requests
+  const updateEnableGlobalShazam = () => {
+
+    stateDispatch({ type: SET_ENABLE_GLOBAL_SHAZAM_SEARCH, data: shazamActive ? false : true })
+
+    let data = {
+      type: 'Warning',
+      text: 'Successfully ' + (!shazamActive ? 'Enabled' : 'Disabled') + ' Shazam for the application',
+      icon: warningIcon,
+      bgColour: '#f0ad4e',
+    }
+
+    dispatchNotification(data)
+
+  }
+
+  //update enable global dowbload option
+  const updateEnableGlobalDownload = () => {
+
+    stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
+
+    let data = {
+      type: 'Warning',
+      text: 'Successfully ' + (!downloadActive ? 'Enabled' : 'Disabled') + ' Download Option for the application',
+      icon: warningIcon,
+      bgColour: '#f0ad4e',
+    }
+
+    dispatchNotification(data)
+
+  }
+
+  //update enable anxiety video
+  const updateEnableGlobalAnxietyVideo = () => {
+
+    stateDispatch({ type: SET_ENABLE_GLOBAL_CALM_ANXIETY, data: anxietyVideos ? false : true })
+
+    let data = {
+      type: 'Warning',
+      text: 'Successfully ' + (!anxietyVideos ? 'Enabled' : 'Disabled') + ' Anxiety video for the Entire application',
+      icon: warningIcon,
+      bgColour: '#f0ad4e',
+    }
+
+    dispatchNotification(data)
+
+  }
+
+  //update enable see other users online status
+  const updateEnableGlobalUsersToViewOtherUsersOnlineActivity = () => {
+
+    stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
+
+    let data = {
+      type: 'Warning',
+      text: 'Successfully ' + (!viewOtherUsers ? 'Enabled' : 'Disabled') + ' View Online Users for the Entire application',
+      icon: warningIcon,
+      bgColour: '#f0ad4e',
+    }
+
+    dispatchNotification(data)
+
+  }
+
+  //dispatch all notiifcations from on place
+  const dispatchNotification = (data) => {
+
+    const notice = {
+      id: Math.floor((Math.random() * 101) + 1),
+      title: data.type,
+      description: data.text,
+      backgroundColor: data.bgColour,
+      icon: data.icon
+    };
+
+    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+
   }
 
 
@@ -205,7 +345,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="row mt-4">
-        <div className="col-lg-7 col-md-12 mt-4 mb-4">
+        <div className="col-lg-12 col-md-12 mt-4 mb-4">
           <div className="card z-index-2 ">
 
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
@@ -239,7 +379,10 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className='col-lg-5 col-md-12 mt-0 mb-4'>
+      </div>
+
+      <div className='row mt-4'>
+        <div className='col-lg-6 col-md-6 mt-0 mb-4'>
           <div className="row">
             <div className="col-12">
               <div className="card my-4">
@@ -410,7 +553,70 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        <div className='col-lg-6 col-md-6 mt-0 mb-4'>
+          <div className="row">
+            <div className="col-12">
+              <div className="card my-4">
+                <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                  <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                    <h6 className="text-white text-capitalize ps-3">Application Settings</h6>
+                  </div>
+                </div>
 
+                <div className="col-12">
+                  <div className="card card-plain h-100">
+                    <div className="card-body p-4">
+                      <ul className="list-group">
+                        <li className="list-group-item border-0 px-0">
+                          <div className="form-check form-switch ps-0">
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={visualizerActive} onChange={updateEnableGlobalVisualizer} />
+                            <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault">&ensp;Enable Audio Visualizer</label>
+                          </div>
+                        </li>
+                        <li className="list-group-item border-0 px-0">
+                          <div className="form-check form-switch ps-0">
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={astronomyActive} onChange={updateEnableGlobalAstronomyPic} />
+                            <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault1">&ensp;Enable Astronmy Picture</label>
+                          </div>
+                        </li>
+                        <li className="list-group-item border-0 px-0">
+                          <div className="form-check form-switch ps-0">
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={shazamActive} onChange={updateEnableGlobalShazam} />
+                            <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Shazam search</label>
+                          </div>
+                        </li>
+                        <li className="list-group-item border-0 px-0">
+                          <div className="form-check form-switch ps-0">
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={downloadActive} onChange={updateEnableGlobalDownload} />
+                            <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Download options</label>
+                          </div>
+                        </li>
+                        <li className="list-group-item border-0 px-0">
+                          <div className="form-check form-switch ps-0">
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={anxietyVideos} onChange={updateEnableGlobalAnxietyVideo} />
+                            <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Calm Anxiety Video</label>
+                          </div>
+                        </li>
+                        <li className="list-group-item border-0 px-0">
+                          <div className="form-check form-switch ps-0">
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={viewOtherUsers} onChange={updateEnableGlobalUsersToViewOtherUsersOnlineActivity} />
+                            <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable users to see what others are Listening</label>
+                          </div>
+                        </li>
+                        <li className="list-group-item border-0 px-0">
+                          <div className="form-check form-switch ps-0">
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" />
+                            <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Direct Commenting</label>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )

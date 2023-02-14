@@ -1,10 +1,11 @@
-.quizeSection 
+/* .quizeSection 
 input[type="text"],
 input[type="date"],
 input[type="number"],
-textarea {
+textarea 
+{
   outline: rgb(5, 3, 3) auto 5px;
-}
+} */
 
 #uploadSection:has(
 textarea,
@@ -240,6 +241,12 @@ label.star:before {
   background: url("../../users/img/icons/flags/FR.png");
 }
 
+.flag-de {
+  background-size: cover;
+  background-position: center center;
+  background: url("../../users/img/icons/flags/DE.png");
+}
+
 /* css for the Chard js */
 .chart-container {
   position: relative;
@@ -252,3 +259,84 @@ label.star:before {
   height: 85vh; 
   overflow: auto;
 }
+
+
+/* Messages chat css */
+.chat-room-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chat-room-list li {
+  height: 100px;
+  background: hsl(210, 3%, 25%);
+  flex: 1 1 calc(50% - 4px);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.messages-container {
+  width: 100%;
+  height: 95%;
+  padding: 16px;
+  flex-grow: 1;
+  border: 1px solid hsl(210, 3%, 25%);
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-input-container {
+  display: flex;
+  gap: 40px;
+}
+
+.message-input {
+  padding: 12px 8px;
+  flex: 1;
+  background: hsl(210, 3%, 25%);
+  border-radius: 5px
+}
+
+.send-message {
+  padding: 12px 14px;
+  background: hsl(208, 100%, 50%);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.message-list-container {
+  margin-bottom: 16px;
+  flex: 1;
+  overflow: scroll;
+}
+
+.message-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.message {
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  background: hsl(210, 3%, 25%);
+  border-radius: 5px;
+  text-align: left;
+}
+
+.own-message {
+  background: hsl(208, 100%, 50%);
+  align-self: flex-end;
+  text-align: right;
+}
+
+.sender {
+  margin-bottom: 8px;
+}
+

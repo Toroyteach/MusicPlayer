@@ -21,6 +21,14 @@ import Footer from '../../components/footer/Footer.js';
 //import custom toast component and its assets
 import CustomToast from '../../components/toast/CustomToast.js';
 
+//import languages list
+import LanguageList from '../../../services/localization/LanguageList.js';
+import LocalizeTypes from '../../../services/localization/localizeTypes.js'
+
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+import i18n from 'i18next';
+
 export default function Home() {
 
   //Global State
@@ -35,18 +43,18 @@ export default function Home() {
     // stateDispatch,
   } = useContext(appContext)
 
-  //language choices
-  const languageOtions = [
-    {
-      label: "EN",
-      value: "En",
-    },
-    {
-      label: "FR",
-      value: "Fr",
+  //initiate tge translator
+  const { t } = useTranslation();
 
-    },
-  ];
+  //use this to allow users to change the current active localisation language
+  const handleChangeLanguage = (value) => {
+
+    //stateDispatch({ type: SET_GLOBAL_LANGUAGE, data: e.target.value }) 
+
+    //change to the new language
+    i18n.changeLanguage(value)
+
+  }
 
   //use to set the nav active or not on mobile view
   const [isActive, setIsActive] = useState(false);
@@ -65,12 +73,6 @@ export default function Home() {
 
   }
 
-  //toast texts and description
-  const [list, setList] = useState([]);
-
-  //use this to allow users to change the current active localisation language
-  //const handleChangeLanguage = (e) => stateDispatch({ type: SET_GLOBAL_LANGUAGE, data: e.target.value })
-
   const { auth, setAuth } = useAuth();
   const location = useLocation();
   const logout = () => {
@@ -84,6 +86,9 @@ export default function Home() {
 
   }
 
+  //toast texts and description
+  const [list, setList] = useState([]);
+
   useEffect(() => {
 
     if (notificationText.length != 0) {
@@ -95,11 +100,15 @@ export default function Home() {
   }, [notificationText]);
 
   //use effect to check state changes in the Application tour to launch/remove Aside Navigation state
-  useEffect( () => {
+  useEffect(() => {
 
     asideNavigation ? setIsActive(true) : setIsActive(false)
 
-  }, [ asideNavigation ])
+  }, [asideNavigation])
+
+  const language = (LocalizeTypes || []).map((language, idx) => (
+    <LanguageList key={idx} style={language.stype} name={language.name} handleOnClick={() => { handleChangeLanguage(language.value) }}/>
+  ))
 
 
   return (
@@ -123,7 +132,7 @@ export default function Home() {
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">dashboard</i>
                 </div>
-                <span className="nav-link-text ms-1">Dashboard</span>
+                <span className="nav-link-text ms-1">{t("dashboard")}</span>
               </CustomLink>
             </li>
             <li className="nav-item" id='musicIntro'>
@@ -131,7 +140,7 @@ export default function Home() {
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">library_music</i>
                 </div>
-                <span className="nav-link-text ms-1">Music</span>
+                <span className="nav-link-text ms-1">{t("music")}</span>
               </CustomLink>
             </li>
             <li className="nav-item" id='messagesIntro'>
@@ -139,7 +148,7 @@ export default function Home() {
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">receipt_long</i>
                 </div>
-                <span className="nav-link-text ms-1">Messages</span>
+                <span className="nav-link-text ms-1">{t("message")}</span>
               </CustomLink>
             </li>
             <li className="nav-item" id='notificationsIntro'>
@@ -147,7 +156,7 @@ export default function Home() {
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">notifications</i>
                 </div>
-                <span className="nav-link-text ms-1">Notifications</span>
+                <span className="nav-link-text ms-1">{t("notifications")}</span>
               </CustomLink>
             </li>
             <li className="nav-item" id='aboutIntro'>
@@ -155,18 +164,18 @@ export default function Home() {
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">info</i>
                 </div>
-                <span className="nav-link-text ms-1">About</span>
+                <span className="nav-link-text ms-1">{t("about")}</span>
               </CustomLink>
             </li>
             <li className="nav-item mt-3">
-              <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account</h6>
+              <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">{t("account")}</h6>
             </li>
             <li className="nav-item" id='profileIntro'>
               <CustomLink to="/profile" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">person</i>
                 </div>
-                <span className="nav-link-text ms-1">Profile</span>
+                <span className="nav-link-text ms-1">{t("profile")}</span>
               </CustomLink>
             </li>
             <li className="nav-item" onClick={logout} id='logoutIntro'>
@@ -174,7 +183,7 @@ export default function Home() {
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">logout</i>
                 </div>
-                <span className="nav-link-text ms-1">Log Out</span>
+                <span className="nav-link-text ms-1">{t("logout")}</span>
               </a>
             </li>
             <li className="nav-item mt-3">
@@ -188,7 +197,7 @@ export default function Home() {
                 <span className="nav-link-text ms-1">Dashboard</span>
               </CustomLink>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <CustomLink to="/admin/messages" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">receipt_long</i>
@@ -235,7 +244,7 @@ export default function Home() {
                 </div>
                 <span className="nav-link-text ms-1">FanBase</span>
               </CustomLink>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -251,8 +260,8 @@ export default function Home() {
         <nav className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
           <div className="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
-              <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                <li className="breadcrumb-item text-sm"><a className="opacity-5 text-dark" href="/#">Welcome</a></li>
+              <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-auto">
+                <li className="breadcrumb-item text-sm"><a className="opacity-5 text-dark" href="/#">{t("welcome")}</a></li>
                 <li className="breadcrumb-item text-sm active modalIntro" aria-current="page">{username}</li>
               </ol>
             </nav>
@@ -267,12 +276,16 @@ export default function Home() {
                       <li>
                         <i className="fa fa-language cursor-pointer"></i>
                         <i className="fa fa-angle-down" aria-hidden="true"></i>
+
                         <div className="triangle"></div>
+
                         <ul>
-                          <li><i className="sl-flag flag-gb"></i> <span>English</span></li>
-                          <li><i className="sl-flag flag-fr"></i> <span>French</span></li>
-                          <li><i className="sl-flag flag-sp"></i> <span>Spanish</span></li>
+              
+                          {language}
+
                         </ul>
+
+
                       </li>
                     </ul>
 
@@ -292,7 +305,7 @@ export default function Home() {
                           </div>
                           <div className="d-flex flex-column justify-content-center">
                             <h6 className="text-sm font-weight-normal mb-1">
-                              <span className="font-weight-bold">New message</span> from Anthony
+                              <span className="font-weight-bold">{t("new-message-from")}</span> Anthony
                             </h6>
                             <p className="text-xs text-secondary mb-0">
                               <i className="fa fa-clock me-1"></i>
@@ -310,7 +323,7 @@ export default function Home() {
                           </div>
                           <div className="d-flex flex-column justify-content-center">
                             <h6 className="text-sm font-weight-normal mb-1">
-                              <span className="font-weight-bold">New Mix</span> by Toroyteach
+                              <span className="font-weight-bold">{t("new-mix-by")}</span> Toroyteach
                             </h6>
                             <p className="text-xs text-secondary mb-0">
                               <i className="fa fa-clock me-1"></i>
@@ -357,6 +370,8 @@ function CustomLink({ to, children, ...props }) {
 
   const resolvedPath = useResolvedPath(to);
   const isActive = useMatch({ path: resolvedPath.pathname, end: true })
+
+  // console.log(resolvedPath)
 
   return (
     <Link className={isActive ? 'active bg-gradient-primary nav-link text-white' : 'nav-link text-white '} to={to} {...props}>

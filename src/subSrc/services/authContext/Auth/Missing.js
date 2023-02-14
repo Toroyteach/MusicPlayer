@@ -11,7 +11,7 @@ export default function Missing() {
                     <h1>404</h1>
                 </div>
                 <h2>Oops! Page Not Found</h2>
-                <Link to="/dashboard">
+                <Link to="/users/dashboard">
                     <a href="#">Back To Homepage</a>
                 </Link>
             </div>

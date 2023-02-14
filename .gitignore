@@ -24,3 +24,5 @@ yarn-error.log*
 
 #ignore mp3 files foe now
 .mp3
+
+.env

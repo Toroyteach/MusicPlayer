@@ -2,14 +2,21 @@ import React from 'react'
 
 import { Link } from 'react-router-dom';
 
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+
 export default function Notifications() {
+
+  //initiate tge translator
+  const { t } = useTranslation();
+
   return (
     <div className="container_fluid">
       <div className="row">
         <div className="col-lg-10 col-md-10 mx-auto">
           <div className="card mt-4">
             <div className="card-header p-3">
-              <h5 className="mb-0">Notifications</h5>
+              <h5 className="mb-0">{t("notifications")}</h5>
             </div>
             <div className="card-body p-3 pb-0">
               <div className="alert alert-primary alert-dismissible text-white" role="alert">
@@ -19,7 +26,7 @@ export default function Notifications() {
                 </button>
               </div>
               <div className="alert alert-secondary alert-dismissible text-white" role="alert">
-                <span className="text-sm">You have a message from Toroyteach <Link to="/users/messages"> <a href="/#" className="alert-link text-white">Click to read</a> </Link>.</span>
+                <span className="text-sm">You have a message from Toroyteach </span>
                 <button type="button" className="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>

@@ -3,8 +3,13 @@ import React from 'react'
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
 
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
+
 export default function OnlineListeners() {
 
+  //initiate tge translator
+  const { t } = useTranslation();
 
   // //handles mause hover for active listeners
   const onEnter = ({ currentTarget }) => {
@@ -27,7 +32,7 @@ export default function OnlineListeners() {
       <div className="page" id="curator">
         <div className="curator_title_wrapper"><span>LP</span>
           <div className="curator_line"></div>
-          <div className="curator_title">Online Listeners</div>
+          <div className="curator_title">{t("online-listeners")}</div>
           <div className="curator_line"></div><span>14</span>
         </div>
 
@@ -39,7 +44,7 @@ export default function OnlineListeners() {
               </div>
             </div>
 
-            <div className="curator_list_content_desc">Other <br />Listeners</div>
+            <div className="curator_list_content_desc"><br /> {t("listeners")}</div>
 
             <div className="item" onMouseEnter={onEnter} onMouseLeave={onLeave}>
               <div className="thumb"></div>

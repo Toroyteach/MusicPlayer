@@ -1,12 +1,9 @@
-import React, { useState, useRef, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 
 import { Link } from 'react-router-dom';
 
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
-
-//import bootstrap loading spinner for when loading audio
-import Spinner from 'react-bootstrap/Spinner'
 
 //import necessary files to make state and context consistent
 import appContext from '../../../services/context/appContext.js';
@@ -28,6 +25,9 @@ import {
 //import check icon to use in the custom toast icon
 import checkIcon from '../../../layouts/components/toast/toastSvg/check.svg';
 import PlayLoad from './loader/PlayLoad.js';
+
+// import the file to allow changing of the language manually
+import { useTranslation } from "react-i18next";
 
 export default function MainPlayer() {
 
@@ -56,20 +56,21 @@ export default function MainPlayer() {
     }
   } = useContext(appContext)
 
-  const VisualizerOptions = [
-    {
-      label: "Default",
-      value: "default",
-    },
-    {
-      label: "Bars",
-      value: "bars",
+  // const VisualizerOptions = [
+  //   {
+  //     label: "Default",
+  //     value: "default",
+  //   },
+  //   {
+  //     label: "Bars",
+  //     value: "bars",
 
-    },
-  ];
+  //   },
+  // ];
 
-  const audio = useRef('audio_tag')
-
+  //initiate tge translator
+  
+  const { t } = useTranslation();
 
   //converts the tome to more understandable format
   const fmtMSS = (s) => {
@@ -157,7 +158,7 @@ export default function MainPlayer() {
       //show the toast of the added mix item
       let data = {
         type: 'Success',
-        text: 'Successfully added ' + activePlaylist[currentSong].title + ' to your favourites list',
+        text: t("successfully-added ") + activePlaylist[currentSong].title + t("to-your-favourites-list"),
         icon: checkIcon,
         bgColour: '#5cb85c',
       }
@@ -178,20 +179,20 @@ export default function MainPlayer() {
   const handleReplayMixItem = () => stateDispatch({ type: SET_TOGGLE_REPEAT, data: repeat ? false : true })
 
   //handle when user wants to change the playlist
-  const [isFavPlaylist, setFavPlaylist] = useState("default")
+  //const [isFavPlaylist, setFavPlaylist] = useState("default")
   //handle when user clicks the Select Playlist button
-  const handleChooseFavPlaylist = () => {
+  // const handleChooseFavPlaylist = () => {
 
-    if (isFavPlaylist != "default") {
+  //   if (isFavPlaylist != "default") {
 
-      setFavPlaylist('default')
+  //     setFavPlaylist('default')
 
-    } else {
+  //   } else {
 
-      setFavPlaylist('fav')
+  //     setFavPlaylist('fav')
 
-    }
-  }
+  //   }
+  // }
 
 
   //method to handle dispatching and handling playing the next song
@@ -272,31 +273,34 @@ export default function MainPlayer() {
 
         <div className="playback_blur"></div>
 
-        <Link to="/single" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Leave Comment">
+        <Link to="/single" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
           <div className="playback_thumb"></div>
         </Link>
 
         <div className="playback_extras text_center">
-
+          {/* handle repeat the current mix */}
           <div className='icon btn-RepeatIcon'>
             <i className={'cursor-pointer fa fa-repeat ' + (repeat ? 'activeIcons' : '')} aria-hidden="true" onClick={handleReplayMixItem}></i>
           </div>
 
+          {/* handle shuffle mix list items */}
           <div className='icon btn-ShuffleIcon'>
             <i className={'cursor-pointer fa fa-random ' + (random ? 'activeIcons' : '')} aria-hidden="true" onClick={handleRandomClick}></i>
           </div>
 
+          {/* select current active playlist */}
           <div className='icon btn-PlaylistIcon dropdown-toggle' data-toggle="dropdown">
             <i className="cursor-pointer fa fa-list-ol" aria-hidden="true"></i>
             <div className='dropdown-menu playliststyle'>
-              <span className="dropdown-item-text">Choose Playlist</span>
-              <ul class="">
-                <li className='selected'><a class="dropdown-item" href="/#">Default</a></li>
-                <li><a class="dropdown-item" href="/#">Favourites</a></li>
+              <span className="dropdown-item-text">{t("choose-playlist")}</span>
+              <ul className="">
+                <li className='selected'><a className="dropdown-item" href="/#">{t("default")}</a></li>
+                <li><a className="dropdown-item" href="/#">{t("favourites")}</a></li>
               </ul>
             </div>
           </div>
 
+          {/* handle make a mix item liked or not */}
           <div className='icon btn-LikeIcon' onClick={handleLikeMixItem}>
             <i className="cursor-pointer btn-heartOn fa fa-heart" aria-hidden="true"></i>
             <i className="cursor-pointer btn-heartOff fa fa-heart-o" aria-hidden="true"></i>
@@ -306,17 +310,19 @@ export default function MainPlayer() {
             <i className="cursor-pointer fa fa-expand" aria-hidden="true" onClick={handleGoingFullScreen}></i>
           </div>
 
+          {/* handle choose audio visualizer */}
           <div className='dropdownV icon btn-VisualizerIcon'>
             <i className="dropdownV cursor-pointer fa fa-bar-chart" aria-hidden="true"></i>
             <div className='dropdown-content'>
               <span className="modalIntro">Choose Visualizer</span>
-              <ul class="dropdown-content">
-                <li className='selected modalIntro'><a class="dropdown-item">Bars</a></li>
-                <li><a class="dropdown-item modalIntro">Circular</a></li>
+              <ul className="dropdown-content">
+                <li className='selected modalIntro'><a className="dropdown-item">Bars</a></li>
+                <li><a className="dropdown-item modalIntro">Circular</a></li>
               </ul>
             </div>
           </div>
 
+          {/* handle download the mix item */}
           <div className='icon btn-DownloadIcon'>
             <i className="cursor-pointer fa fa-download" aria-hidden="true"></i>
           </div>
@@ -342,17 +348,17 @@ export default function MainPlayer() {
 
           <div className="p-2 playback_btn_wrapper">
 
-            <i className="btn-prev fa fa-step-backward" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Previous Mix" onClick={prevMixItem}></i>
-            <i className="btn-prev fa fa-reply" data-bs-toggle="tooltip" data-bs-placement="top" title="Back 30sec" aria-hidden="true" onClick={handleback30}></i>
+            <i className="btn-prev fa fa-step-backward" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("previous")} onClick={prevMixItem}></i>
+            <i className="btn-prev fa fa-reply" data-bs-toggle="tooltip" data-bs-placement="top" title={t("back-30sec")} aria-hidden="true" onClick={handleback30}></i>
 
-            <div className="btn-switch" onClick={handlePlayPause} data-bs-toggle="tooltip" data-bs-placement="top" title="Play Pause">
+            <div className="btn-switch" onClick={handlePlayPause} data-bs-toggle="tooltip" data-bs-placement="top" title={t("play-pause")}>
 
-              <PlayLoad isLoading={playOrLoading} sourceButton={'main'}/>
+              <PlayLoad isLoading={playOrLoading} sourceButton={'main'} />
 
             </div>
 
-            <i className="btn-next fa fa-share" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Forward 1min" onClick={handleForward1Minute}></i>
-            <i className="btn-next fa fa-step-forward" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Next Mix" onClick={nextMixItem}></i>
+            <i className="btn-next fa fa-share" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("forwad-30sec")} onClick={handleForward1Minute}></i>
+            <i className="btn-next fa fa-step-forward" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("next")} onClick={nextMixItem}></i>
 
           </div>
 
