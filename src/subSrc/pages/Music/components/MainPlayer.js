@@ -8,6 +8,9 @@ import { gsap, Power2 } from 'gsap';
 //import necessary files to make state and context consistent
 import appContext from '../../../services/context/appContext.js';
 
+import GenreList from '../music/GenreList.js';
+import genreTypes from '../music/genreTypes.js';
+
 //import the reducer function states to make consistent states
 import {
 
@@ -19,7 +22,7 @@ import {
   SET_USER_FAVOURITE_LIST_REMOVE,
   SET_FAVOURITE_MIX_ITEM,
   SET_NOTIFIATION_TEXT_ITEM,
-
+  SET_ACTIVE_PLAYLIST_ARRAY,
 } from '../../../services/context/appState/stateTypes';
 
 //import check icon to use in the custom toast icon
@@ -48,6 +51,7 @@ export default function MainPlayer() {
     musicSettings: {
       playOrLoading,
       likedItem,
+      completePlaylist,
     },
     userData: {
       favourite: {
@@ -69,8 +73,10 @@ export default function MainPlayer() {
   // ];
 
   //initiate tge translator
-  
+
   const { t } = useTranslation();
+
+  const [playPauseBtn, setPlayPauseBtn] = useState(false)
 
   //converts the tome to more understandable format
   const fmtMSS = (s) => {
@@ -135,8 +141,6 @@ export default function MainPlayer() {
   //handle when user clicks the favourite button
   const handleLikeMixItem = () => {
 
-    //console.log(likedItem)
-
     if (likedItem) {
 
       //get the current item from active playlist and remove it from the list
@@ -181,18 +185,34 @@ export default function MainPlayer() {
   //handle when user wants to change the playlist
   //const [isFavPlaylist, setFavPlaylist] = useState("default")
   //handle when user clicks the Select Playlist button
-  // const handleChooseFavPlaylist = () => {
+  const handleChooseFavPlaylist = (v) => {
 
-  //   if (isFavPlaylist != "default") {
+    const listChoice = v
 
-  //     setFavPlaylist('default')
+    if (listChoice == 'favourite') {
 
-  //   } else {
+      // Generic helper function that can be used for the three operations:        
+      const operation = (list1, list2, isUnion = false) => list1.filter(a => isUnion === list2.some(b => a.id === b.id));
 
-  //     setFavPlaylist('fav')
+      const newPlaylist = operation(activePlaylist, favouriteItems, true)
 
-  //   }
-  // }
+      stateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
+
+    } else {
+
+      const newPlaylist = completePlaylist.filter(function (el) {
+        return el.genre == listChoice
+      });
+
+      stateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
+
+    }
+
+  }
+
+  const genrePlaylist = (genreTypes || []).map((list, idx) => (
+    <GenreList key={idx} className={list.class} name={list.name} handleOnClick={() => handleChooseFavPlaylist(list.name)} />
+  ))
 
 
   //method to handle dispatching and handling playing the next song
@@ -264,6 +284,18 @@ export default function MainPlayer() {
 
   }, [likedItem])
 
+  useEffect(() => {
+
+    if (playing) {
+
+      //setPlayPauseBtn(true)
+
+    } else {
+      setPlayPauseBtn(playOrLoading)
+    }
+
+  }, [playOrLoading])
+
   return (
 
     <div className="player" id="player">
@@ -289,13 +321,15 @@ export default function MainPlayer() {
           </div>
 
           {/* select current active playlist */}
-          <div className='icon btn-PlaylistIcon dropdown-toggle' data-toggle="dropdown">
+          <div className='icon btn-PlaylistIcon dropdown-toggle' data-toggle="dropdown" >
             <i className="cursor-pointer fa fa-list-ol" aria-hidden="true"></i>
             <div className='dropdown-menu playliststyle'>
-              <span className="dropdown-item-text">{t("choose-playlist")}</span>
+              <span className="dropdown-item-text" >{t("choose-playlist")}</span>
               <ul className="">
-                <li className='selected'><a className="dropdown-item" href="/#">{t("default")}</a></li>
-                <li><a className="dropdown-item" href="/#">{t("favourites")}</a></li>
+                {/* <li className='selected'><a className="dropdown-item" href="/#">{t("default")}</a></li> */}
+
+                {genrePlaylist}
+
               </ul>
             </div>
           </div>
@@ -307,7 +341,7 @@ export default function MainPlayer() {
           </div>
 
           <div className='icon btn-EqualizerIcon  '>
-            <i className="cursor-pointer fa fa-expand" aria-hidden="true" onClick={handleGoingFullScreen}></i>
+            <i className="cursor-pointer fa fa-expand" aria-hidden="true" onClick={() => handleChooseFavPlaylist('House')}></i>
           </div>
 
           {/* handle choose audio visualizer */}
@@ -353,7 +387,7 @@ export default function MainPlayer() {
 
             <div className="btn-switch" onClick={handlePlayPause} data-bs-toggle="tooltip" data-bs-placement="top" title={t("play-pause")}>
 
-              <PlayLoad isLoading={playOrLoading} sourceButton={'main'} />
+              <PlayLoad isLoading={playPauseBtn} isPlaying={playing} sourceButton={'main'} />
 
             </div>
 
@@ -370,10 +404,10 @@ export default function MainPlayer() {
         <ul className="list">
 
           {activePlaylist.map((song, i) => (
-            <li className={'list_item ' + (currentSong === i ? 'selected' : '')} key={i} onClick={() => { SetCurrent(i) }} >
+            <li className={'list_item ' + (currentSong === i ? 'selected' : '')} key={i}>
 
               <div className="thumb"> </div>
-              <div className="info">
+              <div className="info" onClick={() => { SetCurrent(i) }}>
                 <div className="title">{song.title}</div>
                 <div className="artist">{song.artistName}</div>
               </div>
@@ -384,6 +418,10 @@ export default function MainPlayer() {
         </ul>
       </div>
 
+
+      <ul className="list">
+        {genrePlaylist}
+      </ul>
     </div>
 
   )

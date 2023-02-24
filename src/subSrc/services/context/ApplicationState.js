@@ -73,6 +73,11 @@ const ApplicationState = (props) => {
     //set the secleted song in dispatch
     dispatch({ type: SET_CURRENT_SONG, data: id })
 
+    //change the document title dynamically to the mix name
+    const name = state.musicSettings.activePlaylist[id].title
+
+    // document.title = name;
+
   }
 
   // End of Song

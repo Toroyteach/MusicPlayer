@@ -5,7 +5,7 @@ import musicContext from './musicContext'
 const MusicContextState = (props) => {
 
     //create the WebKit or Audio Context
-    const audioCtx = null;//new (window.AudioContext || window.webkitAudioContext);
+    const audioCtx = null//new (window.AudioContext || window.webkitAudioContext);
 
     return (
         <musicContext.Provider

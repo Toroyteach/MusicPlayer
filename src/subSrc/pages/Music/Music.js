@@ -33,6 +33,7 @@ import {
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
+import ImageGen from './pages/ImageGen.js';
 
 export default function Music() {
 
@@ -121,7 +122,7 @@ export default function Music() {
     }
 
     // Hide
-    $("#astronomy, #anxiety, .back_btn").css("display", "none");
+    $("#astronomy, #anxiety, .back_btn, #imageGen").css("display", "none");
     //homeToMain.to( $(".back_btn"),{ display: "none" } );
 
     homeToMain.to($(".wave-container"), 1, { yPercent: 0, ease: Power2.easeInOut }, 1);
@@ -134,6 +135,12 @@ export default function Music() {
 
     homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
     $(".logo-text").css("display", "block");
+  }
+
+  const onPlayButtonClickInitiateTour = () => {
+
+    stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: true })
+
   }
 
   //cookie to check if user hase already seen the tour for a day
@@ -153,8 +160,6 @@ export default function Music() {
   return (
 
     <div className="container_fluid wrapper" id="wrapper">
-
-      <ApplicationTour />
 
       <div className='container_fluid'>
         <div className='row'>
@@ -193,7 +198,7 @@ export default function Music() {
       </div>
 
       {/* Waves and Audio Soectryum Visualizer Canvas Component */}
-      <PlainWaves/>
+      <PlainWaves />
       {/* <Visualizer /> */}
 
       <div className="line"></div>
@@ -201,7 +206,7 @@ export default function Music() {
       <div className="text-wrap">
         <div className="text" onMouseEnter={handleMouseEnterTextHoverAction} onMouseLeave={handleMouseExitTextHoverAction}>
           <span>L</span><span>I</span><span>S</span><span>T</span><span>E</span><span>N</span>
-          <div className="main-btn_wrapper">
+          <div className="main-btn_wrapper" onClick={onPlayButtonClickInitiateTour}>
             <i className="main-btn fa fa-play" aria-hidden="true"></i>
           </div>
         </div>
@@ -224,6 +229,9 @@ export default function Music() {
 
       {/* this section will host the astronomy picture of the day */}
       <Astronomy />
+
+      {/* this section will host the geenrate image using OpenAi */}
+      <ImageGen />
 
     </div>
   )

@@ -13,6 +13,7 @@ import Cookies from 'universal-cookie';
 import {
 
     SET_ASIDE_NAVIGATION_OPEN_APP_TOUR,
+    SET_ENABLE_APPLICATION_TOUR,
 
 } from '../context/appState/stateTypes';
 import { t } from 'i18next';
@@ -38,7 +39,7 @@ export default function ApplicationTour() {
     //the steps in the application
     const steps = [
         {
-            title: t("welcome")+ username,
+            title: t("welcome") + username,
             intro: t("intro-text"),
         },
         {
@@ -121,6 +122,8 @@ export default function ApplicationTour() {
 
     const onExit = () => {
 
+        stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: false })
+        
     };
 
     //check the next step so we can activate the aside if mobile device
@@ -141,12 +144,11 @@ export default function ApplicationTour() {
 
     const whenTourCompleted = () => {
 
-        //console.log('tour has been completed')
-        //Set cookie so that the next time the tour does not load
-        //setEnabled(false)
-        let expires = new Date()
-        cookies.set('showTour', 'show', { path: '/', expires: expires, secure: true, sameSite: 'none' });
-        console.log('completed tour and set cookie to', cookies.get('showTour'))
+        const expires = new Date()
+
+        cookies.set('showTour', 'show', { path: '/' }); // expires: expires, secure: true, sameSite: 'none'
+
+        stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: false })
 
     }
 

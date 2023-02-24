@@ -1,13 +1,13 @@
 import { song_list } from '../../../pages/Music/music/songsList.js';
 
 const mixList = [
-  'QuePasa', 'Byte', 'Mamba', 'RecessTrance', 'JK', 'Angst', 'SwitchBack', 'Magnifico', 'HolyGrailH', 'Tonny', 
-  'Amelia', 'Cool_Jam', 
-  'Khalifa_kush', 'Step_up', 
-  'Bona', 'My_all_time', 
+  'QuePasa', 'Byte', 'Mamba', 'RecessTrance', 'JK', 'Angst', 'SwitchBack', 'Magnifico', 'HolyGrailH', 'Tonny',
+  'Amelia', 'Cool_Jam',
+  'Khalifa_kush', 'Step_up',
+  'Bona', 'My_all_time',
   'DuranTonny', 'Tempted_to_say_sorry',
   'Formula', 'Hocus',
-  'T_D', 'M10', 'Made_Up', 'Recess', 'Sweet', 'Ultimo', 'Intuition', 'Sensei', 'Hallows', 'Contengency', 'Aspire3', 
+  'T_D', 'M10', 'Made_Up', 'Recess', 'Sweet', 'Ultimo', 'Intuition', 'Sensei', 'Hallows', 'Contengency', 'Aspire3',
   'DuranTonny', 'Tempted_to_say_sorry', 'Pilot', 'Prism', 'HolyGrainP',
 ];
 
@@ -38,27 +38,40 @@ const userData = {
       "artist": "Toroyteach",
       "id": 3,
       "dateUpdated": '2012-02-03',
+      "mixId": "263bx2i36b",
     },
     {
       "title": "Angst",
       "artist": "Toroyteach",
       "id": 4,
       "dateUpdated": '2012-02-03',
+      "mixId": "x23dxfx4x4",
     },
   ],
   favourite: {
     favouriteCount: 2,
     favouriteItems: [
       {
-        "title": "Stay High",
-        "artistName": "Tove Lo",
-        "id": 1
+        "id": 1,
+        "title": "Byte",
+        "artistName": "Toroyteach",
       },
       {
-        "title": "You",
-        "artistName": "Sanaipei",
-        "id": 2
-      }],
+        "id": 2,
+        "title": "Magnifico",
+        "artistName": "Toroyteach",
+      },
+      {
+        "id": 3,
+        "title": "Angst",
+        "artistName": "Toroyteach",
+      },
+      {
+        "id": 4,
+        "title": "Quepasa",
+        "artistName": "Toroyteach",
+      },
+    ],
   },
   shazam: {
     shazamCount: 2,
@@ -110,7 +123,7 @@ const appSettings = {
   shazamCounts: 13,
   highestFavourite: 'Mamba',
   language: 'En',
-  appDarkMode: true,
+  appDarkMode: false,
   activeSpectrum: true,
   musicAppDarkMode: false,
   astronomyPicture: '',
@@ -123,6 +136,7 @@ const appSettings = {
 const musicSettings = {
   currentSong: 0,
   activePlaylist: song_list,
+  completePlaylist: song_list,
   repeat: false,
   random: false,
   playing: false,

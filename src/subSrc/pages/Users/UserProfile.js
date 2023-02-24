@@ -15,7 +15,6 @@ import swal from 'sweetalert';
 
 //get the reducer types to help update the applcation states
 import {
-
   SET_SHOW_MY_ONLINE_STATUS,
   SET_SHOW_OTHERS_COMMENTS,
   SET_ALLOW_RANDOM_QUIZ,
@@ -30,6 +29,9 @@ import checkIcon from '../../layouts/components/toast/toastSvg/check.svg';
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
+
+//boostrap carousel
+import Carousel from 'react-bootstrap/Carousel';
 
 export default function UserProfile() {
 
@@ -65,7 +67,7 @@ export default function UserProfile() {
 
     let data = {
       type: t("success"),
-      text: t("Successfully-made-your-Online-Status")+" " + (!allowOnlineStatus ? t("enabled") : t("disabled")),
+      text: t("Successfully-made-your-Online-Status") + " " + (!allowOnlineStatus ? t("enabled") : t("disabled")),
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -79,7 +81,7 @@ export default function UserProfile() {
 
     let data = {
       type: t("success"),
-      text: t("Successfully-made-your-Comments")+" " + (!allowComments ? t("visible") : t("hidden")),
+      text: t("Successfully-made-your-Comments") + " " + (!allowComments ? t("visible") : t("hidden")),
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -125,7 +127,7 @@ export default function UserProfile() {
 
     let data = {
       type: t("success"),
-      text: t("Successfully")+" " + (!appDarkMode ? t("enabled") : " "+t("disabled")) + " "+t("Dark-Mode"),
+      text: t("Successfully") + " " + (!appDarkMode ? t("enabled") : " " + t("disabled")) + " " + t("Dark-Mode"),
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -141,7 +143,7 @@ export default function UserProfile() {
 
     let data = {
       type: t("success"),
-      text: t("Successfully")+" " + (!activeSpectrum ? t("activated") : t("deactivated")) + " "+t("audio-visualizer"),
+      text: t("Successfully") + " " + (!activeSpectrum ? t("activated") : t("deactivated")) + " " + t("audio-visualizer"),
       icon: checkIcon,
       bgColour: '#5cb85c',
     }
@@ -228,7 +230,8 @@ export default function UserProfile() {
           </div>
           <div className={visible ? 'row fadeOutTheRest' : 'row'} id="fadeOutTheRest">
             <div className="row">
-              <div className="col-12 col-xl-4">
+
+              <div className="col-xl-3 col-md-3 col-sm-12 col-lg-3">
                 <div className="card card-plain h-100">
                   <div className="card-header pb-0 p-3">
                     <div className="row">
@@ -243,23 +246,21 @@ export default function UserProfile() {
                     </div>
                   </div>
                   <div className="card-body p-3">
-                    <p className="text-sm">
+                    <p className="text-sm text-secondary">
                       {excerpt}
                     </p>
                     <hr className="horizontal gray-light my-4" />
                     <ul className="list-group">
-                      <li className="list-group-item border-0 ps-0 pt-0 text-sm"><strong className="">{t("fullname")}:</strong> &nbsp; {firstname + " " + lastname}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="">{t("mobile")}:</strong> &nbsp; {number}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="">{t("email")}:</strong> &nbsp; {email}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm"><strong className="">{t("username")}:</strong> &nbsp; {username}</li>
-                      <li className="list-group-item border-0 ps-0 pb-0">
-                        <button onClick={deleteUsersAccount} type="button" className="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">{t("delete-my-account-together-with-data")}</button> &nbsp;
-                      </li>
+                      <li className="list-group-item border-0 ps-0 pt-0 text-sm text-secondary"><strong className="">{t("fullname")}:</strong> &nbsp; {firstname + " " + lastname}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("mobile")}:</strong> &nbsp; {number}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("email")}:</strong> &nbsp; {email}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("username")}:</strong> &nbsp; {username}</li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div className={visible ? 'col-12 col-xl-4 fadeOutPlatformSettings' : 'col-12 col-xl-4'} id="fadeOutPlatformSettings">
+
+              <div className={visible ? 'col-12 col-xl-4 fadeOutPlatformSettings' : 'col-xl-4 col-md-4 col-sm-12 col-lg-4'} id="fadeOutPlatformSettings">
                 <div className="card card-plain h-100">
                   <div className="card-header pb-0 p-3">
                     <h6 className="mb-0">{t("platform-settings")}</h6>
@@ -288,79 +289,49 @@ export default function UserProfile() {
                         </div>
                       </li>
 
-                      {/* <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={allowQuize} onChange={updateAllowRandomQuizes} />
-                          <label className="form-check-label text-body text-truncate mb-0" for="flexSwitchCheckDefault2">&ensp;{t("allow-random-quiz")}</label>
-                        </div>
-                      </li> */}
-
-                      <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefaultvisualizer" checked={activeSpectrum} onChange={handleChooseVisualizer} />
-                          <label className="form-check-label text-body text-truncate mb-0" htmlFor="flexSwitchCheckDefaultvisualizer">&ensp;{t("music-visualizer")}</label>
-                        </div>
+                      <li className="list-group-item border-0 ps-0 pb-0">
+                        <button onClick={deleteUsersAccount} type="button" className="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">{t("delete-my-account-together-with-data")}</button> &nbsp;
                       </li>
                     </ul>
 
                   </div>
                 </div>
               </div>
-              {/* <div className="col-12 col-xl-4">
+
+              <div className='col-xl-5 col-md-5 col-sm-12 col-lg-5' id="fadeOutPlatformSettings">
                 <div className="card card-plain h-100">
                   <div className="card-header pb-0 p-3">
-                    <h6 className="mb-0">Application Settings</h6>
+                    <h6 className="mb-0">Your AI Generated Images</h6>
                   </div>
-                  <div className="card-body p-3">
-                    <ul className="list-group">
-                      <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={visualizerActive} onChange={updateEnableGlobalVisualizer} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault">&ensp;Enable Audio Visualizer</label>
-                        </div>
-                      </li>
-                      <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={astronomyActive} onChange={updateEnableGlobalAstronomyPic} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault1">&ensp;Enable Astronmy Picture</label>
-                        </div>
-                      </li>
-                      <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={shazamActive} onChange={updateEnableGlobalShazam} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable Shazam search</label>
-                        </div>
-                      </li>
-                      <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={downloadActive} onChange={updateEnableGlobalDownload} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable Download options</label>
-                        </div>
-                      </li>
-                      <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={anxietyVideos} onChange={updateEnableGlobalAnxietyVideo} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable Calm Anxiety Video</label>
-                        </div>
-                      </li>
-                      <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={viewOtherUsers} onChange={updateEnableGlobalUsersToViewOtherUsersOnlineActivity} />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable users to see what others are Listening</label>
-                        </div>
-                      </li>
-                      <li className="list-group-item border-0 px-0">
-                        <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" />
-                          <label className="form-check-label text-body text-truncatemb-0" for="flexSwitchCheckDefault2">&ensp;Enable Direct Commenting</label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div> */}
-              <div className="col-12 mt-4">
+                  <br />
+                  <Carousel fade>
+                    <Carousel.Item>
+                      <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(15).webp" alt="First slide" />
+                      <Carousel.Caption>
+                        <h3>First slide label</h3>
+                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                      </Carousel.Caption>
+                    </Carousel.Item>
 
+                    <Carousel.Item>
+                      <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp" alt="Second slide" />
+                      <Carousel.Caption>
+                        <h3>Second slide label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      </Carousel.Caption>
+                    </Carousel.Item>
+
+                    <Carousel.Item>
+                      <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(23).webp" alt="Third slide" />
+                      <Carousel.Caption>
+                        <h3>Third slide label</h3>
+                        <p>
+                          Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+                        </p>
+                      </Carousel.Caption>
+                    </Carousel.Item>
+                  </Carousel>
+                </div>
               </div>
 
             </div>
@@ -382,7 +353,7 @@ export default function UserProfile() {
                 <div className="row g-3 modalIntro">
                   <div className="col-6 modalIntro">
                     <input type="text" id="orangeForm-firstname" className="form-control validate" />
-                    <label data-error="wrong" data-success="right"htmlFor="orangeForm-name">{t("your-firstname")}</label>
+                    <label data-error="wrong" data-success="right" htmlFor="orangeForm-name">{t("your-firstname")}</label>
                   </div>
                   <div className="col-6">
                     <input type="text" id="orangeForm-lastname" className="form-control validate" />

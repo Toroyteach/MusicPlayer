@@ -6,21 +6,38 @@ import sanaipei from '../music/sanaipei.mp3'
 
 export const song_list = [
     {
+      genre: 'dance-edm',
       title: 'Stay High',
       artistName: 'Tove Lo',
       fileUrl: stay,
       id: 1,
     },
     {
+      genre: 'pop',
       title: 'You',
       artistName: 'Sanaipei',
       fileUrl: sanaipei,
       id: 2,
     },
     {
+      genre: 'ragga',
       title: 'Alot',
       artistName: '21 Savage',
       fileUrl: savage,
       id: 3,
     },
+    {
+      genre: 'rock',
+      title: 'Soft',
+      artistName: 'Avril Lavigne',
+      fileUrl: savage,
+      id: 4,
+    },
+    {
+      genre: 'dance-edm',
+      title: 'Byte',
+      artistName: 'Toroyteach',
+      fileUrl: savage,
+      id: 5,
+    }
   ]

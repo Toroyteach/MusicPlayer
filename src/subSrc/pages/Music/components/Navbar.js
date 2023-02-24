@@ -12,13 +12,13 @@ export default function Navbar() {
   const { t } = useTranslation();
 
   // In the Music player navigation
-  const handleHomeClickAction = ({ currentTarget }) => {
+  const handleHomeClickAction = () => {
 
     //edit this to resume playback from initial play or start  playing..
     let homeToMain = gsap;
 
     // Hide
-    $("#astronomy, #anxiety, #curator").css("display", "none");
+    $("#astronomy, #anxiety, #curator, #imageGen").css("display", "none");
     homeToMain.to($(".back_btn"), { display: "none", opacity: 0, x: 15, ease: Power2.easeInOut, duration: 0.2 });
 
     homeToMain.to($(".wave-container"), 1, { yPercent: 0, ease: Power2.easeInOut }, 1);
@@ -35,12 +35,12 @@ export default function Navbar() {
     $(".logo-text").css("display", "block");
   }
 
-  const handleListnersClickAction = ({ currentTarget }) => {
+  const handleListnersClickAction = () => {
     //edit this to resume playback from initial play or start  playing..
     let homeToMain = gsap;
 
     // Hide
-    $("#astronomy, #anxiety").css("display", "none");
+    $("#astronomy, #anxiety, #imageGen").css("display", "none");
     //$(".logo-text").css("display", "none");
     homeToMain.to($(".line, .text-wrap, .logo-text"), 0.5, { display: "none", opacity: 0, y: -20, ease: Power2.easeInOut }, 0);
     // Background down
@@ -58,7 +58,7 @@ export default function Navbar() {
     homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
   }
 
-  const handleAnxietyClickAction = ({ currentTarget }) => {
+  const handleAnxietyClickAction = () => {
     //edit this to resume playback from initial play or start  playing..
     let homeToMain = gsap;
 
@@ -74,17 +74,17 @@ export default function Navbar() {
 
     homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
 
-    $("#astronomy, #curator").css("display", "none");
+    $("#astronomy, #curator, #imageGen").css("display", "none");
 
     $("#anxiety").css("display", "block");
   }
 
-  const handleAstronomyClickAction = ({ currentTarget }) => {
+  const handleAstronomyClickAction = () => {
     //edit this to resume playback from initial play or start  playing..
     let homeToMain = gsap;
 
     // Hide
-    $("#anxiety, #curator").css("display", "none");
+    $("#anxiety, #curator, #imageGen").css("display", "none");
     $(".logo-text").css("display", "none");
     homeToMain.to($(".line, .text-wrap"), 0.5, { display: "none", opacity: 0, y: -20, ease: Power2.easeInOut }, 0);
     // Background down
@@ -98,6 +98,27 @@ export default function Navbar() {
     $("#astronomy").css("display", "block");
   }
 
+  const handleImageGenClickAction = () => {
+    //edit this to resume playback from initial play or start  playing..
+    let homeToMain = gsap;
+
+    // Hide
+    $("#anxiety, #curator, #astronomy").css("display", "none");
+    $(".logo-text").css("display", "none");
+    homeToMain.to($(".line, .text-wrap"), 0.5, { display: "none", opacity: 0, y: -20, ease: Power2.easeInOut }, 0);
+    // Background down
+    homeToMain.to($(".wave-container"), 1, { yPercent: 50, ease: Power2.easeOut }, 0);
+    // Show
+    homeToMain.fromTo($(".back_btn"), { x: 15 }, { display: "flex", opacity: 1, x: 0, ease: Power2.easeInOut, duration: 1 });
+
+    homeToMain.to(".m-nav", { duration: 0.5, xPercent: -100, display: "none", ease: Expo.easeOut });
+
+    homeToMain.to(".dim", { duration: 0.5, opacity: 0, display: "none", ease: Power2.easeInOut });
+
+    $("#imageGen").css("display", "block");
+    homeToMain.fromTo($("#imageGen"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, ease: Power2.easeInOut, duration: 2.0 });
+  }
+
   return (
     <div className="m-nav">
       <ul className="m-nav_main">
@@ -105,6 +126,7 @@ export default function Navbar() {
         <li> <a className="m-nav_link a" onClick={handleListnersClickAction}>{t("listeners")}</a></li>
         <li> <a className="m-nav_link a" onClick={handleAnxietyClickAction}>{t("calm-your-anxiety")}</a></li>
         <li> <a className="m-nav_link a" onClick={handleAstronomyClickAction}>{t("astronomy-picture-of-the-day")}</a></li>
+        <li> <a className="m-nav_link a" onClick={handleImageGenClickAction}>Generate Images</a></li>
       </ul>
     </div>
   )

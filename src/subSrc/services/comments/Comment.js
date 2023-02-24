@@ -19,7 +19,7 @@ const Comment = ({
     //initiate tge translator
     const { t } = useTranslation();
 
-    const isEditing = activeComment && activeComment.id === comment.id && activeComment.type === "editting";
+    const isEditing = activeComment && activeComment.id === comment.id && activeComment.type === "editing";
 
     const isReplying = activeComment && activeComment.id === comment.id && activeComment.type === "replying";
 
@@ -42,7 +42,7 @@ const Comment = ({
 
             <img className="rounded-circle shadow-1-strong me-3" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(10).webp" alt="avatar" width="65" height="65" />
 
-            <div className="flex-grow-1 flex-shrink-1">
+            <div className="flex-grow-1 flex-shrink-1 text-body">
                 <div>
                     <div className="d-flex justify-content-between align-items-center">
                         <p className="mb-1">{comment.username} <span className="small">- {createdAt}</span> </p>

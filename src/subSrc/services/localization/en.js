@@ -73,7 +73,7 @@ export const en = {
     'edit': 'Edit',
     'delete': 'Delete',
     'your-comment': 'Your Comment',
-    'cancel': 'Cnacel',
+    'cancel': 'Cancel',
     'successfully-added': 'successfully added',
     'to-your-favourites-list': 'to your favourites list',
 

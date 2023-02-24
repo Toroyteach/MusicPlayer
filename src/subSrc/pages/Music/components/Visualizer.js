@@ -76,6 +76,11 @@ const Visualizer = () => {
     };
 
 
+    const visualizerAnimation = () => {
+        
+    }
+
+
     useEffect(() => {
 
         if (canvasRef.current) {

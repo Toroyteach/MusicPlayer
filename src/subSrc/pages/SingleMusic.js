@@ -152,13 +152,13 @@ export default function SingleMusic() {
 
             <div className="card">
               <div className="row g-0">
-                <div className="col-md-3">
-                  <img src={coverImage} className="img-responsive rounded-start" alt="Magnifico" style={{ maxWidth: "80%", maxHeight: "auto" }} />
+                <div className="col-md-3" style={{ display: "flex" }}>
+                  <img src={coverImage} className="img-responsive rounded-start" alt="Magnifico" style={{ maxWidth: "100%", maxHeight: "auto", justifyContent: "center" }} />
                 </div>
                 <div className="col-md-9">
                   <div className="card-body">
                     <h5 className="card-title">Magnifico</h5>
-                    <p className="card-text">I dont have any good descrioption to talk about this mix. While i was creating it i had thought of the word TNT to mean that it is an exploseive mix tape but
+                    <p className="card-text text-body">I dont have any good descrioption to talk about this mix. While i was creating it i had thought of the word TNT to mean that it is an exploseive mix tape but
                       later on i came to change it to Magnifico which would come to hit me that i have named this mix item as some spectacular and am not so sure how the viewers or
                       the fans are going to persieve it if not enjoy it haha. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
                       standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,

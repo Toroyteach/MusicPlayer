@@ -11,6 +11,7 @@ import {
   SET_MIX_ITEM_DURATION,
   SET_VOLUME,
   SET_ABLE_TO_PLAY_OR_LOADING,
+  SET_COMPLETE_PLAYLIST,
 
   //admin states
   SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
@@ -132,6 +133,12 @@ export default (state, action) => {
       return {
         ...state,
         musicSettings: { ...state.musicSettings, playOrLoading: action.data }
+      }
+
+    case SET_COMPLETE_PLAYLIST:
+      return {
+        ...state,
+        musicSettings: { ...state.musicSettings, completePlaylist: action.data }
       }
 
     //User states

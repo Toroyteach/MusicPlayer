@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Link } from 'react-router-dom';
 
@@ -16,8 +16,16 @@ export default function UsersMessages() {
 
   const chatRoomList = useRoom()
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (chatRoomList.length == 0) {
+      setLoading(false)
+    }
+  }, [chatRoomList])
+
   return (
-    <div className="container_fluid">
+    <div className="container-fluid" style={{ "position":"relative;", "top":"50px;" }}>
 
       <div className="row justify-content-center">
         <div className="col-md-10 col-lg-10 col-xl-10">
@@ -31,13 +39,21 @@ export default function UsersMessages() {
 
             <div className="card-body" data-mdb-perfect-scrollbar="true" style={{ position: "relative", height: "60vh", overflow: "auto" }}>
 
-              <ul className="chat-room-list">
-                {chatRoomList.map((room) => (
-                  <li key={room.id}>
-                    <Link to={`/users/messages/room/${room.roomId}`}>{room.title}</Link>
-                  </li>
-                ))}
-              </ul>
+              {loading &&
+                <div className="spinner-grow" style={{ width: "3rem", height: "3rem" }} role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              }
+
+              {!loading &&
+                <ul className="chat-room-list">
+                  {chatRoomList.map((room) => (
+                    <li key={room.id}>
+                      <Link to={`/users/messages/room/${room.roomId}`} className="text-message-list">{room.title}</Link>
+                    </li>
+                  ))}
+                </ul>
+              }
 
             </div>
 

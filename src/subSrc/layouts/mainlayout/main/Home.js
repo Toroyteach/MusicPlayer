@@ -28,6 +28,7 @@ import LocalizeTypes from '../../../services/localization/localizeTypes.js'
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
 import i18n from 'i18next';
+import ApplicationTour from '../../../services/intro-tour/ApplicationTour.js';
 
 export default function Home() {
 
@@ -48,6 +49,8 @@ export default function Home() {
 
   //use this to allow users to change the current active localisation language
   const handleChangeLanguage = (value) => {
+
+    console.log('here')
 
     //stateDispatch({ type: SET_GLOBAL_LANGUAGE, data: e.target.value }) 
 
@@ -107,12 +110,14 @@ export default function Home() {
   }, [asideNavigation])
 
   const language = (LocalizeTypes || []).map((language, idx) => (
-    <LanguageList key={idx} style={language.stype} name={language.name} handleOnClick={() => { handleChangeLanguage(language.value) }}/>
+    <LanguageList key={idx} style={language.stype} name={language.name} handleOnClick={() => { handleChangeLanguage(language.value) }} />
   ))
 
 
   return (
     <div className={isActive ? 'g-sidenav-show g-sidenav-pinned' : 'g-sidenav-show'}>
+
+      <ApplicationTour />
 
       <CustomToast toastList={list} position="top-right" autoDelete={true} autoDeleteTime={3000} />
 
@@ -280,7 +285,7 @@ export default function Home() {
                         <div className="triangle"></div>
 
                         <ul>
-              
+
                           {language}
 
                         </ul>
