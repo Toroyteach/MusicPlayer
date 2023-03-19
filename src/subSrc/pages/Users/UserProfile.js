@@ -12,6 +12,9 @@ import appContext from '../../services/context/appContext.js';
 
 //import cool alerts from sweetalerts
 import swal from 'sweetalert';
+import Swal from 'sweetalert2'
+// import imgaeTest from '../../../public/avatar.jpg'
+// import thanosGif from '../../../public/avatar.jpg'
 
 //get the reducer types to help update the applcation states
 import {
@@ -22,6 +25,7 @@ import {
   SET_SPECTRUM_TYPE,
   SET_MAIN_APP_DARKMODE,
   SET_NOTIFIATION_TEXT_ITEM,
+  SET_THANOS_SNAP_ANIMATION,
 } from '../../services/context/appState/stateTypes.js';
 
 import checkIcon from '../../layouts/components/toast/toastSvg/check.svg';
@@ -32,6 +36,16 @@ import { useTranslation } from "react-i18next";
 
 //boostrap carousel
 import Carousel from 'react-bootstrap/Carousel';
+import Button from 'react-bootstrap/Button';
+
+//
+import ModalImage from "react-modal-image";
+
+//custom hook for thanos snap sound
+import { useThanosAudio } from '../../services/hooks/thanosAudio/useThanosAudio';
+
+//import thanos audio object
+import thanosSnapAudioFile from '../../services/hooks/thanosAudio/thanosSnapAudioFile.mp3'
 
 export default function UserProfile() {
 
@@ -53,6 +67,7 @@ export default function UserProfile() {
     appSettings: {
       appDarkMode,
       activeSpectrum,
+      thanosSnapVisible,
     },
     stateDispatch,
   } = useContext(appContext)
@@ -154,7 +169,7 @@ export default function UserProfile() {
   //handle delete users account
   //variable for the cool thanos animation disappearance effect
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(false)
+  const [audio] = useState(new Audio(thanosSnapAudioFile));
   const deleteUsersAccount = () => {
 
     swal({
@@ -167,11 +182,10 @@ export default function UserProfile() {
       .then((willDelete) => {
         if (willDelete) {
 
-          swal(t("success-deleted-text"), { icon: "success", });
-
-          setVisible(true);
-
-          //setTimeout(navigate("/login"), 13000); 
+          stateDispatch({ type: SET_THANOS_SNAP_ANIMATION, data: true })
+          
+          //TODO: PLAY thanos snap sound
+          audio.play()
 
           setTimeout(() => {
 
@@ -211,7 +225,7 @@ export default function UserProfile() {
           <span className="mask  bg-gradient-primary  opacity-3"></span>
         </div>
         <div className="card card-body mx-md-1 mt-n6">
-          <div className={visible ? 'row gx-4 mb-2 fadeOut' : 'row gx-4 mb-2'} id="fadeOut">
+          <div className={thanosSnapVisible ? 'row gx-4 mb-2 fadeOut' : 'row gx-4 mb-2'} id="fadeOut">
             <div className="col-auto">
               <div className="avatar avatar-xl position-relative">
                 <img src={profileImage} alt="profile_image" className="w-100 border-radius-lg shadow-sm" />
@@ -228,7 +242,7 @@ export default function UserProfile() {
               </div>
             </div>
           </div>
-          <div className={visible ? 'row fadeOutTheRest' : 'row'} id="fadeOutTheRest">
+          <div className={thanosSnapVisible ? 'row fadeOutTheRest' : 'row'} id="fadeOutTheRest">
             <div className="row">
 
               <div className="col-xl-3 col-md-3 col-sm-12 col-lg-3">
@@ -260,7 +274,7 @@ export default function UserProfile() {
                 </div>
               </div>
 
-              <div className={visible ? 'col-12 col-xl-4 fadeOutPlatformSettings' : 'col-xl-4 col-md-4 col-sm-12 col-lg-4'} id="fadeOutPlatformSettings">
+              <div className={thanosSnapVisible ? 'col-12 col-xl-4 fadeOutPlatformSettings' : 'col-xl-4 col-md-4 col-sm-12 col-lg-4'} id="fadeOutPlatformSettings">
                 <div className="card card-plain h-100">
                   <div className="card-header pb-0 p-3">
                     <h6 className="mb-0">{t("platform-settings")}</h6>
@@ -301,33 +315,41 @@ export default function UserProfile() {
               <div className='col-xl-5 col-md-5 col-sm-12 col-lg-5' id="fadeOutPlatformSettings">
                 <div className="card card-plain h-100">
                   <div className="card-header pb-0 p-3">
-                    <h6 className="mb-0">Your AI Generated Images</h6>
+                    <h6 className="mb-0">{t("your-generated-ai")}</h6>
                   </div>
                   <br />
                   <Carousel fade>
                     <Carousel.Item>
                       <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(15).webp" alt="First slide" />
+
                       <Carousel.Caption>
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        <p>Generate me a image of the sunset in the horizon.</p>
+                        <Button variant="outline-info">Download</Button>
+                        <Button variant="outline-danger">Delete</Button>
                       </Carousel.Caption>
                     </Carousel.Item>
 
                     <Carousel.Item>
-                      <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp" alt="Second slide" />
+                      {/* <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp" alt="Second slide" /> */}
+
+                      <ModalImage
+                        small='https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp'
+                        large='https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp'
+                        alt="Hello World!"
+                      />
                       <Carousel.Caption>
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p>Generate me a image of the sunset in the horizon.</p>
+                        <Button variant="outline-info">Download</Button>
+                        <Button variant="outline-danger">Delete</Button>
                       </Carousel.Caption>
                     </Carousel.Item>
 
                     <Carousel.Item>
                       <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(23).webp" alt="Third slide" />
                       <Carousel.Caption>
-                        <h3>Third slide label</h3>
-                        <p>
-                          Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                        </p>
+                        <p>Generate me a image of the sunset in the horizon.</p>
+                        <Button variant="outline-info">Download</Button>
+                        <Button variant="outline-danger">Delete</Button>
                       </Carousel.Caption>
                     </Carousel.Item>
                   </Carousel>

@@ -82,6 +82,8 @@ export const es = {
     'type-message': 'Escribir mensaje',
     'emoji': 'Emoticonos',
     'send': 'Enviar',
+    'choose-room-to-join':'Elija la sala para unirse',
+    'welcome-to-chat-room-about': 'Bienvenida a la sala de chat sobre',
 
     //Norifications
     'notifications': 'Notificaciones',
@@ -123,6 +125,7 @@ export const es = {
     'delete-warning-text':'Una vez que hayas eliminado tu cuenta, no hay vuelta atrás.',
     'success-deleted-text':'¡Puf! Tu cuenta ha sido eliminada.',
     'success-canceled-text':'¡¡Feew!! ¡Tu cuenta está a salvo!',
+    'your-generated-ai':'Sus imágenes de IA generadas',
 
     //About
     'for-fans-and-music-lovers': 'Para aficionados y amantes de la música',

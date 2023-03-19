@@ -20,8 +20,8 @@ function ChatRoom() {
 
     return (
         <>
-            <div className="alert alert-primary" role="alert">
-                Welcome to the chat room about {room.title}. Now chattaway
+            <div className="alert alert-primary" role="alert"> {t("welcome-to-chat-room-about")}
+                {room.title}. Now chattaway
             </div>
 
             <div className="--dark-theme" id="chat">

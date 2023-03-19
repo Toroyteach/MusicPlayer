@@ -5778,6 +5778,10 @@
     .section-title h2 {
         letter-spacing: 0px;
     }
+
+    .m-nav_main .disableMobileView {
+        display: block;
+    }
 }
 
 @media (min-width: 424px) and (max-height: 786px) {

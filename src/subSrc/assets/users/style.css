@@ -1138,7 +1138,7 @@ body {
 
 .volumeDropDown{
   position: absolute;
-  right: 43px;
+  right: 55px;
   display: none;
   bottom: 10px;
   width: 24px;
@@ -1301,7 +1301,7 @@ body {
 
 .fadeOut{
   opacity:0;
-  transition: opacity 5s;
+  transition: opacity 7s;
 }
 
 #fadeOutPlatformSettings {
@@ -1310,7 +1310,7 @@ body {
 
 .fadeOutPlatformSettings{
   opacity:0;
-  transition: opacity 8s;
+  transition: opacity 10s;
 }
 
 #fadeOutTheRest {
@@ -1319,7 +1319,16 @@ body {
 
 .fadeOutTheRest {
   opacity:0;
-  transition: opacity 12s;
+  transition: opacity 14s;
+}
+
+#fadeOutMainNav {
+  transition-timing-function: ease-in-out;
+}
+
+.fadeOutMainNav {
+  opacity:0;
+  transition: opacity 16s;
 }
 
 

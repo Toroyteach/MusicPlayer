@@ -81,6 +81,8 @@ export const de = {
     'type-message': 'Nachricht eingeben',
     'emoji': 'Emoji',
     'send': 'Senden',
+    'choose-room-to-join':'Wählen Sie einen Raum aus, dem Sie beitreten möchten',
+    'welcome-to-chat-room-about': 'Willkommen im Chatroom über',
 
     //Norifications
     'notifications': 'Benachrichtigung',
@@ -122,6 +124,7 @@ export const de = {
     'delete-warning-text':'Wenn Sie Ihr Konto einmal gelöscht haben, gibt es kein Zurück mehr!',
     'success-deleted-text':'Puff! Ihr Konto wurde gelöscht!',
     'success-canceled-text':'Puh!! Ihr Konto ist sicher!',
+    'your-generated-ai':'Ihre generierten KI-Bilder',
 
     //About
     'for-fans-and-music-lovers': 'für Fans und Musikliebhaber',

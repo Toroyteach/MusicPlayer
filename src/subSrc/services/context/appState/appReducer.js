@@ -12,6 +12,7 @@ import {
   SET_VOLUME,
   SET_ABLE_TO_PLAY_OR_LOADING,
   SET_COMPLETE_PLAYLIST,
+  SET_THANOS_SNAP_ANIMATION,
 
   //admin states
   SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
@@ -435,6 +436,12 @@ export default (state, action) => {
       return {
         ...state,
         appSettings: { ...state.appSettings, enableApplicationTour: action.data }
+      }
+
+    case SET_THANOS_SNAP_ANIMATION:
+      return {
+        ...state,
+        appSettings: { ...state.appSettings, thanosSnapVisible: action.data }
       }
 
     default:

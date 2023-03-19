@@ -35,7 +35,7 @@ export default function UsersMessages() {
               <h5 className="mb-0">{t("chat-rooms")}</h5>
             </div>
 
-            <p className="card-header d-flex justify-content-between align-items-center p-3">Choose a room to join</p>
+            <p className="card-header d-flex justify-content-between align-items-center p-3">{t("choose-room-to-join")}</p>
 
             <div className="card-body" data-mdb-perfect-scrollbar="true" style={{ position: "relative", height: "60vh", overflow: "auto" }}>
 

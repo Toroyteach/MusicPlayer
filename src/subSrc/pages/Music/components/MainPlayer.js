@@ -189,24 +189,24 @@ export default function MainPlayer() {
 
     const listChoice = v
 
-    if (listChoice == 'favourite') {
+    // if (listChoice == 'favourite') {
 
-      // Generic helper function that can be used for the three operations:        
-      const operation = (list1, list2, isUnion = false) => list1.filter(a => isUnion === list2.some(b => a.id === b.id));
+    //   // Generic helper function that can be used for the three operations:        
+    //   const operation = (list1, list2, isUnion = false) => list1.filter(a => isUnion === list2.some(b => a.id === b.id));
 
-      const newPlaylist = operation(activePlaylist, favouriteItems, true)
+    //   const newPlaylist = operation(activePlaylist, favouriteItems, true)
 
-      stateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
+    //   stateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
 
-    } else {
+    // } else {
 
-      const newPlaylist = completePlaylist.filter(function (el) {
-        return el.genre == listChoice
-      });
+    //   const newPlaylist = completePlaylist.filter(function (el) {
+    //     return el.genre == listChoice
+    //   });
 
-      stateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
+    //   stateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
 
-    }
+    // }
 
   }
 

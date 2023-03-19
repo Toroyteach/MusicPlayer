@@ -172,7 +172,7 @@ export default function SingleMusic() {
           </section>
 
 
-          <section className="gradient-custom">
+          {/* <section className="gradient-custom">
             <div className="container my-5 py-5">
               <div className="row d-flex justify-content-center">
 
@@ -195,7 +195,8 @@ export default function SingleMusic() {
 
               </div>
             </div>
-          </section>
+          </section> */}
+          
 
         </div>
 

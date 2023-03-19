@@ -84,7 +84,7 @@ function MusicApplication() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/music" element={<MusicPlayer />} />
                     <Route path="/notifications" element={<Notifications />} />
-                    <Route path="/single" element={<SingleAudio />} />
+                    <Route path="/music/single" element={<SingleAudio />} />
                     <Route path="/about" element={<About />} />
 
                     {/* USERS PAGES */}

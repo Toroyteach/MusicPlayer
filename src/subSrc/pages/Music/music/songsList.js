@@ -26,18 +26,4 @@ export const song_list = [
       fileUrl: savage,
       id: 3,
     },
-    {
-      genre: 'rock',
-      title: 'Soft',
-      artistName: 'Avril Lavigne',
-      fileUrl: savage,
-      id: 4,
-    },
-    {
-      genre: 'dance-edm',
-      title: 'Byte',
-      artistName: 'Toroyteach',
-      fileUrl: savage,
-      id: 5,
-    }
   ]

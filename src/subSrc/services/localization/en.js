@@ -82,6 +82,8 @@ export const en = {
     'type-message': 'Type a message',
     'emoji': 'emoji',
     'send': 'send',
+    'choose-room-to-join':'Choose Room to Join',
+    'welcome-to-chat-room-about': 'Welcome to Chat Room about ',
 
     //Norifications
     'notifications': 'Notifications',
@@ -125,6 +127,7 @@ export const en = {
     'delete-warning-text':'Once you have deleted your account theres no going back!',
     'success-deleted-text':'Poof! Your account has been deleted!',
     'success-canceled-text':'Pheew!! Your account is safe!',
+    'your-generated-ai':'Your Generated Images',
 
     //About
     'for-fans-and-music-lovers': 'For Fans and Music Lovers',
@@ -166,7 +169,7 @@ export const en = {
     'music-section-navigation-text': 'This is the sub Navigation inside the music section that you can use to explore other cool sections inside it',
     'main-music-player': 'Main Music Player',
     'main-music-player-text': 'Here you will be able to launch and view the main music player which has even more selection of controls for the mix items and its playlist.',
-    'quick-navigation': 'Quick Navigation',
+    'quick-navigation': 'Notifications',
     'quick-navigation-text': 'Here you will be briefed on the latest notifications about the application.',
     'language-section': 'Language Section',
     'language-section-text': 'Here you will be able to select your favourite language to use in the application. More languages shall follow in later updates.',

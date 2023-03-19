@@ -152,6 +152,32 @@ export default function NeutralUsageStats() {
                                     </thead>
                                     <tbody>
 
+                                        <tr>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <div className="d-flex flex-column justify-content-center">
+                                                        <h6 className="mb-0 text-sm text-secondary">WabiSabi</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="avatar-group mt-2 text-secondary">
+                                                    House/EDM
+                                                </div>
+                                            </td>
+                                            <td className="align-middle text-center text-sm text-secondary">
+                                                <span className="text-xs font-weight-bold"> 62 </span>
+                                            </td>
+                                            <td className="align-middle">
+                                                <div className="progress-wrapper w-20 mx-auto">
+                                                    <div className="progress-info">
+                                                        <div className="progress-percentage text-secondary">
+                                                            <span className="text-xs font-weight-bold">1:30:32</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
 
                                         <tr>
                                             <td>

@@ -46,6 +46,9 @@ export default function Footer() {
     musicSettings: {
       playOrLoading
     },
+    appSettings: {
+      thanosSnapVisible,
+    },
   } = useContext(appContext)
 
   //handles the actual playing and changing of the play pause buttons
@@ -195,7 +198,7 @@ export default function Footer() {
 
 
   return (
-    <footer className="footer py-4  ">
+    <footer className={thanosSnapVisible ? 'footer py-4 fadeOut' : 'footer py-4'} id="fadeOut">
       <div className="container-fluid">
         <div className="row align-items-center justify-content-lg-between">
 
@@ -213,8 +216,8 @@ export default function Footer() {
             {/* Mini Music */}
             <div className="mini-player-footer">
 
-              <Link to="/single">
-                <div className="track_info_wrapper" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Leave Comment">
+              <Link to="/music/single">
+                <div className="track_info_wrapper" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
                   <div className="track_info">
                     <div className="thumb"></div>
                     <div className="info">

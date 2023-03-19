@@ -124,7 +124,7 @@ export default function Navbar() {
       <ul className="m-nav_main">
         <li> <a className="m-nav_link a" onClick={handleHomeClickAction}>{t("home")}</a></li>
         <li> <a className="m-nav_link a" onClick={handleListnersClickAction}>{t("listeners")}</a></li>
-        <li> <a className="m-nav_link a" onClick={handleAnxietyClickAction}>{t("calm-your-anxiety")}</a></li>
+        <li className='disableMobileView'>  <a className="m-nav_link a" onClick={handleAnxietyClickAction}>{t("calm-your-anxiety")}</a></li>
         <li> <a className="m-nav_link a" onClick={handleAstronomyClickAction}>{t("astronomy-picture-of-the-day")}</a></li>
         <li> <a className="m-nav_link a" onClick={handleImageGenClickAction}>Generate Images</a></li>
       </ul>

@@ -40,6 +40,7 @@ export default function Home() {
     appSettings: {
       notificationText,
       asideNavigation,
+      thanosSnapVisible,
     },
     // stateDispatch,
   } = useContext(appContext)
@@ -122,87 +123,89 @@ export default function Home() {
       <CustomToast toastList={list} position="top-right" autoDelete={true} autoDeleteTime={3000} />
 
       <aside className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
-        <div className="sidenav-header">
-          <i className="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-          <div className="navbar-brand m-0">
-            <img src={image} className="navbar-brand-img h-100" alt="main_logo" />
-            <span className="ms-1 font-weight-bold text-white">Toroyteach Exp</span>
+
+        <div className={thanosSnapVisible ? 'fadeOutMainNav' : 'row'} id='fadeOutMainNav'>
+          <div className="sidenav-header">
+            <i className="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+            <div className="navbar-brand m-0">
+              <img src={image} className="navbar-brand-img h-100" alt="main_logo" />
+              <span className="ms-1 font-weight-bold text-white">Toroyteach Exp</span>
+            </div>
           </div>
-        </div>
-        <hr className="horizontal light mt-0 mb-2" />
-        <div className="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
-          <ul className="navbar-nav">
-            <li className="nav-item" id='dashboardIntro'>
-              <CustomLink to="/users/dashboard" onClick={navigationTimeOut} >
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">dashboard</i>
-                </div>
-                <span className="nav-link-text ms-1">{t("dashboard")}</span>
-              </CustomLink>
-            </li>
-            <li className="nav-item" id='musicIntro'>
-              <CustomLink to="/music" onClick={navigationTimeOut}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">library_music</i>
-                </div>
-                <span className="nav-link-text ms-1">{t("music")}</span>
-              </CustomLink>
-            </li>
-            <li className="nav-item" id='messagesIntro'>
-              <CustomLink to="/users/messages" onClick={navigationTimeOut}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">receipt_long</i>
-                </div>
-                <span className="nav-link-text ms-1">{t("message")}</span>
-              </CustomLink>
-            </li>
-            <li className="nav-item" id='notificationsIntro'>
-              <CustomLink to="/notifications" onClick={navigationTimeOut}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">notifications</i>
-                </div>
-                <span className="nav-link-text ms-1">{t("notifications")}</span>
-              </CustomLink>
-            </li>
-            <li className="nav-item" id='aboutIntro'>
-              <CustomLink to="/about" onClick={navigationTimeOut}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">info</i>
-                </div>
-                <span className="nav-link-text ms-1">{t("about")}</span>
-              </CustomLink>
-            </li>
-            <li className="nav-item mt-3">
-              <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">{t("account")}</h6>
-            </li>
-            <li className="nav-item" id='profileIntro'>
-              <CustomLink to="/profile" onClick={navigationTimeOut}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">person</i>
-                </div>
-                <span className="nav-link-text ms-1">{t("profile")}</span>
-              </CustomLink>
-            </li>
-            <li className="nav-item" onClick={logout} id='logoutIntro'>
-              <a className="nav-link text-white ">
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">logout</i>
-                </div>
-                <span className="nav-link-text ms-1">{t("logout")}</span>
-              </a>
-            </li>
-            <li className="nav-item mt-3">
-              <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin Pages</h6>
-            </li>
-            <li className="nav-item">
-              <CustomLink to="/admin/dashboard" onClick={navigationTimeOut}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">dashboard</i>
-                </div>
-                <span className="nav-link-text ms-1">Dashboard</span>
-              </CustomLink>
-            </li>
-            {/* <li className="nav-item">
+          <hr className="horizontal light mt-0 mb-2" />
+          <div className="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
+            <ul className="navbar-nav">
+              <li className="nav-item" id='dashboardIntro'>
+                <CustomLink to="/users/dashboard" onClick={navigationTimeOut} >
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">dashboard</i>
+                  </div>
+                  <span className="nav-link-text ms-1">{t("dashboard")}</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item" id='musicIntro'>
+                <CustomLink to="/music" onClick={navigationTimeOut}>
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">library_music</i>
+                  </div>
+                  <span className="nav-link-text ms-1">{t("music")}</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item" id='messagesIntro'>
+                <CustomLink to="/users/messages" onClick={navigationTimeOut}>
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">receipt_long</i>
+                  </div>
+                  <span className="nav-link-text ms-1">{t("message")}</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item" id='notificationsIntro'>
+                <CustomLink to="/notifications" onClick={navigationTimeOut}>
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">notifications</i>
+                  </div>
+                  <span className="nav-link-text ms-1">{t("notifications")}</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item" id='aboutIntro'>
+                <CustomLink to="/about" onClick={navigationTimeOut}>
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">info</i>
+                  </div>
+                  <span className="nav-link-text ms-1">{t("about")}</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item mt-3">
+                <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">{t("account")}</h6>
+              </li>
+              <li className="nav-item" id='profileIntro'>
+                <CustomLink to="/profile" onClick={navigationTimeOut}>
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">person</i>
+                  </div>
+                  <span className="nav-link-text ms-1">{t("profile")}</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item" onClick={logout} id='logoutIntro'>
+                <a className="nav-link text-white ">
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">logout</i>
+                  </div>
+                  <span className="nav-link-text ms-1">{t("logout")}</span>
+                </a>
+              </li>
+              <li className="nav-item mt-3">
+                <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin Pages</h6>
+              </li>
+              <li className="nav-item">
+                <CustomLink to="/admin/dashboard" onClick={navigationTimeOut}>
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">dashboard</i>
+                  </div>
+                  <span className="nav-link-text ms-1">Dashboard</span>
+                </CustomLink>
+              </li>
+              {/* <li className="nav-item">
               <CustomLink to="/admin/messages" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">receipt_long</i>
@@ -250,13 +253,14 @@ export default function Home() {
                 <span className="nav-link-text ms-1">FanBase</span>
               </CustomLink>
             </li> */}
-          </ul>
-        </div>
+            </ul>
+          </div>
 
-        <div className="sideNavAside">
-          <img src={animeImg} className="card-img-top" alt="..." />
-        </div>
+          <div className="sideNavAside">
+            <img src={animeImg} className="card-img-top" alt="..." />
+          </div>
 
+        </div>
       </aside>
 
       <main className="main-content position-relative max-height-vh-120 h-120 border-radius-lg " id='main-section'>
@@ -375,13 +379,32 @@ function CustomLink({ to, children, ...props }) {
 
   const resolvedPath = useResolvedPath(to);
   const isActive = useMatch({ path: resolvedPath.pathname, end: true })
+  const location = useLocation();
 
-  // console.log(resolvedPath)
+  if (isActive) {
 
-  return (
-    <Link className={isActive ? 'active bg-gradient-primary nav-link text-white' : 'nav-link text-white '} to={to} {...props}>
-      {children}
-    </Link>
-  )
+    return (
+      <Link className='active bg-gradient-primary nav-link text-white' to={to} {...props}>
+        {children}
+      </Link>
+    )
+
+  } else if ((to == location['pathname'].slice(0, 15)) || (to == location['pathname'].slice(0, 6))) {
+
+    return (
+      <Link className='active bg-gradient-primary nav-link text-white' to={to} {...props}>
+        {children}
+      </Link>
+    )
+
+  } else {
+
+    return (
+      <Link className='nav-link text-white ' to={to} {...props}>
+        {children}
+      </Link>
+    )
+
+  }
 
 }

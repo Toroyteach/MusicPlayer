@@ -23,7 +23,7 @@ function ChatList({ roomId }) {
                 </div>
             }
 
-            <div className="chat__conversation-board" ref={containerRef}>
+            <div ref={containerRef}>
                 {chats.map((x) => (
                     <Chat
                         key={x.id}

@@ -81,6 +81,8 @@ export const fr = {
     'type-message': 'type de message',
     'emoji': 'emoji',
     'send': 'Envoyer',
+    'choose-room-to-join':'Choisissez la salle à rejoindre',
+    'welcome-to-chat-room-about': 'Bienvenue sur le chat à propos de',
 
     //Norifications
     'notifications': 'Notifications',
@@ -122,6 +124,7 @@ export const fr = {
     'delete-warning-text':'Une fois que vous avez supprimé votre compte, vous ne pouvez plus revenir en arrière !',
     'success-deleted-text':'Pouf ! Votre compte a été supprimé !',
     'success-canceled-text':'Pheew !! Votre compte est en sécurité !',
+    'your-generated-ai':'Vos images AI générées',
 
     //About
     'for-fans-and-music-lovers': 'pour les fans et les mélomanes',
