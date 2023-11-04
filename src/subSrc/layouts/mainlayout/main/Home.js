@@ -1,12 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react'
 
-import { Link, useMatch, useResolvedPath, Outlet, useLocation, Navigate, } from 'react-router-dom';
+import { Link, useMatch, useResolvedPath, Outlet, useLocation, useNavigate } from 'react-router-dom';
+
+import io from 'socket.io-client';
+
+// import { useQuery } from 'react-query';
+
+import useQuery from '../../../services/api/base/useQuery.js';
 
 //use auth for logout
 import useAuth from '../../../services/authContext/useAuth.js';//'../backend/authContext/useAuth.js';
 
+import apiClient from '../../../services/api/base/apiClient.js';
+
+import apiEndUrl from '../../../services/api/base/apiEndurl.js';
+
 //import necessary files to make state and context consistent
 import appContext from '../../../services/context/appContext.js';
+
+import musicContext from '../../../services/music/musicContext.js';
 
 //notification images
 import messageImage from '../../../assets/users/img/team-2.jpg';
@@ -24,36 +36,134 @@ import CustomToast from '../../components/toast/CustomToast.js';
 //import languages list
 import LanguageList from '../../../services/localization/LanguageList.js';
 import LocalizeTypes from '../../../services/localization/localizeTypes.js'
+import { useCookies, Cookies } from "react-cookie";
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
 import i18n from 'i18next';
 import ApplicationTour from '../../../services/intro-tour/ApplicationTour.js';
 
+import {
+  SET_USER_FIREBASE_UUID,
+  SET_NOTIFIATION_TEXT_ITEM,
+  SET_USER_USERNAME,
+  SET_USER_FIRSTNAME,
+  SET_USER_LASTNAME,
+  SET_USER_EXCERPT,
+  SET_USER_EMAIL,
+  SET_USER_NUMBER,
+  SET_USER_TOTALMINUTESLISTENED,
+  SET_USER_TOTAL_PLAYS_COUNT,
+  SET_USER_ROLE,
+  SET_USER_HISTORY_LIST,
+  SET_USER_SHAZAM_LIST,
+  SET_SHOW_MY_ONLINE_STATUS,
+  SET_SHOW_OTHERS_COMMENTS,
+  SET_MAIN_APP_DARKMODE,
+  SET_USER_FAVOURITE_LIST_ADD,
+  SET_ONLINE_USERS_LIST,
+  SET_USER_USERIMAGE
+} from '../../../services/context/appState/stateTypes';
+
+import {
+  SET_TOGGLE_RANDOM,
+  SET_TOGGLE_REPEAT,
+  SET_ALLMUSICMIXES,
+  SET_ACTIVE_PLAYLIST_ARRAY,
+} from '../../../services/music/musicState/musicStateTypes';
+
+import warningIcon from '../../../layouts/components/toast/toastSvg/warning.svg';
+import webSocketUrl from '../../../services/api/base/webSocketUrl.js';
+
 export default function Home() {
 
   //Global State
   const {
     userData: {
+      firebaseUid,
       username,
+      allowOnlineStatus,
+      userImage
     },
     appSettings: {
       notificationText,
       asideNavigation,
       thanosSnapVisible,
     },
-    // stateDispatch,
+    stateDispatch,
   } = useContext(appContext)
+
+  const {
+    musicStateDispatch,
+    activePlaylist,
+    currentSong,
+    SetCurrent,
+  } = useContext(musicContext)
+
+  const [cookie, setCookie, removeCookie] = useCookies(["userToken", "userRefreshToken"]);
+  const cookies = new Cookies();
+  const accessToken = cookies.get('userToken')
+
+  //Online Listeners
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  const navigate = useNavigate();
 
   //initiate tge translator
   const { t } = useTranslation();
 
+  const { data, loading, error } = useQuery(`${apiEndUrl}profile/getUserFavouriteList/${firebaseUid}`, "GET");
+  const { data: musicListData } = useQuery(`${apiEndUrl}music/getMix`, "GET");
   //use this to allow users to change the current active localisation language
   const handleChangeLanguage = (value) => {
 
-    console.log('here')
+    // const cookies = new Cookies();
+    // const refreshToken = cookies.get('userRefreshToken')
 
-    //stateDispatch({ type: SET_GLOBAL_LANGUAGE, data: e.target.value }) 
+    // //TODO stop music if playing
+
+    // apiClient.delete(`/auth/logout?refreshToken=${refreshToken}`)
+    //   .then(response => {
+
+    //     if(response.data.success === true){
+
+    //       stateDispatch({ type: SET_GLOBAL_LANGUAGE, data: response.data.photoUrl })
+
+    //       let data = {
+    //         type: t("success"),
+    //         text: "Language Set Seccessfully",
+    //         icon: checkIcon,
+    //         bgColour: '#5cb85c',
+    //       }
+
+    //       dispatchNotification(data)
+
+    //     } else if(response.data.success === false) {
+
+    //       let data = {
+    //         type: 'Warning',
+    //         text: 'Failed to Set Language',
+    //         icon: warningIcon,
+    //         bgColour: '#f0ad4e',
+    //       }
+
+    //       dispatchNotification(data)
+
+    //     }
+
+    //   })
+    //   .catch(error => {
+
+    //     let data = {
+    //       type: 'Warning',
+    //       text: 'Failed to Set Language',
+    //       icon: warningIcon,
+    //       bgColour: '#f0ad4e',
+    //     }
+
+    //     dispatchNotification(data)
+
+    //   });
 
     //change to the new language
     i18n.changeLanguage(value)
@@ -81,17 +191,210 @@ export default function Home() {
   const location = useLocation();
   const logout = () => {
     //unset cookie
+    const cookies = new Cookies();
+    const refreshToken = cookies.get('userRefreshToken')
 
-    //setAuth({});
+    //TODO stop music if playing
 
-    //console.log(auth);
-    //const toastProperties = TOAST_PROPERTIES.find((toast) => toast.title.toLowerCase() === 'warning');
-    //stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: toastProperties });
+    apiClient.delete(`/auth/logout?refreshToken=${refreshToken}`)
+      .then(response => {
 
+        if (response.data.success === true) {
+
+          stateDispatch({ type: SET_USER_USERNAME, data: '' })
+          stateDispatch({ type: SET_USER_FIRSTNAME, data: '' })
+          stateDispatch({ type: SET_USER_LASTNAME, data: '' })
+          stateDispatch({ type: SET_USER_EXCERPT, data: '' })
+          stateDispatch({ type: SET_USER_EMAIL, data: '' })
+          stateDispatch({ type: SET_USER_NUMBER, data: '' })
+          stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: '' })
+          stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: '' })
+          stateDispatch({ type: SET_USER_ROLE, data: '' })
+          stateDispatch({ type: SET_USER_HISTORY_LIST, data: '' })
+          stateDispatch({ type: SET_USER_SHAZAM_LIST, data: '' })
+          stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: '' })
+          stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: '' })
+          stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: '' })
+          stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: '' })
+
+          setAuth({});
+
+          removeCookie("userToken", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: 'localhost'
+          });
+
+          removeCookie("userRefreshToken", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: 'localhost'
+          });
+
+          removeCookie("firebaseUid", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("username", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("firstname", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("lastname", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("excerpt", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("email", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("number", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("role", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("image", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("minutesListened", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("playsCount", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("onlineStatus", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("showOthersComment", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("appDarkMode", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("randomPlayback", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+          removeCookie("repeatPlayback", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: "localhost"
+          });
+
+
+
+          navigate("/login");
+
+        }
+        // else if(response.data.success === false) {
+
+        //   let data = {
+        //     type: 'Warning',
+        //     text: 'Failed to Logout',
+        //     icon: warningIcon,
+        //     bgColour: '#f0ad4e',
+        //   }
+
+        //   dispatchNotification(data)
+
+        // }
+
+      })
+      .catch(error => {
+
+
+      });
+
+
+  }
+
+  //dispatch all notiifcations from on place
+  const dispatchNotification = (data) => {
+
+    const notice = {
+      id: Math.floor((Math.random() * 101) + 1),
+      title: data.type,
+      description: data.text,
+      backgroundColor: data.bgColour,
+      icon: data.icon
+    };
+
+    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
   }
 
   //toast texts and description
   const [list, setList] = useState([]);
+
+  //Mobile view
+  const isMobile = window.innerWidth <= 768;
+
+  const language = (LocalizeTypes || []).map((language, idx) => (
+    <LanguageList key={idx} style={language.stype} name={language.name} handleOnClick={() => { handleChangeLanguage(language.value) }} />
+  ))
 
   useEffect(() => {
 
@@ -100,6 +403,24 @@ export default function Home() {
       setList([...list, notificationText]);
 
     }
+
+
+    // const element = document.documentElement; // Get the root element (HTML element)
+
+    // if (isMobile) {
+    //   if (element.requestFullscreen) {
+    //     element.requestFullscreen(); // Standard API
+    //   } else if (element.mozRequestFullScreen) {
+    //     element.mozRequestFullScreen(); // Firefox
+    //   } else if (element.webkitRequestFullscreen) {
+    //     element.webkitRequestFullscreen(); // Webkit/Blink
+    //   } else if (element.msRequestFullscreen) {
+    //     element.msRequestFullscreen(); // IE/Edge
+    //   }
+    // } else {
+    //   alert('Full-screen mode is only available on mobile devices.');
+    // }
+
 
   }, [notificationText]);
 
@@ -110,10 +431,86 @@ export default function Home() {
 
   }, [asideNavigation])
 
-  const language = (LocalizeTypes || []).map((language, idx) => (
-    <LanguageList key={idx} style={language.stype} name={language.name} handleOnClick={() => { handleChangeLanguage(language.value) }} />
-  ))
+  useEffect(() => {
+    // Connect to the WebSocket server
+    const socket = io(webSocketUrl);
 
+    if (allowOnlineStatus) {
+
+      const songTitle = activePlaylist[currentSong]?.title ?? ''
+
+      if (songTitle) {
+        return
+      }
+
+      socket.emit('onlineListeners', {
+        userName: username,
+        activeSong: songTitle,
+        displayPicUrl: userImage
+      });
+
+    }
+
+    socket.on('onlineUsersList', (users) => {
+      if (users.length > 0) {
+        stateDispatch({ type: SET_ONLINE_USERS_LIST, data: users })
+      }
+
+    });
+
+    return () => {
+      // Disconnect the socket when the component unmounts
+      socket.disconnect();
+    };
+  }, [])
+
+  useEffect(() => {
+
+    if (((cookies.get('userToken') != 'null' && cookies.get('userRefreshToken') != 'null') || cookies.get('userToken') || cookies.get('userRefreshToken'))) {
+
+      stateDispatch({ type: SET_USER_FIREBASE_UUID, data: cookies.get('firebaseUid') })
+      stateDispatch({ type: SET_USER_USERNAME, data: cookies.get('username') })
+      stateDispatch({ type: SET_USER_FIRSTNAME, data: cookies.get('firstname') })
+      stateDispatch({ type: SET_USER_LASTNAME, data: cookies.get('lastname') })
+      stateDispatch({ type: SET_USER_EXCERPT, data: cookies.get('excerpt') })
+      stateDispatch({ type: SET_USER_EMAIL, data: cookies.get('email') })
+      stateDispatch({ type: SET_USER_NUMBER, data: cookies.get('number') })
+      stateDispatch({ type: SET_USER_ROLE, data: cookies.get('role') })
+      stateDispatch({ type: SET_USER_USERIMAGE, data: cookies.get('image') ?? 'imageavatar.png' })
+      stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: cookies.get('minutesListened') })
+      stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: cookies.get('playCount') })
+      stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: (cookies.get('onlineStatus') == true || cookies.get('onlineStatus') === "true") ? true : false })
+      stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: (cookies.get('showOthersComment') == true || cookies.get('showOthersComment') === "true") ? true : false })
+      stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: (cookies.get('appDarkMode') == true || cookies.get('appDarkMode') === "true") ? true : false })
+
+      // musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: cookies.get('activePlaylist') })
+      musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: (cookies.get('randomPlayback') == true || cookies.get('randomPlayback') === "true") ? true : false })
+      musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: (cookies.get('repeatPlayback') == true || cookies.get('repeatPlayback') === "true") ? true : false })
+    }
+
+  }, [])
+
+  useEffect(() => {
+
+    if (data) {
+
+      stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: data.data.favourite.favouriteData })
+    }
+
+
+  }, [data])
+
+  useEffect(() => {
+
+    if (musicListData) {
+
+      musicStateDispatch({ type: SET_ALLMUSICMIXES, data: musicListData.data.mix.mixData })
+      musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: musicListData.data.mix.mixData })
+
+    }
+
+
+  }, [musicListData])
 
   return (
     <div className={isActive ? 'g-sidenav-show g-sidenav-pinned' : 'g-sidenav-show'}>
@@ -212,16 +609,16 @@ export default function Home() {
                 </div>
                 <span className="nav-link-text ms-1">Messages</span>
               </CustomLink>
-            </li>
-            <li className="nav-item">
+            </li> */}
+              {/* <li className="nav-item">
               <CustomLink to="/admin/users" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">people</i>
                 </div>
                 <span className="nav-link-text ms-1">Users</span>
               </CustomLink>
-            </li>
-            <li className="nav-item">
+            </li> */}
+              {/* <li className="nav-item">
               <CustomLink to="/admin/add-quiz" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i className="material-icons opacity-10">add</i>
@@ -236,23 +633,23 @@ export default function Home() {
                 </div>
                 <span className="nav-link-text ms-1">Add Mix</span>
               </CustomLink>
-            </li>
-            <li className="nav-item">
-              <CustomLink to="/admin/comments" onClick={navigationTimeOut}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">assignment</i>
-                </div>
-                <span className="nav-link-text ms-1">Comments</span>
-              </CustomLink>
-            </li>
-            <li className="nav-item">
-              <CustomLink to="/admin/map" onClick={navigationTimeOut}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">people</i>
-                </div>
-                <span className="nav-link-text ms-1">FanBase</span>
-              </CustomLink>
             </li> */}
+              <li className="nav-item">
+                <CustomLink to="/admin/comments" onClick={navigationTimeOut}>
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">assignment</i>
+                  </div>
+                  <span className="nav-link-text ms-1">Comments</span>
+                </CustomLink>
+              </li>
+              <li className="nav-item">
+                <CustomLink to="/admin/map" onClick={navigationTimeOut}>
+                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i className="material-icons opacity-10">people</i>
+                  </div>
+                  <span className="nav-link-text ms-1">FanBase</span>
+                </CustomLink>
+              </li>
             </ul>
           </div>
 

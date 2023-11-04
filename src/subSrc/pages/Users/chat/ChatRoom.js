@@ -21,8 +21,13 @@ function ChatRoom() {
     return (
         <>
             <div className="alert alert-primary" role="alert"> {t("welcome-to-chat-room-about")}
-                {room.title}. Now chattaway
+                {room.title}.
             </div>
+
+
+            <Link className='text-white' to="/users/messages">
+                <button type="button" class="btn">{t("go-back")}</button>
+            </Link>
 
             <div className="--dark-theme" id="chat">
                 <div className="chat__conversation-board">

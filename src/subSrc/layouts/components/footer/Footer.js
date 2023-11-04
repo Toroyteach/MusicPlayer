@@ -1,12 +1,17 @@
-import React, { useContext } from 'react'
-
+import React, { useState, useEffect, useContext } from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+
+import Queue from '../../../services/music/Queue.js';
 
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
 
+import Cookies from 'universal-cookie';
+
 //import necessary files to make state and context consistent
 import appContext from '../../../services/context/appContext.js';//'../context/appContext.js'
+import musicContext from '../../../services/music/musicContext.js';
 
 import '../../../assets/users/css/style.css';
 
@@ -26,7 +31,9 @@ import {
   SET_CURRENT_SONG,
   SET_VOLUME
 
-} from '../../../services/context/appState/stateTypes';
+} from '../../../services/music/musicState/musicStateTypes';
+
+
 import PlayLoad from '../../../pages/Music/components/loader/PlayLoad.js';
 import { t } from 'i18next';
 
@@ -34,28 +41,132 @@ export default function Footer() {
 
   // Global State
   const {
+    stateDispatch,
     userData: {
       username,
-    },
-    currentSong,
-    playing,
-    activePlaylist,
-    stateDispatch,
-    random,
-    volume,
-    musicSettings: {
-      playOrLoading
+      favourite,
     },
     appSettings: {
       thanosSnapVisible,
     },
   } = useContext(appContext)
 
+  const {
+    currentSong,
+    playing,
+    activePlaylist,
+    musicStateDispatch,
+    random,
+    volume,
+    playNextItem,
+    SetCurrent,
+    musicSettings: {
+      playOrLoading,
+      mixList
+    },
+  } = useContext(musicContext)
+
+  //////
+  // testing Code
+  // const cookies = new Cookies();
+  // const accessToken = cookies.get('userToken')
+  // const audioFilesEndpoint = 'http://localhost:3010/music/clippedMix';
+  // const [queue, setQueue] = useState(new Queue());
+
+  ///
+  ///
+
+  // const [audioContext, setAudioContext] = useState(null);
+  // const [currentIndex, setCurrentIndex] = useState(1);
+  // const [totalChunks, setTotalChunks] = useState(16);
+
+  // const fetchChunkedFiles = async () => {
+  //   const title = "quepasa"//state.musicSettings.activePlaylist[state.musicSettings.currentSong].title
+  //   const header = {
+  //     headers: { Authorization: `Bearer ${accessToken}` }
+  //   }
+  //   const res = await fetch(`${audioFilesEndpoint}?title=${title}&clippedId=${currentIndex}.opus`, header);
+  //   const arrayBuffer = await res.arrayBuffer()
+  //   const decodedAudio = await audioContext.decodeAudioData(arrayBuffer)
+  //   return decodedAudio;
+  // };
+
+  // const { isLoading, isError, error, data: audioData, refetch, remove, status } = useQuery('fetchAudio', fetchChunkedFiles, {
+  //   refetchOnWindowFocus: false,
+  //   enabled: false,
+  // },);
+
+
+  // useEffect(() => {
+  //   const context = new (window.AudioContext || window.webkitAudioContext)();
+  //   setAudioContext(context);
+  // }, []);
+
+  // useEffect(() => {
+
+  //   if (audioData) {
+  //     queue.enqueue(audioData)
+  //   }
+
+  // }, [audioData])
+
+
+  // const playAudio = () => {
+  //   if (!audioContext || queue.isEmpty()) {
+  //     console.log('Queue is empty')
+  //     return;
+  //   }
+
+  //   const playNextItem = () => {
+  //     if (queue.isEmpty()) {
+  //       return;
+  //     }
+
+  //     const dataArr = queue.peek();
+  //     const playSound = audioContext.createBufferSource();
+  //     playSound.buffer = dataArr;
+  //     playSound.connect(audioContext.destination);
+  //     playSound.onended = () => {
+
+  //       queue.dequeue();
+
+  //       if (!queue.isEmpty()) {
+
+  //         playNextItem();
+
+  //       }
+  //     };
+
+  //     playSound.start(audioContext.currentTime);
+
+  //     if(currentIndex <= totalChunks){
+
+  //       setCurrentIndex((prevIndex) => prevIndex + 1);
+
+  //       setTimeout(() => {
+  //         remove('fetchAudio')
+  //         refetch();
+  //       }, 4000);
+
+  //     }
+  //   };
+
+  //   // Start playing the first item from the queue
+  //   playNextItem();
+  // };
+
+  // const addCurrentItem = () => {
+
+  //   SetCurrent()
+  // }
+
+  ////
+
   //handles the actual playing and changing of the play pause buttons
   // const [showSpinner, setShowSpinner] = useState(false)
   const playAndPause = () => {
 
-    stateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
+    musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
 
     if (playing) {
 
@@ -97,18 +208,18 @@ export default function Footer() {
 
     if (currentSong === 0) {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
+      musicStateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
 
     } else {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
+      musicStateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
 
     }
 
   }
 
   // self State
-  const handleVolume = (e) => stateDispatch({ type: SET_VOLUME, data: e })
+  const handleVolume = (e) => musicStateDispatch({ type: SET_VOLUME, data: e })
 
 
   //shazam details to send to rapid api
@@ -175,7 +286,7 @@ export default function Footer() {
     //   console.error(error);
     // });
 
-    
+
     // fetch("https://shazam.p.rapidapi.com/auto-complete?term=kiss%20the&locale=en-US", {
     //   "method": "GET",
     //   "headers": {
@@ -190,12 +301,15 @@ export default function Footer() {
     //     console.error(err);
     //   });
 
-  //   fetch('https://shazam.p.rapidapi.com/songs/v2/detect?timezone=America%2FChicago&locale=en-US', options)
-	// .then(response => response)
-	// .then(response => console.log(response))
-	// .catch(err => console.error(err));
+    //   fetch('https://shazam.p.rapidapi.com/songs/v2/detect?timezone=America%2FChicago&locale=en-US', options)
+    // .then(response => response)
+    // .then(response => console.log(response))
+    // .catch(err => console.error(err));
   }
 
+  // const handlePop = () => {
+  //   // playNextItem()
+  // };
 
   return (
     <footer className={thanosSnapVisible ? 'footer py-4 fadeOut' : 'footer py-4'} id="fadeOut">
@@ -212,17 +326,24 @@ export default function Footer() {
           </div>
 
           <div className="col-lg-6 col-md-6 col-sm-12">
+            {/* <button onClick={addCurrentItem}>
+              {isLoading ? 'Loading...' : isError ? 'Error' : 'Play'}
+            </button>
+
+            <button onClick={handlePop}>
+              POP
+            </button> */}
 
             {/* Mini Music */}
             <div className="mini-player-footer">
 
-              <Link to="/music/single">
+              <Link to={`/music/single/dtLzqJlkKMwpPdTQoTMG`}>
                 <div className="track_info_wrapper" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
                   <div className="track_info">
                     <div className="thumb"></div>
                     <div className="info">
-                      <div className="title ">{activePlaylist[currentSong].title}</div>
-                      <div className="artist ">{activePlaylist[currentSong].artistName}</div>
+                      <div className="title ">{activePlaylist[currentSong]?.title}</div>
+                      <div className="artist ">{activePlaylist[currentSong]?.artistName}</div>
                     </div>
                   </div>
                 </div>
@@ -233,7 +354,6 @@ export default function Footer() {
                 <i className="btn-prev fa fa-step-backward footerPlayer" data-bs-toggle="tooltip" data-bs-placement="top" title={t("previous")} aria-hidden="true" onClick={prevMixItem}></i>
 
                 <div className="btn-switch" onClick={playAndPause} data-bs-toggle="tooltip" data-bs-placement="top" title={t("play-pause")}>
-
 
                   <PlayLoad isLoading={playOrLoading} sourceButton={'footer'} />
 

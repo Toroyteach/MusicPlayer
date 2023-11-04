@@ -351,7 +351,7 @@ export default function AdminDashboard() {
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
               <div className="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
 
-                <div className="chart-co text-white" style={{ position: 'relative', height: '386px', width: '800px' }}>
+                <div className="chart-co text-white" style={{ position: 'relative', height: '520px', width: '1100px' }}>
 
                   <Line options={{
                     title: {
@@ -567,13 +567,13 @@ export default function AdminDashboard() {
                   <div className="card card-plain h-100">
                     <div className="card-body p-4">
                       <ul className="list-group">
-                        <li className="list-group-item border-0 px-0">
+                        {/* <li className="list-group-item border-0 px-0">
                           <div className="form-check form-switch ps-0">
                             <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked={visualizerActive} onChange={updateEnableGlobalVisualizer} />
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault">&ensp;Enable Audio Visualizer</label>
                           </div>
-                        </li>
-                        <li className="list-group-item border-0 px-0">
+                        </li> */}
+                        {/* <li className="list-group-item border-0 px-0">
                           <div className="form-check form-switch ps-0">
                             <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1" checked={astronomyActive} onChange={updateEnableGlobalAstronomyPic} />
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault1">&ensp;Enable Astronmy Picture</label>
@@ -584,19 +584,19 @@ export default function AdminDashboard() {
                             <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={shazamActive} onChange={updateEnableGlobalShazam} />
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Shazam search</label>
                           </div>
-                        </li>
+                        </li> */}
                         <li className="list-group-item border-0 px-0">
                           <div className="form-check form-switch ps-0">
                             <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={downloadActive} onChange={updateEnableGlobalDownload} />
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Download options</label>
                           </div>
                         </li>
-                        <li className="list-group-item border-0 px-0">
+                        {/* <li className="list-group-item border-0 px-0">
                           <div className="form-check form-switch ps-0">
                             <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={anxietyVideos} onChange={updateEnableGlobalAnxietyVideo} />
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Calm Anxiety Video</label>
                           </div>
-                        </li>
+                        </li> */}
                         <li className="list-group-item border-0 px-0">
                           <div className="form-check form-switch ps-0">
                             <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={viewOtherUsers} onChange={updateEnableGlobalUsersToViewOtherUsersOnlineActivity} />

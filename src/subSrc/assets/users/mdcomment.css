@@ -1,0 +1,35 @@
+  .horizontal-timeline {
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
+
+  .horizontal-timeline .items .items-list {
+      display: block;
+      position: relative;
+      text-align: center;
+      padding-top: 70px;
+      margin-right: 0;
+  }
+
+  .horizontal-timeline .items .items-list .event-date {
+      position: absolute;
+      top: 36px;
+      left: 0;
+      right: 0;
+      width: 75px;
+      margin: 0 auto;
+      font-size: 0.9rem;
+      padding-top: 8px;
+  }
+
+  @media (min-width: 1140px) {
+      .horizontal-timeline .items .items-list {
+          display: inline-block;
+          padding-top: 45px;
+      }
+
+      .horizontal-timeline .items .items-list .event-date {
+          top: 15px;
+      }
+  }

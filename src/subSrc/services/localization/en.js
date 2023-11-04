@@ -95,6 +95,8 @@ export const en = {
     'your-email': 'your email',
     'your-username': 'your username',
     'your-password': 'your password',
+    'your-confirm-password': 'Confirm your password',
+    'password-error-regex' : 'Password Does not meet Minimum Requirements. Use Caps numbers and symbols',
     'update': 'update',
     'mobile': 'mobile',
     'show-other-users-my-comments': 'show other users my comments',
@@ -117,6 +119,8 @@ export const en = {
     'Successfully-made-your-Online-Status':'Successfully made your online status',
     'Successfully-made-your-Comments':'Successfully made your comments',
     'Successfully':'Successfully',
+    'success-updating-data' : 'Succeessfully Update your Data',
+    'Failed-updating-data' : 'Failed to update Data',
     'Dark-Mode':'Dark Mode',
     'activated':'Activated',
     'deactivated': 'Deactivatefd',
@@ -128,6 +132,11 @@ export const en = {
     'success-deleted-text':'Poof! Your account has been deleted!',
     'success-canceled-text':'Pheew!! Your account is safe!',
     'your-generated-ai':'Your Generated Images',
+    'choose-image' : 'Choose Profile Image',
+    'upload-image' : 'Upload Image',
+    'Failed-uploading-image' : 'Failed to Upload Profile Image',
+    'success-uploading-image' : 'Successfully Uploaded Profile Image',
+    'success-rating-mix' : 'Successfully Added your Rating',
 
     //About
     'for-fans-and-music-lovers': 'For Fans and Music Lovers',
@@ -196,4 +205,9 @@ export const en = {
     'There-is-an-error-accessing-the-Mix-Item':'There is an error accessing the Mix Item',
     'success': 'Success',
     'warning': 'Warning',
+    'error' : 'Error',
+    'error-updateing-your-settings' : 'An Error occurred updating your settings to',
+
+    'go-back' : 'Go back',
+    'gen-images-appears-here' : 'Your generate Image will Appear here',
 }

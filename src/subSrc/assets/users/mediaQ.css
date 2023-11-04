@@ -2467,7 +2467,7 @@
     /* media queries fro the main landing page of backend */
     /* mostly for special phones and mobile Devices */
     .changeView {
-        height: 77vh;
+        height: 73vh;
     }
 
     .breadcrumb>.text-sm {

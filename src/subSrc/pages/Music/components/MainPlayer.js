@@ -5,29 +5,41 @@ import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
 
+import { useCookies, Cookies } from "react-cookie";
+
+import apiClient from '../../../services/api/base/apiClient.js';
+
+import useQuery from '../../../services/api/base/useQuery.js';
+
 //import necessary files to make state and context consistent
 import appContext from '../../../services/context/appContext.js';
+
+import musicContext from '../../../services/music/musicContext.js';
 
 import GenreList from '../music/GenreList.js';
 import genreTypes from '../music/genreTypes.js';
 
 //import the reducer function states to make consistent states
 import {
+  SET_USER_FAVOURITE_LIST_ADD,
+  SET_USER_FAVOURITE_LIST_REMOVE,
+  SET_NOTIFIATION_TEXT_ITEM,
+} from '../../../services/context/appState/stateTypes';
 
+import {
   SET_TOGGLE_RANDOM,
   SET_TOGGLE_REPEAT,
   SET_TOGGLE_PLAYING,
   SET_CURRENT_SONG,
-  SET_USER_FAVOURITE_LIST_ADD,
-  SET_USER_FAVOURITE_LIST_REMOVE,
   SET_FAVOURITE_MIX_ITEM,
-  SET_NOTIFIATION_TEXT_ITEM,
   SET_ACTIVE_PLAYLIST_ARRAY,
-} from '../../../services/context/appState/stateTypes';
+} from '../../../services/music/musicState/musicStateTypes';
 
 //import check icon to use in the custom toast icon
 import checkIcon from '../../../layouts/components/toast/toastSvg/check.svg';
 import PlayLoad from './loader/PlayLoad.js';
+
+import warningIcon from '../../../layouts/components/toast/toastSvg/error.svg';
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
@@ -36,29 +48,37 @@ export default function MainPlayer() {
 
   // Global State
   const {
-    SetCurrent,
-    handleForward1Minute,
-    handleback30,
-    handleProgress,
-    currentTime,
-    repeat,
-    duration,
-    currentSong,
-    playing,
-    activePlaylist,
     stateDispatch,
-    random,
-    musicSettings: {
-      playOrLoading,
-      likedItem,
-      completePlaylist,
-    },
     userData: {
+      firebaseUid,
       favourite: {
         favouriteItems,
       }
     }
   } = useContext(appContext)
+
+  const {
+    handleForward1Minute,
+    handleback30,
+    handleProgress,
+    currentTime,
+    duration,
+    currentSong,
+    playing,
+    activePlaylist,
+    musicStateDispatch,
+    random,
+    volume,
+    playNextItem,
+    SetCurrent,
+    repeat,
+    musicSettings: {
+      playOrLoading,
+      likedItem,
+      completePlaylist,
+      mixList,
+    },
+  } = useContext(musicContext)
 
   // const VisualizerOptions = [
   //   {
@@ -76,11 +96,118 @@ export default function MainPlayer() {
 
   const { t } = useTranslation();
 
+  const cookies = new Cookies();
+  const accessToken = cookies.get('userToken')
+  const [cookie, setCookie] = useCookies(["userToken", "userRefreshToken"]);
+
+  const [loading, setLoading] = useState(false);
+
   const [playPauseBtn, setPlayPauseBtn] = useState(false)
 
   //converts the tome to more understandable format
   const fmtMSS = (s) => {
     return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + ~~s
+  }
+
+  const handleAddFavourite = (dataIdToAdd) => {
+
+    setLoading(true)
+    //Make post request to change the status
+    apiClient.post('/music/addUserFavourite', dataIdToAdd, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoading(false)
+        if (response.data.status === 'succes') {
+
+          musicStateDispatch({ type: SET_FAVOURITE_MIX_ITEM, data: likedItem ? false : true })
+
+
+          let data = {
+            type: 'Success',
+            text: t("successfully-added ") + activePlaylist[currentSong].title + t("to-your-favourites-list"),
+            icon: checkIcon,
+            bgColour: '#5cb85c',
+          }
+
+          dispatchNotification(data)
+        }
+
+
+      })
+      .catch(error => {
+
+        setLoading(false)
+        let data = {
+          type: t("error"),
+          text: t("error-updateing-your-settings") + " " + (!repeat ? t("enabled") : t("disabled")),
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
+  };
+
+  const handleRemoveFavourite = (dataIdToAdd) => {
+    const favData = {
+      userFavourite: dataIdToAdd
+    }
+
+    const id = dataIdToAdd.mixId
+
+    setLoading(true)
+    //Make post request to change the status
+    apiClient.delete(`/music/deleteUserFavourite/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoading(false)
+        if (response.data.status === 'succes') {
+
+          musicStateDispatch({ type: SET_FAVOURITE_MIX_ITEM, data: false })
+
+        }
+
+      })
+      .catch(error => {
+
+        setLoading(false)
+        let data = {
+          type: t("error"),
+          text: t("error-updateing-your-settings") + " " + (!repeat ? t("enabled") : t("disabled")),
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
+  };
+
+  const getRecentFavList = () => {
+    apiClient.get(`/profile/getUserFavouriteList/${firebaseUid}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then(response => {
+
+      if (response.data.status === 'success') {
+
+        stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: response.data.data.favourite.favouriteData ?? [] })
+
+      }
+
+    }).catch(error => {
+
+    });
   }
 
   //handle toggling of full screen
@@ -141,46 +268,146 @@ export default function MainPlayer() {
   //handle when user clicks the favourite button
   const handleLikeMixItem = () => {
 
+    if (activePlaylist.length == 0) {
+      return
+    }
+
+    const newMixItem = {
+      title: activePlaylist[currentSong].title,
+      artist: activePlaylist[currentSong].genre,
+      mixId: activePlaylist[currentSong].mixId,
+    };
+
     if (likedItem) {
 
-      //get the current item from active playlist and remove it from the list
-      const idx = favouriteItems.find((match) => match.id === activePlaylist[currentSong].id);
-      const oldList = Object.assign([], favouriteItems);
-      oldList.splice(idx, 1);
+      // //get the current item from active playlist and remove it from the list
+      // const idx = favouriteItems.find((match) => match.id === activePlaylist[currentSong].id);
+      // const oldList = Object.assign([], favouriteItems);
 
+
+      // oldList.splice(idx, 1);
+      handleRemoveFavourite(newMixItem)
       //will add a new list without this one
-      stateDispatch({ type: SET_USER_FAVOURITE_LIST_REMOVE, data: oldList })
+      // stateDispatch({ type: SET_USER_FAVOURITE_LIST_REMOVE, data: oldList })
 
     } else {
 
       //get the active playlist item and add to the favourite
-      const newMixItem = activePlaylist[currentSong];
-
-      //will add to the list
-      stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: newMixItem })
-
-      //show the toast of the added mix item
-      let data = {
-        type: 'Success',
-        text: t("successfully-added ") + activePlaylist[currentSong].title + t("to-your-favourites-list"),
-        icon: checkIcon,
-        bgColour: '#5cb85c',
-      }
-
-      dispatchNotification(data)
+      handleAddFavourite(newMixItem)
 
     }
 
-    //dispatch to set the current item liked or not
-    stateDispatch({ type: SET_FAVOURITE_MIX_ITEM, data: likedItem ? false : true })
-
+    setTimeout(() => {
+      getRecentFavList()
+    }, 4000)
   }
 
   //handle Random icon active or not based on user action
-  const handleRandomClick = () => stateDispatch({ type: SET_TOGGLE_RANDOM, data: random ? false : true })
+  const handleRandomClick = () => {
+    const randomPlaybackData = {
+      randomPlayback: random ? false : true
+    }
+
+    setLoading(true)
+    //Make post request to change the status
+    apiClient.post('/profile/updateUserProfileSettings', randomPlaybackData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoading(false)
+
+        if (response.data.status === 'succes') {
+          musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: response.data.data.randomPlayback })
+          setCookie("randomPlayback", response.data.data.randomPlayback, {
+            path: "/",
+            secure: true,
+            sameSite: true,
+          });
+
+
+          let data = {
+            type: t("success"),
+            text: t("Successfully") + " " + (!response.data.data.randomPlayback ? t("enabled") : " " + t("disabled")) + " " + t("Dark-Mode"),
+            icon: checkIcon,
+            bgColour: '#5cb85c',
+          }
+
+          dispatchNotification(data)
+        }
+
+
+      })
+      .catch(error => {
+
+        setLoading(false)
+        let data = {
+          type: t("error"),
+          text: t("error-updateing-your-settings") + " " + (!random ? t("enabled") : t("disabled")),
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
+
+  }
 
   //handle Replay icon active or not based on user action
-  const handleReplayMixItem = () => stateDispatch({ type: SET_TOGGLE_REPEAT, data: repeat ? false : true })
+  const handleReplayMixItem = () => {
+
+    const replybackData = {
+      replayPlayback: repeat ? false : true
+    }
+
+    setLoading(true)
+    //Make post request to change the status
+    apiClient.post('/profile/updateUserProfileSettings', replybackData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoading(false)
+        if (response.data.status === 'succes') {
+          musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: response.data.data.replayPlayback })
+          setCookie("repeatPlayback", response.data.data.replayPlayback, {
+            path: "/",
+            secure: true,
+            sameSite: true,
+          });
+
+
+          let data = {
+            type: t("success"),
+            text: t("Successfully") + " " + (!response.data.data.replayPlayback ? t("enabled") : " " + t("disabled")) + " " + t("Dark-Mode"),
+            icon: checkIcon,
+            bgColour: '#5cb85c',
+          }
+
+          dispatchNotification(data)
+        }
+
+
+      })
+      .catch(error => {
+
+        setLoading(false)
+        let data = {
+          type: t("error"),
+          text: t("error-updateing-your-settings") + " " + (!repeat ? t("enabled") : t("disabled")),
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
+  }
 
   //handle when user wants to change the playlist
   //const [isFavPlaylist, setFavPlaylist] = useState("default")
@@ -189,24 +416,73 @@ export default function MainPlayer() {
 
     const listChoice = v
 
-    // if (listChoice == 'favourite') {
+    let newPlaylist = [];
 
-    //   // Generic helper function that can be used for the three operations:        
-    //   const operation = (list1, list2, isUnion = false) => list1.filter(a => isUnion === list2.some(b => a.id === b.id));
+    if (listChoice == 'favourite') {
 
-    //   const newPlaylist = operation(activePlaylist, favouriteItems, true)
+      // Generic helper function that can be used for the three operations:        
+      const operation = (list1, list2, isUnion = false) => list1.filter(a => isUnion === list2.some(b => a.mixId === b.mixId));
 
-    //   stateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
+      newPlaylist = operation(mixList, favouriteItems, true)
 
-    // } else {
+    } else {
 
-    //   const newPlaylist = completePlaylist.filter(function (el) {
-    //     return el.genre == listChoice
-    //   });
+      newPlaylist = mixList
 
-    //   stateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
+    }
 
-    // }
+    const activePlaylistData = {
+      activePlaylist: listChoice
+    }
+
+    setLoading(true)
+    //Make post request to change the status
+    apiClient.post('/profile/updateUserProfileSettings', activePlaylistData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoading(false)
+
+        if (response.data.status === 'succes') {
+
+          musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
+          setCookie("activePlaylist", response.data.data.activePlaylist, {
+            path: "/",
+            secure: true,
+            sameSite: true,
+          });
+
+
+          let data = {
+            type: t("success"),
+            text: t("Successfully") + " " + (!response.data.data.randomPlayback ? t("enabled") : " " + t("disabled")) + " " + t("Dark-Mode"),
+            icon: checkIcon,
+            bgColour: '#5cb85c',
+          }
+
+          dispatchNotification(data)
+        }
+
+
+      })
+      .catch(error => {
+
+        setLoading(false)
+        let data = {
+          type: t("error"),
+          text: t("error-updateing-your-settings") + " " + (!random ? t("enabled") : t("disabled")),
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
+
+
 
   }
 
@@ -221,7 +497,6 @@ export default function MainPlayer() {
 
     if (currentSong === activePlaylist.length - 1) {
 
-      //SetCurrent(0)
       stateDispatch({ type: SET_CURRENT_SONG, data: 0 })
 
     } else if (random) {
@@ -321,18 +596,18 @@ export default function MainPlayer() {
           </div>
 
           {/* select current active playlist */}
-          <div className='icon btn-PlaylistIcon dropdown-toggle' data-toggle="dropdown" >
-            <i className="cursor-pointer fa fa-list-ol" aria-hidden="true"></i>
-            <div className='dropdown-menu playliststyle'>
-              <span className="dropdown-item-text" >{t("choose-playlist")}</span>
-              <ul className="">
-                {/* <li className='selected'><a className="dropdown-item" href="/#">{t("default")}</a></li> */}
+          <div className='icon btn-PlaylistIcon  custom-dropdown' >
+            <i className="cursor-pointer fa fa-list-ol custom-dropbtn" aria-hidden="true"></i>
 
-                {genrePlaylist}
-
+            <div className='custom-dropdown-content playliststyle'>
+              <span className="text-dark" >{t("choose-playlist")}</span>
+              <ul >
+                <li className="text-dark" onClick={() => handleChooseFavPlaylist("default")}>{t("default")}</li>
+                <li className="text-dark" onClick={() => handleChooseFavPlaylist("favourite")}>Favouite</li>
               </ul>
             </div>
           </div>
+
 
           {/* handle make a mix item liked or not */}
           <div className='icon btn-LikeIcon' onClick={handleLikeMixItem}>
@@ -341,20 +616,10 @@ export default function MainPlayer() {
           </div>
 
           <div className='icon btn-EqualizerIcon  '>
-            <i className="cursor-pointer fa fa-expand" aria-hidden="true" onClick={() => handleChooseFavPlaylist('House')}></i>
+            <i className="cursor-pointer fa fa-expand" aria-hidden="true" onClick={() => handleChooseFavPlaylist('ragga')}></i>
           </div>
 
           {/* handle choose audio visualizer */}
-          <div className='dropdownV icon btn-VisualizerIcon'>
-            <i className="dropdownV cursor-pointer fa fa-bar-chart" aria-hidden="true"></i>
-            <div className='dropdown-content'>
-              <span className="modalIntro">Choose Visualizer</span>
-              <ul className="dropdown-content">
-                <li className='selected modalIntro'><a className="dropdown-item">Bars</a></li>
-                <li><a className="dropdown-item modalIntro">Circular</a></li>
-              </ul>
-            </div>
-          </div>
 
           {/* handle download the mix item */}
           <div className='icon btn-DownloadIcon'>
@@ -364,8 +629,8 @@ export default function MainPlayer() {
         </div>
 
         <div className="playback_info">
-          <div className="title">{activePlaylist[currentSong].title}</div>
-          <div className="artist">{activePlaylist[currentSong].artistName}</div>
+          <div className="title">{activePlaylist[currentSong]?.title}</div>
+          <div className="artist">{activePlaylist[currentSong]?.genre}</div>
         </div>
 
         <div className="">
@@ -397,25 +662,37 @@ export default function MainPlayer() {
           </div>
 
         </div>
-
+        {loading && <div className="spinner-grow text-center" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>}
       </div>
 
       <div className="list_wrapper">
-        <ul className="list">
 
-          {activePlaylist.map((song, i) => (
-            <li className={'list_item ' + (currentSong === i ? 'selected' : '')} key={i}>
+        {(!activePlaylist || activePlaylist.length === 0) ? (
+          <div className="alert alert-warning">
+            The playlist is empty. Please add some songs.
+          </div>
+        ) : (
+          <ul className="list">
 
-              <div className="thumb"> </div>
-              <div className="info" onClick={() => { SetCurrent(i) }}>
-                <div className="title">{song.title}</div>
-                <div className="artist">{song.artistName}</div>
-              </div>
+            {(activePlaylist || []).map((song, i) => (
+              <li className={'list_item ' + (currentSong === i ? 'selected' : '')} key={i}>
 
-            </li>
-          ))}
+                <div className="thumb"> </div>
+                <div className="info" onClick={() => { SetCurrent(i) }}>
+                  <div className="title">{song.title}</div>
+                  <div className="artist">{song.genre}</div>
+                </div>
 
-        </ul>
+              </li>
+            ))}
+
+          </ul>
+        )}
+
+
+
       </div>
 
 

@@ -1,18 +1,19 @@
 //imports for the state types to be used in the reducer
 import {
   //music application state
-  SET_CURRENT_SONG,
-  SET_TOGGLE_RANDOM,
-  SET_TOGGLE_REPEAT,
-  SET_TOGGLE_PLAYING,
-  SET_ACTIVE_PLAYLIST_ARRAY,
-  SET_RECENT_SEEK_TIME,
-  SET_FAVOURITE_MIX_ITEM,
-  SET_MIX_ITEM_DURATION,
-  SET_VOLUME,
-  SET_ABLE_TO_PLAY_OR_LOADING,
-  SET_COMPLETE_PLAYLIST,
+  // SET_CURRENT_SONG,
+  // SET_TOGGLE_RANDOM,
+  // SET_TOGGLE_REPEAT,
+  // SET_TOGGLE_PLAYING,
+  // SET_ACTIVE_PLAYLIST_ARRAY,
+  // SET_RECENT_SEEK_TIME,
+  // SET_FAVOURITE_MIX_ITEM,
+  // SET_MIX_ITEM_DURATION,
+  // SET_VOLUME,
+  // SET_ABLE_TO_PLAY_OR_LOADING,
+  // SET_COMPLETE_PLAYLIST,
   SET_THANOS_SNAP_ANIMATION,
+  // SET_ALLMUSICMIXES,
 
   //admin states
   SET_ENABLE_GLOBAL_AUDIO_VISUALIZER,
@@ -62,6 +63,12 @@ import {
   SET_USER_FAVOURITE_LIST_REMOVE,
   SET_USER_SHAZAM_LIST,
   SET_USER_HISTORY_LIST,
+  SET_USER_FAVOURITES_COUNT,
+  SET_USER_IDENTIFIED_SONGS_COUNT,
+  SET_USER_COMMENTS,
+  SET_USER_COMMENTS_COUNT,
+  SET_USER_FIREBASE_UUID,
+  SET_ONLINE_USERS_LIST,
 
   //user setting states
   SET_SHOW_MY_ONLINE_STATUS,
@@ -76,73 +83,85 @@ export default (state, action) => {
   switch (action.type) {
 
     //Music application states
-    case SET_ACTIVE_PLAYLIST_ARRAY:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, activePlaylist: action.data }
-      }
+    // case SET_ACTIVE_PLAYLIST_ARRAY:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, activePlaylist: action.data }
+    //   }
 
-    case SET_CURRENT_SONG:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, currentSong: action.data }
-      }
+    // case SET_CURRENT_SONG:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, currentSong: action.data }
+    //   }
 
-    case SET_TOGGLE_RANDOM:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, random: action.data }
-      }
+    // case SET_TOGGLE_RANDOM:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, random: action.data }
+    //   }
 
-    case SET_TOGGLE_REPEAT:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, repeat: action.data }
-      }
+    // case SET_TOGGLE_REPEAT:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, repeat: action.data }
+    //   }
 
-    case SET_TOGGLE_PLAYING:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, playing: action.data }
-      }
+    // case SET_TOGGLE_PLAYING:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, playing: action.data }
+    //   }
 
-    case SET_RECENT_SEEK_TIME:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, seekTime: action.data }
-      }
+    // case SET_RECENT_SEEK_TIME:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, seekTime: action.data }
+    //   }
 
-    case SET_MIX_ITEM_DURATION:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, duration: action.data }
-      }
+    // case SET_MIX_ITEM_DURATION:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, duration: action.data }
+    //   }
 
-    case SET_VOLUME:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, volume: action.data }
-      }
+    // case SET_VOLUME:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, volume: action.data }
+    //   }
 
-    case SET_FAVOURITE_MIX_ITEM:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, likedItem: action.data }
-      }
+    // case SET_FAVOURITE_MIX_ITEM:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, likedItem: action.data }
+    //   }
 
-    case SET_ABLE_TO_PLAY_OR_LOADING:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, playOrLoading: action.data }
-      }
+    // case SET_ABLE_TO_PLAY_OR_LOADING:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, playOrLoading: action.data }
+    //   }
 
-    case SET_COMPLETE_PLAYLIST:
-      return {
-        ...state,
-        musicSettings: { ...state.musicSettings, completePlaylist: action.data }
-      }
+    // case SET_COMPLETE_PLAYLIST:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, completePlaylist: action.data }
+    //   }
+
+    // case SET_ALLMUSICMIXES:
+    //   return {
+    //     ...state,
+    //     musicSettings: { ...state.musicSettings, mixList: action.data }
+    //   }
 
     //User states
+    case SET_USER_FIREBASE_UUID:
+      return {
+        ...state,
+        userData: { ...state.userData, firebaseUid: action.data }
+      }
+
     case SET_USER_FIRSTNAME:
       return {
         ...state,
@@ -227,6 +246,30 @@ export default (state, action) => {
         userData: { ...state.userData, totalQuizePoints: action.data }
       }
 
+    case SET_USER_FAVOURITES_COUNT:
+      return {
+        ...state,
+        userData: { ...state.userData, favourite: { ...state.userData.favourite, favouriteCount: action.data } }
+      }
+
+    case SET_USER_IDENTIFIED_SONGS_COUNT:
+      return {
+        ...state,
+        userData: { ...state.userData, shazam: { ...state.userData.shazam, shazamCount: action.data } }
+      }
+
+    case SET_USER_COMMENTS_COUNT:
+      return {
+        ...state,
+        userData: { ...state.userData, comments: { ...state.userData.comments, commentsCount: action.data } }
+      }
+
+    case SET_USER_COMMENTS:
+      return {
+        ...state,
+        userData: { ...state.userData, comments: { ...state.userData.comments, commentsItems: action.data } }
+      }
+
     case SET_USER_LAST_QUIZ_DATE:
       return {
         ...state,
@@ -262,7 +305,7 @@ export default (state, action) => {
 
         const newFavourite = {
           ...state,
-          userData: { ...state.userData, favourite: { ...state.userData.favourite, favouriteItems: [...state.userData.favourite.favouriteItems, action.data] } }
+          userData: { ...state.userData, favourite: { ...state.userData.favourite, favouriteItems: action.data } }
         }
 
         return newFavourite
@@ -285,7 +328,7 @@ export default (state, action) => {
 
         const newShazam = {
           ...state,
-          userData: { ...state.userData, shazam: { ...state.userData.shazam, shazamItems: [...state.userData.shazam.shazamItems, action.data] } }
+          userData: { ...state.userData, shazam: { ...state.userData.shazam, shazamItems: action.data } }
         }
 
         return newShazam
@@ -303,6 +346,18 @@ export default (state, action) => {
         return newHistory
 
       }
+
+      case SET_ONLINE_USERS_LIST:
+        {
+  
+          const newHistory = {
+            ...state,
+            appSettings: { ...state.appSettings, onlineList: action.data }
+          }
+  
+          return newHistory
+  
+        }
 
     //Application stats
     case SET_CUMMULATIVE_MINUTES_LISTENED:

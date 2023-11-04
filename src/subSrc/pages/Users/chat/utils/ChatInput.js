@@ -1,11 +1,22 @@
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 // import { useAuth } from '../../hooks/useAuth';
 import { sendChat } from '../../../../services/firebase/firebase'
+
+import appContext from '../../../../services/context/appContext';
 
 import { useTranslation } from "react-i18next";
 
 function ChatInput({ roomId }) {
+
+    const {
+        userData: {
+          firebaseUid,
+          userImage,
+          username
+        },
+      } = useContext(appContext)
+
     //const { user } = useAuth();
     const [value, setValue] = useState('');
 
@@ -15,9 +26,7 @@ function ChatInput({ roomId }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        sendChat(roomId, 'PvksVIX69lcl3KQKssH7784rVhC2', value);
-        //PvksVIX69lcl3KQKssH7784rVhC2
-        //8MhNWoP6B4V0RwNmfUBadSieRIj2
+        sendChat(roomId, firebaseUid, value, userImage, username);
         setValue('');
     };
 
@@ -71,7 +80,7 @@ function ChatInput({ roomId }) {
                             </svg>
                         </button> */}
 
-                        <input type="text" placeholder={t("type-message")} value={value} onChange={handleChange} className="chat__conversation-panel__input panel-item border border-success" required minLength={1}/>
+                        <textarea type="text" placeholder={t("type-message")} value={value} onChange={handleChange} className="chat__conversation-panel__input panel-item border border-success" required minLength={1}/>
 
                         <button className="chat__conversation-panel__button panel-item btn-icon send-message-button" disabled={value < 1}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-reactid="1036">

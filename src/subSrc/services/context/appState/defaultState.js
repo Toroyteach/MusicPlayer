@@ -11,15 +11,46 @@ const mixList = [
   'DuranTonny', 'Tempted_to_say_sorry', 'Pilot', 'Prism', 'HolyGrainP',
 ];
 
+const allMusicListCount = [
+  {
+    "commentsEnabled" : true,
+    "mixId" : "  dtLzqJlkKMwpPdTQoTMG ",
+    "status" : "enabled",
+    "title" : "Quepasa",
+    "genre" : "house-edm",
+    "songsCount" : "52",
+    "duration" : "1:43:12",
+  },
+  {
+    "commentsEnabled" : true,
+    "mixId" : "  dtLzqJlkKMwpPdTQoTMG ",
+    "status" : "enabled",
+    "title" : "Wabisabi",
+    "genre" : "house-edm",
+    "songsCount" : "52",
+    "duration" : "1:43:12",
+  },
+  {
+    "commentsEnabled" : true,
+    "mixId" : "  dtLzqJlkKMwpPdTQoTMG ",
+    "status" : "enabled",
+    "title" : "Amelia",
+    "genre" : "house-edm",
+    "songsCount" : "52",
+    "duration" : "1:43:12",
+  }
+]
+
 //default user state
 const userData = {
+  firebaseUid: '34fg29834f283946fg23864gf',
   firstname: 'Anthony',
   lastname: 'Toroyteach',
   email: 'toroyteach@gmail.com',
   excerpt: 'I am a deejay who also likes to do this other programming thing. Checkout what i have in store for you. Welcome to my experience. Its gonna be an amaizing one',
   username: 'Toroyteach',
   number: 'wantoowantwo',
-  userImage: 'thisimage',
+  userImage: 'imageavatar.png',
   activePlaylist: 'Favourite',
   lastSong: 'Angst',
   recentSeekTime: '12:13:48',
@@ -123,7 +154,7 @@ const appSettings = {
   shazamCounts: 13,
   highestFavourite: 'Mamba',
   language: 'En',
-  appDarkMode: true,
+  appDarkMode: false,
   activeSpectrum: true,
   musicAppDarkMode: false,
   astronomyPicture: '',
@@ -131,6 +162,7 @@ const appSettings = {
   asideNavigation: false,
   enableApplicationTour: false,
   thanosSnapVisible: false,
+  onlineList: []
 }
 
 //Music player states
@@ -147,7 +179,7 @@ const musicSettings = {
   mainAppTheme: 'default',
   musicAppTheme: 'default',
   likedItem: false,
-  mixList: mixList,
+  mixList: allMusicListCount,
   playOrLoading: false,
 }
 

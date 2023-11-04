@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 
 //user details context
@@ -7,6 +7,8 @@ import appContext from '../../../services/context/appContext.js'
 import imageBadge from '../../../assets/users/img/small-logos/logo-xd.svg'
 import userImageTable from '../../../assets/users/img/team-1.jpg'
 
+import useQuery from '../../../services/api/base/useQuery.js'
+
 //react translator hook
 import { useTranslation } from "react-i18next";
 
@@ -14,24 +16,65 @@ export default function NeutralUsageStats() {
 
     const {
         userData: {
-            history,
+            firebaseUid,
+            // history,
             favourite: {
-                favouriteCount,
-                favouriteItems
+                // favouriteCount,
+                // favouriteItems
             },
             shazam: {
-                shazamCount,
-                shazamItems
+                // shazamCount,
+                // shazamItems
             },
             comments: {
-                commentsCount,
-                commentsItems
+                // commentsCount,
+                // commentsItems
             },
         },
+        musicSettings: {
+            mixList
+        }
     } = useContext(appContext);
 
     //initiate tge translator
     const { t } = useTranslation();
+
+    const [history, setHistory] = useState([]);
+    const [historyCount, setHistoryCount] = useState([]);
+
+    const [favouriteItems, setFavouriteItems] = useState([]);
+    const [favouriteItemsCount, setFavouriteItemsCount] = useState([]);
+
+    const [commentsItems, setCommentsItems] = useState([]);
+    const [commentsItemsCount, setCommentsItemsCount] = useState([]);
+
+    const [shazamItems, setShazamItems] = useState([]);
+    const [shazamItemsCount, setShazamItemsCount] = useState([]);
+
+    const [mixItems, setMixItems] = useState([]);
+
+    const { data, loading, error } = useQuery(`/profile/userDashboard/${firebaseUid}`, 'GET');
+
+    useEffect(() => {
+        if (data) {
+            if (data.status === 'success') {
+
+                setHistory(data.data.history.historyData)
+                setHistoryCount(data.data.history.historyCount)
+
+                setFavouriteItems(data.data.favourite.favouriteData)
+                setFavouriteItemsCount(data.data.favourite.favouriteCount)
+
+                setCommentsItems(data.data.comment.comments)
+                setCommentsItemsCount(data.data.comment.commentsCount)
+
+                setShazamItems(data.data.shazam.shazamData)
+                setShazamItemsCount(data.data.shazam.shazamCount)
+
+                setMixItems(data.data.musicList)
+            }
+        }
+    }, [data])
 
     return (
         <>
@@ -72,7 +115,7 @@ export default function NeutralUsageStats() {
                             <h6>{t("favourites")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                                <span className="font-weight-bold">{favouriteCount}</span>
+                                <span className="font-weight-bold">{favouriteItemsCount}</span>
                             </p>
                         </div>
                         <div className="card-body p-3" style={{ maxHeight: "200px", overflow: "auto" }}>
@@ -86,7 +129,7 @@ export default function NeutralUsageStats() {
                                         </span>
                                         <div className="timeline-content">
                                             <h6 className="text-dark text-sm font-weight-bold mb-0">{song.title}</h6>
-                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0">{song.artistName}</p>
+                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0">{song.artist}</p>
                                         </div>
                                     </div>
 
@@ -103,7 +146,7 @@ export default function NeutralUsageStats() {
                             <h6>{t("identified-songs")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                                <span className="font-weight-bold">{shazamCount}</span>
+                                <span className="font-weight-bold">{shazamItemsCount}</span>
                             </p>
                         </div>
                         <div className="card-body p-3">
@@ -129,6 +172,12 @@ export default function NeutralUsageStats() {
                 </div>
 
             </div>
+            {loading &&
+                <div className='container text-center'>
+                    <span class="loader"></span>
+                </div>
+            }
+
             <div className="row mb-4">
                 <div className="col-lg-8 col-md-6 mb-md-0 mb-4">
                     <div className="card">
@@ -152,140 +201,38 @@ export default function NeutralUsageStats() {
                                     </thead>
                                     <tbody>
 
-                                        <tr>
-                                            <td>
-                                                <div className="d-flex px-2 py-1">
-                                                    <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm text-secondary">WabiSabi</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="avatar-group mt-2 text-secondary">
-                                                    House/EDM
-                                                </div>
-                                            </td>
-                                            <td className="align-middle text-center text-sm text-secondary">
-                                                <span className="text-xs font-weight-bold"> 62 </span>
-                                            </td>
-                                            <td className="align-middle">
-                                                <div className="progress-wrapper w-20 mx-auto">
-                                                    <div className="progress-info">
-                                                        <div className="progress-percentage text-secondary">
-                                                            <span className="text-xs font-weight-bold">1:30:32</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
 
-                                        <tr>
-                                            <td>
-                                                <div className="d-flex px-2 py-1">
-                                                    <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm text-secondary">QuePasa</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="avatar-group mt-2 text-secondary">
-                                                    House/EDM
-                                                </div>
-                                            </td>
-                                            <td className="align-middle text-center text-sm text-secondary">
-                                                <span className="text-xs font-weight-bold"> 50 </span>
-                                            </td>
-                                            <td className="align-middle">
-                                                <div className="progress-wrapper w-20 mx-auto">
-                                                    <div className="progress-info">
-                                                        <div className="progress-percentage text-secondary">
-                                                            <span className="text-xs font-weight-bold">1:12:22</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        {(mixItems || []).map((song, i) => (
 
-                                        <tr>
-                                            <td>
-                                                <div className="d-flex px-2 py-1">
-                                                    <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">Amelia</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="avatar-group mt-2">
-                                                    R&B/Slow Jams
-                                                </div>
-                                            </td>
-                                            <td className="align-middle text-center text-sm">
-                                                <span className="text-xs font-weight-bold"> 65 </span>
-                                            </td>
-                                            <td className="align-middle">
-                                                <div className="progress-wrapper w-20 mx-auto">
-                                                    <div className="progress-info">
-                                                        <div className="progress-percentage">
-                                                            <span className="text-xs font-weight-bold">1:32:22</span>
+                                            <tr key={i}>
+                                                <td>
+                                                    <div className="d-flex px-2 py-1">
+                                                        <div className="d-flex flex-column justify-content-center">
+                                                            <h6 className="mb-0 text-sm text-secondary">{song.title}</h6>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td>
+                                                    <div className="avatar-group mt-2 text-secondary">
+                                                        {song.genre}
+                                                    </div>
+                                                </td>
+                                                <td className="align-middle text-center text-sm text-secondary">
+                                                    <span className="text-xs font-weight-bold"> {song.songsCount} </span>
+                                                </td>
+                                                <td className="align-middle">
+                                                    <div className="progress-wrapper w-20 mx-auto">
+                                                        <div className="progress-info">
+                                                            <div className="progress-percentage text-secondary">
+                                                                <span className="text-xs font-weight-bold">{song.duration}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                        <tr>
-                                            <td>
-                                                <div className="d-flex px-2 py-1">
-                                                    <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">Angst</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="avatar-group mt-2">
-                                                    House/EDM
-                                                </div>
-                                            </td>
-                                            <td className="align-middle text-center text-sm">
-                                                <span className="text-xs font-weight-bold"> 47 </span>
-                                            </td>
-                                            <td className="align-middle">
-                                                <div className="progress-wrapper w-20 mx-auto">
-                                                    <div className="progress-info">
-                                                        <div className="progress-percentage">
-                                                            <span className="text-xs font-weight-bold">1:01:22</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        ))}
 
-                                        <tr>
-                                            <td>
-                                                <div className="d-flex px-2 py-1">
-                                                    <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">SwitchBack</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="avatar-group mt-2">
-                                                    House/EDM
-                                                </div>
-                                            </td>
-                                            <td className="align-middle text-center text-sm">
-                                                <span className="text-xs font-weight-bold"> 41 </span>
-                                            </td>
-                                            <td className="align-middle">
-                                                <div className="progress-wrapper w-20 mx-auto">
-                                                    <div className="progress-info">
-                                                        <div className="progress-percentage">
-                                                            <span className="text-xs font-weight-bold">1:19:22</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
 
                                     </tbody>
                                 </table>
@@ -297,6 +244,10 @@ export default function NeutralUsageStats() {
                     <div className="card h-100">
                         <div className="card-header pb-0">
                             <h6>{t("my-comments")}</h6>
+                            <p className="text-sm">
+                                <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                                <span className="font-weight-bold">{commentsItemsCount}</span>
+                            </p>
                         </div>
                         <div className="card-body p-3" style={{ maxHeight: "300px", overflow: "auto" }}>
                             <div className="timeline timeline-one-side">
@@ -310,7 +261,7 @@ export default function NeutralUsageStats() {
                                         <div className="timeline-content">
                                             <h6 className="text-dark text-sm font-weight-bold mb-0">{song.mixItem}</h6>
                                             <p className="text-secondary font-weight-bold text-xs mt-1 mb-0"> {song.dateCreated}</p>
-                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0">{song.content}.</p>
+                                            <p className="text-secondary font-weight-bold text-xs mt-1 mb-0">{song.body}.</p>
                                         </div>
                                     </div>
 

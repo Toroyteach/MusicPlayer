@@ -11,19 +11,23 @@ import { AuthProvider } from './subSrc/services/authContext/AuthProvider.js';
 
 import MusicContextState from './subSrc/services/music/MusicContextState.js';
 
+import { QueryClient, QueryClientProvider } from "react-query";
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const queryClient = new QueryClient();
 
 root.render(
   <React.StrictMode>
-    <CookiesProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <MusicContextState>
-            <MusicApplication/>
-          </MusicContextState>
-        </AuthProvider>
-      </BrowserRouter>
-    </CookiesProvider>
+    <QueryClientProvider client={queryClient}>
+      <CookiesProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <MusicApplication />
+          </AuthProvider>
+        </BrowserRouter>
+      </CookiesProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

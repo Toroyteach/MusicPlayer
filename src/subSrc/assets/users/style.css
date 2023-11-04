@@ -51,6 +51,8 @@
   --primary-text-message-list: #fff;
   --primary-text-body: #222;
   --primary-chatBorder-background: #ffffff;
+  --loading-white: #222;
+  --chat-username: rgb(53, 8, 8);
 }
 
 .dark-version{
@@ -84,7 +86,43 @@
   --primary-text-message-list: #222;
   --primary-text-body: #fff;
   --primary-chatBorder-background: #3e3e3e;
+  --loading-white: #fff;
+  --chat-username: rgb(107, 255, 144);
 }
+
+.loader {
+    position: relative;
+    width: 100px;
+    height: 16px;
+  }
+  .loader:before , .loader:after{
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--loading-white);
+    box-shadow: 32px 0 var(--loading-white);
+    left: 0;
+    top: 0;
+    animation: ballMoveX 1s linear infinite;
+  }
+  .loader:after {
+    box-shadow: none;
+    transform-origin: 40px 0;
+    transform: rotate(-153deg);
+    animation: rotateLoader 1s linear infinite;
+  }
+
+  @keyframes rotateLoader {
+    0% , 10%{ transform: rotate(-153deg); }
+    90%, 100% { transform: rotate(0deg); }
+  }
+  @keyframes ballMoveX {
+    0% , 10%{  transform: translateX(0) }
+    90%, 100% { transform: translateX(32px) }
+  }
+      
 
 .modalIntro {
   color: var(--primary-modal-text);
@@ -1236,7 +1274,7 @@ body {
 /* *********************************** */
 .playliststyle {
   position: absolute;
-  left: -170px;
+  left: -111px;
   top: 0;
   display: none;
 }
@@ -1285,6 +1323,32 @@ body {
 .checkbox-menu li.active label:hover,
 .checkbox-menu li.active label:focus {
   background-color: #b8b8ff;
+}
+
+/* Style the custom-dropdown container */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style the custom-dropbtn button */
+.custom-dropbtn {
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Style the custom-dropdown content (hidden by default) */
+.custom-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  z-index: 1;
+}
+
+/* Show the custom-dropdown content when the custom-dropbtn button is clicked */
+.custom-dropdown:hover .custom-dropdown-content {
+  display: block;
 }
 
 /* Audio visualizer spectrum */
@@ -1420,16 +1484,15 @@ body {
   width: auto;
 }
 #chat .chat__conversation-board__message__person__nickname {
-  font-size: 9px;
-  color: #484848;
+  font-size: 15px;
+  color: var(--chat-username);
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  display: none;
 }
 #chat .chat__conversation-board__message__context {
-  max-width: 55%;
+  max-width: 100%;
   align-self: flex-end;
 }
 #chat .chat__conversation-board__message__options {

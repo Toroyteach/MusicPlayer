@@ -230,9 +230,6 @@ export default function Music() {
       {/* this section will host the astronomy picture of the day */}
       <Astronomy />
 
-      {/* this section will host the geenrate image using OpenAi */}
-      <ImageGen />
-
     </div>
   )
 }

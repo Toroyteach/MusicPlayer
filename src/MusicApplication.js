@@ -45,6 +45,7 @@ import SignIn from './subSrc/services/authContext/Auth/SignIn.js';
 import SignUp from './subSrc/services/authContext/Auth/SignUp.js';
 import Missing from './subSrc/services/authContext/Auth/Missing.js';
 import GuestPlayer from './subSrc/pages/Guest/GuestPlayer.js';
+import MusicContextState from './subSrc/services/music/MusicContextState';
 
 // import useAuth from "./useAuth";
 
@@ -54,7 +55,7 @@ function MusicApplication() {
 
     //warn the user before unloading or closing tab of the application
     useEffect(() => {
-        
+
         window.addEventListener('beforeunload', alertUser)
 
         return () => {
@@ -71,47 +72,57 @@ function MusicApplication() {
     return (
         <ApplicationState>
 
-            <Routes>
+            <MusicContextState>
 
-                {/* Landing page for guests */}
-                <Route path="/" element={<GuestPlayer />} />
+                <Routes>
 
-                {/* Users Protected Page */}
-                {/* <Route element={<RequireAuth />}> */}
-                <Route element={<Home />}>
+                    {/* Landing page for guests */}
+                    <Route path="/" element={<GuestPlayer />} />
 
-                    {/* NEUTRAL PAGES */}
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/music" element={<MusicPlayer />} />
-                    <Route path="/notifications" element={<Notifications />} />
-                    <Route path="/music/single" element={<SingleAudio />} />
-                    <Route path="/about" element={<About />} />
-
-                    {/* USERS PAGES */}
-                    <Route path="/users/dashboard" element={<UsersDashboard />} />
-                    <Route path="/users/messages" element={<UsersMessages />} />
-                    <Route path="/users/messages/room/:id" element={<ChatRoom />} />
+                    {/* Users Protected Page */}
+                    <Route element={<RequireAuth />}>
 
 
-                    {/* ADMIN PAGES */}
-                    <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/messages" element={<AdminMessages />} />
-                    <Route path="/admin/map" element={<Map />} />
-                    <Route path="/admin/add-mix" element={<UploadMix />} />
-                    <Route path="/admin/add-quiz" element={<UploadQuiz />} />
-                    <Route path="/admin/comments" element={<Comments />} />
-                    <Route path="/admin/users" element={<UsersList />} />
+                        <Route element={<Home />}>
 
-                </Route>
-                {/* </Route> */}
 
-                {/* Auth pages */}
-                <Route path="/login" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
+                            {/* NEUTRAL PAGES */}
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/music" element={<MusicPlayer />} />
+                            <Route path="/notifications" element={<Notifications />} />
+                            <Route path="/music/single/:mixId" element={<SingleAudio />} />
+                            <Route path="/about" element={<About />} />
 
-                <Route path='*' element={<Missing />} />
+                            {/* USERS PAGES */}
+                            <Route path="/users/dashboard" element={<UsersDashboard />} />
+                            <Route path="/users/messages" element={<UsersMessages />} />
+                            <Route path="/users/messages/room/:id" element={<ChatRoom />} />
 
-            </Routes>
+
+                            {/* ADMIN PAGES */}
+                            <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
+                            {/* <Route path="/admin/messages" element={<AdminMessages />} /> */}
+                            <Route path="/admin/map" element={<Map />} />
+                            {/* <Route path="/admin/add-mix" element={<UploadMix />} />
+                            <Route path="/admin/add-quiz" element={<UploadQuiz />} /> */}
+                            <Route path="/admin/comments" element={<Comments />} />
+                            {/* <Route path="/admin/users" element={<UsersList />} /> */}
+
+
+                        </Route>
+
+
+                    </Route>
+
+                    {/* Auth pages */}
+                    <Route path="/login" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
+
+                    <Route path='*' element={<Missing />} />
+
+                </Routes>
+                
+            </MusicContextState>
 
         </ApplicationState>
     )

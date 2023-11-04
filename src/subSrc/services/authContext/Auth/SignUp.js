@@ -1,6 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import useQuery from '../../api/base/useQuery.js';
+
+import apiClient from '../../api/base/apiClient.js';
 
 import backgroundImage from '../../../assets/users/img/illustrations/illustration-signup.jpg';
 
@@ -15,9 +19,15 @@ import useUsernameValidation from '../../hooks/formValidation/useUsernameValidat
 //import captcher from google to help deter robots
 import ReCAPTCHA from 'react-google-recaptcha'
 
+import { useCookies } from "react-cookie";
+
 export default function SignUp() {
 
   const errRef = useRef();
+
+  const [cookies, setCookie] = useCookies(["userToken"]);
+
+  const navigate = useNavigate();
 
   //firstname
   const { firstname, setFirstname, validFirstname } = useFirstnameValidation();
@@ -43,25 +53,52 @@ export default function SignUp() {
   //error messages notifiation
   const [errMsg, setErrMsg] = useState('');
 
+  //Handle get data
+  const [requestData, setRequestData] = useState({ /* your request data here */ });
+
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   //handle signup on click
   const handleSubmit = (e) => {
 
     e.preventDefault();
 
-    console.log(firstname, validFirstname);
-    console.log(lastname, validLastname);
-    console.log(email, validEmail);
-    console.log(password, validPassword);
-    console.log(username, validUsername);
-    console.log(number, validNumber);
+    if (validFirstname && validLastname && validEmail && validPassword && validUsername && validNumber) {
 
+      setLoading(true)
+
+      setRequestData({
+        firstname,
+        lastname,
+        email,
+        password,
+        username,
+        phone: number,
+        role: 'User',
+      })
+
+      apiClient.post('/auth/register', requestData)
+        .then(response => {
+
+          setLoading(false)
+
+          navigate('/login', { replace: true });
+
+        })
+        .catch(error => {
+          setLoading(false)
+          setError('Error creating account please try again later')
+        });
+
+    }
   }
 
   //captcher function
   const capchaKey = '6LckD6MhAAAAAGQ4akjQtUX0uW7cDzs6_Hu4ED1P' //get this from the backend
   const [isRobot, setIsRobot] = useState(true);
   const onCaptchaChange = (value) => {
-    console.log('Captcha value:', value)
+    //console.log('Captcha value:', value)
     setIsRobot(false)
   }
 
@@ -83,27 +120,34 @@ export default function SignUp() {
                       <p className="mb-0">Enter your email and password to register</p>
                       <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     </div>
+
+                    {error &&
+                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {error}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>}
+
                     <div className="card-body" style={{ backgroundColor: "#fff" }}>
                       <form role="form" onSubmit={handleSubmit}>
-                        <div className="input-group input-group-outline mb-3">
+                        <div className="input-group input-group-outline mb-2">
                           <input placeholder='Firstname' id='firstname' aria-invalid={validFirstname ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setFirstname(e.target.value)} type="text" className="form-control" required />
                         </div>
-                        <div className="input-group input-group-outline mb-3">
+                        <div className="input-group input-group-outline mb-2">
                           <input placeholder='Lastname' id='lastname' aria-invalid={validLastname ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setLastname(e.target.value)} type="text" className="form-control" required />
                         </div>
-                        <div className="input-group input-group-outline mb-3">
+                        <div className="input-group input-group-outline mb-2">
                           <input placeholder='Email' id='email' aria-invalid={validEmail ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" required />
                         </div>
-                        <div className="input-group input-group-outline mb-3">
+                        <div className="input-group input-group-outline mb-2">
                           <input placeholder='Password' id='password' aria-invalid={validPassword ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" required />
                         </div>
-                        <div className="input-group input-group-outline mb-3">
+                        <div className="input-group input-group-outline mb-2">
                           <input placeholder='Confirm Password' id='confirm-password' aria-invalid={validPassword ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" type="password" className="form-control" required />
                         </div>
-                        <div className="input-group input-group-outline mb-3">
+                        <div className="input-group input-group-outline mb-2">
                           <input placeholder='Number' id='phonenumber' aria-invalid={validNumber ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setNumber(e.target.value)} type="number" className="form-control" required />
                         </div>
-                        <div className="input-group input-group-outline mb-3">
+                        <div className="input-group input-group-outline mb-2">
                           <input placeholder='username' id='username' aria-invalid={validUsername ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setUsername(e.target.value)} type="text" className="form-control" required />
                         </div>
                         <div className="form-check form-check-info text-start ps-0">
@@ -113,7 +157,7 @@ export default function SignUp() {
                           </label>
                         </div>
                         <div className="d-flex justify-content-center">
-                          <ReCAPTCHA sitekey={capchaKey} onChange={onCaptchaChange}/>
+                          <ReCAPTCHA sitekey={capchaKey} onChange={onCaptchaChange} />
                         </div>
                         <div className="text-center">
                           <button type="submit" className="btn btn-lg bg-gradient-success btn-lg w-100 mt-4 mb-0" disabled={!validFirstname || !validLastname || !validEmail || !validPassword || !validNumber || !validUsername || !isRobot ? true : false}>Sign Up</button>
@@ -121,10 +165,13 @@ export default function SignUp() {
                       </form>
                     </div>
                     <div className="card-footer text-center pt-0 px-lg-2 px-1">
+                      {loading && <div class="spinner-grow text-center" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>}
                       <p className="mb-2 text-md mx-auto">
                         Already have an account? Or sign in with Social Accounts<br />
-                        <Link to="/users/dashboard">
-                          <a className="text-primary text-gradient font-weight-bold">Demo Here</a>
+                        <Link to="/login">
+                          <a className="text-primary text-gradient font-weight-bold">Here</a>
                         </Link>
                       </p>
                     </div>

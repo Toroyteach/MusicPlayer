@@ -30,7 +30,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function sendChat(roomId, user, text) {
+async function sendChat(roomId, user, text, userPic, username) {
     try {
 
         const textObj = {
@@ -38,8 +38,8 @@ async function sendChat(roomId, user, text) {
             text: text, 
             timestamp: serverTimestamp(),
             userId: user,
-            userPic: "userpic",
-            username: "TestUser"
+            userPic: userPic,
+            username: username
         };
 
         await addDoc(collection(db, 'messages', roomId, 'usersMessages'), textObj);

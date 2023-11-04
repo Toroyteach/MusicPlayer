@@ -2,11 +2,21 @@ import React, { useContext, useRef, useEffect, useState } from 'react'
 
 import coverImage from './Music/music/Cover-Image.jpg'
 
+import { useParams } from 'react-router-dom';
+
 //import necessary files to make state and context consistent
 import appContext from '../services/context/appContext.js'
 
+import useQuery from '../services/api/base/useQuery';
+
+import { Cookies } from "react-cookie";
+
+import apiClient from '../services/api/base/apiClient'
+
 //import custom coments
 import Comments from "../services/comments/Comments.js"
+
+import endpoinUrl from '../services/api/base/endpointUrl';
 
 //waveform for the cool audio seek
 import WaveSurfer from "wavesurfer.js";
@@ -15,63 +25,106 @@ import WaveSurfer from "wavesurfer.js";
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
 
+import checkIcon from '../layouts/components/toast/toastSvg/check.svg';
+
+import { SET_NOTIFIATION_TEXT_ITEM } from '../services/context/appState/stateTypes';
 
 export default function SingleMusic() {
 
   // Global State
   const {
+    userData: {
+      firebaseUid,
+      userImage,
+    },
     audioObject,
     currentTime,
     playing,
     duration,
+    stateDispatch,
   } = useContext(appContext)
+
+  let { mixId } = useParams();
 
   //initiate tge translator
   const { t } = useTranslation();
 
   const waveformRef = useRef();
 
+  const [rating, setRating] = useState('')
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+
+  const { data, loading, error } = useQuery(`/comments/singleMixData/${mixId}`, 'GET');
+
+  const handleChange = e => {
+    const target = e.target;
+    if (target.checked) {
+
+      const cookies = new Cookies();
+      const accessToken = cookies.get('userToken')
+      const ratingData = {
+        mixId: mixId,
+        rating: target.value,
+        userId: firebaseUid,
+      }
+      // Make post request to change the status
+      apiClient.post('/ratings/', ratingData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then(response => {
+
+          if (response.data.status === 'success') {
+            setRating(response.data.data.rating)
+
+            let data = {
+              type: t("success"),
+              text: t("success-rating-mix"),
+              icon: checkIcon,
+              bgColour: '#5cb85c',
+            }
+
+            dispatchNotification(data)
+          }
+
+        })
+        .catch(error => {
+
+          console.log("Error")
+
+        });
+
+    }
+  };
+
+  const dispatchNotification = (data) => {
+
+    const notice = {
+      id: Math.floor((Math.random() * 101) + 1),
+      title: data.type,
+      description: data.text,
+      backgroundColor: data.bgColour,
+      icon: data.icon
+    };
+
+    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+
+  }
+
   useEffect(() => {
+    if (data) {
+      if (data.status === 'success') {
 
-    const waveSurfer = WaveSurfer.create({
-      container: waveformRef.current,
-      barWidth: 2,
-      barHeight: 1, // the height of the wave
-      barGap: null,
-      responsive: true,
-      splitChannels: false,
-      waveColor: "#7a0909",
-      interact: false
-    });
-
-    if (waveformRef.current) {
-
-      //check if audio is null
-      if (Object.keys(audioObject).length != 0) {
-
-        waveSurfer.load(audioObject)
-
-        //set volume to 0
-        waveSurfer.setVolume(0)
-
-        //set mute to true
-        waveSurfer.setMute(true)
-
+        setTitle(data.data.mixItemDoc.title)
+        setDescription(data.data.mixItemDoc.description)
+        setRating(data.data.ratingsDoc ? data.data.ratingsDoc.rating : 0)
+        
       }
     }
 
-    waveSurfer.on('ready', function () {
-
-      //set the wave surfer to play
-      let newTime = (currentTime / duration)
-      waveSurfer.seekTo(newTime)
-      waveSurfer.seekAndCenter(newTime)
-      // console.log('audio time on ready state and playing', (currentTime / duration))
-
-    });
-
-    return () => waveSurfer.destroy()
-  }, []);
+  }, [data]);
 
 
   return (
@@ -93,6 +146,12 @@ export default function SingleMusic() {
             </div>
 
           </section>
+
+          {loading &&
+                <div className='container text-center'>
+                    <span class="loader"></span>
+                </div>
+            }
 
 
           <section className="text-center border-top border-bottom py-3 mb-4 card">
@@ -119,23 +178,23 @@ export default function SingleMusic() {
 
                   <form action="">
 
-                    <input className="star star-5" id="star-5" type="radio" name="star" />
+                    <input className="star star-5" id="star-5" type="radio" name="star" value="5" checked={rating == 5} onChange={handleChange} />
 
                     <label className="star star-5" htmlFor="star-5"></label>
 
-                    <input className="star star-4" id="star-4" type="radio" name="star" />
+                    <input className="star star-4" id="star-4" type="radio" name="star" value="4" checked={rating == 4} onChange={handleChange} />
 
                     <label className="star star-4" htmlFor="star-4"></label>
 
-                    <input className="star star-3" id="star-3" type="radio" name="star" />
+                    <input className="star star-3" id="star-3" type="radio" name="star" value="3" checked={rating == 3} onChange={handleChange} />
 
                     <label className="star star-3" htmlFor="star-3"></label>
 
-                    <input className="star star-2" id="star-2" type="radio" name="star" />
+                    <input className="star star-2" id="star-2" type="radio" name="star" value="2" checked={rating == 2} onChange={handleChange} />
 
                     <label className="star star-2" htmlFor="star-2"></label>
 
-                    <input className="star star-1" id="star-1" type="radio" name="star" />
+                    <input className="star star-1" id="star-1" type="radio" name="star" value="1" checked={rating == 1} onChange={handleChange} />
 
                     <label className="star star-1" htmlFor="star-1"></label>
 
@@ -157,13 +216,8 @@ export default function SingleMusic() {
                 </div>
                 <div className="col-md-9">
                   <div className="card-body">
-                    <h5 className="card-title">Magnifico</h5>
-                    <p className="card-text text-body">I dont have any good descrioption to talk about this mix. While i was creating it i had thought of the word TNT to mean that it is an exploseive mix tape but
-                      later on i came to change it to Magnifico which would come to hit me that i have named this mix item as some spectacular and am not so sure how the viewers or
-                      the fans are going to persieve it if not enjoy it haha. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                      but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-                      and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum..</p>
+                    <h5 className="card-title">{title}</h5>
+                    <p className="card-text text-body">{description}.</p>
                   </div>
                 </div>
               </div>
@@ -172,11 +226,11 @@ export default function SingleMusic() {
           </section>
 
 
-          {/* <section className="gradient-custom">
+          <section className="gradient-custom">
             <div className="container my-5 py-5">
               <div className="row d-flex justify-content-center">
 
-                <div className="col-md-12 col-lg-10 col-xl-10">
+                <div className="col-12">
                   <div className="card">
                     <div className="card-body p-4">
                       <h4 className="text-center mb-4 pb-2">{t("liked-the-mix-leave-comment")}</h4>
@@ -184,7 +238,7 @@ export default function SingleMusic() {
                       <div className="row">
                         <div className="col">
 
-                          <Comments commentsUrl="http://localhost:3004/comments" currentUserId="1" />
+                          <Comments currentMixName={title} currentUserId="1" currentMixId={mixId} />
 
                         </div>
                       </div>
@@ -195,8 +249,8 @@ export default function SingleMusic() {
 
               </div>
             </div>
-          </section> */}
-          
+          </section>
+
 
         </div>
 

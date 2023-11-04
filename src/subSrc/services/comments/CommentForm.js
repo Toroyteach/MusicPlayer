@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
+
+import endpoinUrl from "../api/base/endpointUrl";
+
+import appContext from "../context/appContext";
 
 const CommentForm = ({
     handleSubmit,
@@ -9,9 +13,15 @@ const CommentForm = ({
     hasCancelButton = false,
     handleCancel,
     initialText = "",
+    userPic,
 }) => {
 
-    //initiate tge translator
+    const {
+        userData: {
+            userImage,
+        },
+    } = useContext(appContext)
+
     const { t } = useTranslation();
 
     const [text, setText] = useState(initialText);
@@ -31,7 +41,7 @@ const CommentForm = ({
 
                 <div className="d-flex flex-start w-100">
                     <img className="rounded-circle shadow-1-strong me-3"
-                        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
+                        src={endpoinUrl + userImage} alt="avatar" width="40"
                         height="40" />
                     <div className="form-outline w-100">
                         <textarea className="form-control" id="textAreaExample" rows="4"

@@ -1,10 +1,20 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useContext } from 'react';
 // import { useAuth } from '../../hooks/useAuth';
 import { useChat } from '../../../../services/hooks/chatHooks/useChat'
 
+import appContext from '../../../../services/context/appContext';
+
+import endpoinUrl from '../../../../services/api/base/endpointUrl';
+
 function ChatList({ roomId }) {
     const containerRef = useRef(null);
-    //const { user } = useAuth();
+
+    const {
+        userData: {
+          firebaseUid,
+        },
+      } = useContext(appContext)
+
     const user = 'PvksVIX69lcl3KQKssH7784rVhC2'
     const chats = useChat(roomId);
 
@@ -28,7 +38,7 @@ function ChatList({ roomId }) {
                     <Chat
                         key={x.id}
                         chat={x}
-                        isOwnChat={x.userId === user}
+                        isOwnChat={x.userId === firebaseUid}
                     />
                 ))}
             </div>
@@ -38,7 +48,7 @@ function ChatList({ roomId }) {
 }
 
 function Chat({ chat, isOwnChat }) {
-    const { username, text } = chat;
+    const { username, text, userPic } = chat;
 
     return (
         <>
@@ -48,10 +58,10 @@ function Chat({ chat, isOwnChat }) {
 
                     <div className={['chat__conversation-board__message__person', isOwnChat && 'ownChat'].join(' ')}>
                         <div className="chat__conversation-board__message__person__avatar">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Monika Figi" />
+                            <img src={endpoinUrl+userPic} alt={username} />
                         </div>
-                        <span className="chat__conversation-board__message__person__nickname">Monika Figi</span>
                     </div>
+                        <span className="chat__conversation-board__message__person__nickname">{username}</span>
 
                     <div className="chat__conversation-board__message__context">
                         {/* <h4 className="sender">{isOwnChat ? 'You' : username}</h4> */}

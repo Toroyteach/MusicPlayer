@@ -5,21 +5,23 @@ import appContext from './appContext.js';
 
 //librarty from axios to fetch the data
 import axios from 'axios';
+import { useQuery } from 'react-query';
 
 //set the active language
 import '../../services/localization/i18n'
 
 import {
-  SET_CURRENT_SONG,
-  SET_TOGGLE_PLAYING,
-  SET_ACTIVE_PLAYLIST_ARRAY,
-  SET_RECENT_SEEK_TIME,
-  SET_MIX_ITEM_DURATION,
+  // SET_CURRENT_SONG,
+  // SET_TOGGLE_PLAYING,
+  // SET_ACTIVE_PLAYLIST_ARRAY,
+  // SET_RECENT_SEEK_TIME,
+  // SET_MIX_ITEM_DURATION,
   SET_MUSIC_APP_DARKMODE,
   SET_FAVOURITE_MIX_ITEM,
   SET_ASTRONOMY_PICTURE,
-  SET_ABLE_TO_PLAY_OR_LOADING,
-  SET_NOTIFIATION_TEXT_ITEM
+  // SET_ABLE_TO_PLAY_OR_LOADING,
+  SET_NOTIFIATION_TEXT_ITEM,
+  SET_ONLINE_USERS_LIST,
 } from './appState/stateTypes.js';
 
 import defaultState from './appState/defaultState.js';
@@ -44,7 +46,6 @@ const ApplicationState = (props) => {
   // initialize the reducer with the default state of the application
   const [state, dispatch] = useReducer(appReducer, defaultState)
 
-  //cookie to set the timeline seek items for mixes
   const cookies = new Cookies();
 
   // Set songs array
@@ -64,19 +65,19 @@ const ApplicationState = (props) => {
 
   // Set current song
   const SetCurrent = (id) => {
-    //set the dispatch playing to false
-    dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
+    // //set the dispatch playing to false
+    // dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
 
-    //add the correct method to fetch the correct file path
-    audio.src = state.musicSettings.activePlaylist[id].fileUrl;
+    // //add the correct method to fetch the correct file path
+    // audio.src = state.musicSettings.activePlaylist[id].fileUrl;
 
-    //set the secleted song in dispatch
-    dispatch({ type: SET_CURRENT_SONG, data: id })
+    // //set the secleted song in dispatch
+    // dispatch({ type: SET_CURRENT_SONG, data: id })
 
-    //change the document title dynamically to the mix name
-    const name = state.musicSettings.activePlaylist[id].title
+    // //change the document title dynamically to the mix name
+    // const name = state.musicSettings.activePlaylist[id].title
 
-    // document.title = name;
+    // // document.title = name;
 
   }
 
@@ -87,17 +88,15 @@ const ApplicationState = (props) => {
     // Check for random and repeat options
     // and set the next mix
     //set the dispatch playing to false
-    dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
+    // dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
 
     if (state.musicSettings.random) {
 
-      dispatch({ type: SET_CURRENT_SONG, data: ~~(Math.floor(Math.random() * state.musicSettings.activePlaylist.length)), })
+      // dispatch({ type: SET_CURRENT_SONG, data: ~~(Math.floor(Math.random() * state.musicSettings.activePlaylist.length)), })
 
     } else {
 
       if (state.musicSettings.repeat) {
-
-        console.log('repeat')
 
         SetCurrent(state.musicSettings.currentSong)
 
@@ -141,7 +140,6 @@ const ApplicationState = (props) => {
 
   }
 
-
   //load the image only once from Nasa and use reducer to main state of it.
   const NASA_API_KEY = '';
   const END_POINT = 'https://api.nasa.gov/planetary/apod?api_key=aQK0MCbvf5b9EN5j1ZSr0mKnxKH3ZAB9VLvhbit0';
@@ -162,7 +160,7 @@ const ApplicationState = (props) => {
   //effect to make theme state on load
   useEffect(() => {
 
-    if (state.appSettings.appDarkMode) {
+    if (state.appSettings.appDarkMode === true || state.appSettings.appDarkMode === "true") {
 
       document.body.classList.add('dark-version');
 
@@ -183,7 +181,6 @@ const ApplicationState = (props) => {
 
   const [cookieSeekTime, setCookieSeekTime] = useState(10);
 
-
   //effect to handle changes to the current song including errors and setting of cookies and any audio issues
   useEffect(() => {
 
@@ -191,15 +188,16 @@ const ApplicationState = (props) => {
     SetCurrent(state.musicSettings.currentSong)
 
     //loop through the favourite list if match dispatch favourite icon else none
-    const result = state.userData.favourite.favouriteItems.find((match) => match.id === state.musicSettings.activePlaylist[state.musicSettings.currentSong].id)
+    // const result = state.userData.favourite.favouriteItems.find((match) => match.id === state.musicSettings.activePlaylist[state.musicSettings.currentSong].id)
 
     //dispatch set favourite icon to true
-    dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: result ? true : false })
+    // dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: result ? true : false })
 
     //dispatch the the browser is loading the music item.
-    audio.onloadstart = () => {
-      dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
-    }
+    //dispatch this when loading the next music or not intenret
+    // audio.onloadstart = () => {
+    //   dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
+    // }
 
     //
     audio.onplaying = () => {
@@ -213,24 +211,25 @@ const ApplicationState = (props) => {
       setCurrentTime(audio.currentTime)
 
       //if ((Math.trunc(audio.currentTime) % 60 === 0)) {
-        console.log(audio.currentTime)
-        //set the cookie here
-        let time = audio.currentTime
+      console.log(audio.currentTime)
+      //set the cookie here
+      let time = audio.currentTime
 
-        const date = new Date()
-        date.setFullYear(date.getFullYear() + 1)
+      const date = new Date()
 
-        cookies.set('mixPreviousTimeline', time, { path: '/', secure: true, sameSite: 'none', expires: date });
+      date.setFullYear(date.getFullYear() + 1)
+
+      cookies.set('mixPreviousTimeline', time, { path: '/', secure: true, sameSite: 'none', expires: date });
       //}
 
-      dispatch({ type: SET_RECENT_SEEK_TIME, data: audio.currentTime })
+      // dispatch({ type: SET_RECENT_SEEK_TIME, data: audio.currentTime })
     }
 
     audio.oncanplay = () => {
 
       setDuration(audio.duration)
-      dispatch({ type: SET_MIX_ITEM_DURATION, data: audio.duration })
-      dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
+      // dispatch({ type: SET_MIX_ITEM_DURATION, data: audio.duration })
+      // dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
 
     }
 
@@ -312,21 +311,21 @@ const ApplicationState = (props) => {
   return (
     <appContext.Provider
       value={{
-        currentSong: state.musicSettings.currentSong,
-        activePlaylist: state.musicSettings.activePlaylist,
-        repeat: state.musicSettings.repeat,
-        random: state.musicSettings.random,
-        playing: state.musicSettings.playing,
+        // currentSong: state.musicSettings.currentSong,
+        // activePlaylist: state.musicSettings.activePlaylist,
+        // repeat: state.musicSettings.repeat,
+        // random: state.musicSettings.random,
+        // playing: state.musicSettings.playing,
         astronomyPicture: state.appSettings.astronomyPicture,
-        volume: state.musicSettings.volume,
-        duration: state.musicSettings.duration,
-        audioObject: audio,
-        currentTime: currentTime,
+        // volume: state.musicSettings.volume,
+        // duration: state.musicSettings.duration,
+        // audioObject: audio,
+        // currentTime: currentTime,
         stateDispatch: dispatch,
-        handleForward1Minute,
-        handleback30,
-        handleProgress,
-        SetCurrent,
+        // handleForward1Minute,
+        // handleback30,
+        // handleProgress,
+        // SetCurrent,
         ...state,
       }}
     >

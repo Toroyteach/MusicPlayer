@@ -2,25 +2,20 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "./useAuth";
 
 //read users cookies
-import { useCookies } from "react-cookie";
+import { Cookies } from "react-cookie";
 
 const RequireAuth = () => {
     const { auth } = useAuth();
     const location = useLocation();
+    const cookies = new Cookies();
 
-    const [cookies, removeCookie ] = useCookies(["user"]);
-
-    if (!auth?.user && !cookies.user) {
-
-        //removeCookie("user");
+    if (!auth?.user && ((cookies.get('userToken') === 'null' && cookies.get('userRefreshToken') === 'null') || !cookies.get('userToken') || !cookies.get('userRefreshToken'))) {
 
         return <Navigate to='/login' state={{ from: location }} replace />
 
-    } else {
-
-        return <Outlet />
-
     }
+
+    return <Outlet />;
 
 }
 
