@@ -320,8 +320,8 @@ export default function Footer() {
             <div className="copyright text-center text-sm text-muted text-lg-start">
               ©
               {t("created-with")} <i className="fa fa-heart"></i> {t("by")}
-              <a href="https://toroyteach.com" className="font-weight-bold" target="_blank" rel="noreferrer"> Toroyteach </a>
-              {t("for-a-cool-fan-like-you")} {username}.
+              <a href="https://toroyteach.com" target="_blank" rel="noreferrer"> Toroyteach </a>
+              {t("for-a-cool-fan-like-you")} <span className='font-weight-bold'>{username}</span>.
             </div>
           </div>
 

@@ -46,6 +46,7 @@ import SignUp from './subSrc/services/authContext/Auth/SignUp.js';
 import Missing from './subSrc/services/authContext/Auth/Missing.js';
 import GuestPlayer from './subSrc/pages/Guest/GuestPlayer.js';
 import MusicContextState from './subSrc/services/music/MusicContextState';
+import AdminAuth from './subSrc/services/authContext/AdminAuth';
 
 // import useAuth from "./useAuth";
 
@@ -100,13 +101,15 @@ function MusicApplication() {
 
 
                             {/* ADMIN PAGES */}
-                            <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
-                            {/* <Route path="/admin/messages" element={<AdminMessages />} /> */}
-                            <Route path="/admin/map" element={<Map />} />
-                            {/* <Route path="/admin/add-mix" element={<UploadMix />} />
-                            <Route path="/admin/add-quiz" element={<UploadQuiz />} /> */}
-                            <Route path="/admin/comments" element={<Comments />} />
-                            {/* <Route path="/admin/users" element={<UsersList />} /> */}
+                            <Route element={<AdminAuth />}>
+                                <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
+                                {/* <Route path="/admin/messages" element={<AdminMessages />} /> */}
+                                <Route path="/admin/map" element={<Map />} />
+                                {/* <Route path="/admin/add-mix" element={<UploadMix />} />
+                                <Route path="/admin/add-quiz" element={<UploadQuiz />} /> */}
+                                <Route path="/admin/comments" element={<Comments />} />
+                                {/* <Route path="/admin/users" element={<UsersList />} /> */}
+                            </Route>
 
 
                         </Route>
@@ -121,7 +124,7 @@ function MusicApplication() {
                     <Route path='*' element={<Missing />} />
 
                 </Routes>
-                
+
             </MusicContextState>
 
         </ApplicationState>

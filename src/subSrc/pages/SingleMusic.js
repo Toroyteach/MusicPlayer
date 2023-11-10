@@ -55,6 +55,8 @@ export default function SingleMusic() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
 
+  const [allowCommentsOnMix, setAllowCommentsOnMix] = useState(true)
+
   const { data, loading, error } = useQuery(`/comments/singleMixData/${mixId}`, 'GET');
 
   const handleChange = e => {
@@ -120,7 +122,8 @@ export default function SingleMusic() {
         setTitle(data.data.mixItemDoc.title)
         setDescription(data.data.mixItemDoc.description)
         setRating(data.data.ratingsDoc ? data.data.ratingsDoc.rating : 0)
-        
+
+        setAllowCommentsOnMix(data.data.mixItemDoc.commentsEnabled)
       }
     }
 
@@ -148,10 +151,10 @@ export default function SingleMusic() {
           </section>
 
           {loading &&
-                <div className='container text-center'>
-                    <span class="loader"></span>
-                </div>
-            }
+            <div className='container text-center'>
+              <span class="loader"></span>
+            </div>
+          }
 
 
           <section className="text-center border-top border-bottom py-3 mb-4 card">
@@ -226,30 +229,32 @@ export default function SingleMusic() {
           </section>
 
 
-          <section className="gradient-custom">
-            <div className="container my-5 py-5">
-              <div className="row d-flex justify-content-center">
+          {allowCommentsOnMix &&
+            <section className="gradient-custom">
+              <div className="container my-5 py-5">
+                <div className="row d-flex justify-content-center">
 
-                <div className="col-12">
-                  <div className="card">
-                    <div className="card-body p-4">
-                      <h4 className="text-center mb-4 pb-2">{t("liked-the-mix-leave-comment")}</h4>
+                  <div className="col-12">
+                    <div className="card">
+                      <div className="card-body p-4">
+                        <h4 className="text-center mb-4 pb-2">{t("liked-the-mix-leave-comment")}</h4>
 
-                      <div className="row">
-                        <div className="col">
+                        <div className="row">
+                          <div className="col">
 
-                          <Comments currentMixName={title} currentUserId="1" currentMixId={mixId} />
+                            <Comments currentMixName={title} currentUserId="1" currentMixId={mixId} />
 
+                          </div>
                         </div>
                       </div>
+
                     </div>
-
                   </div>
-                </div>
 
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          }
 
 
         </div>

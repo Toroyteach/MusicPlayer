@@ -83,7 +83,8 @@ export default function Home() {
       firebaseUid,
       username,
       allowOnlineStatus,
-      userImage
+      userImage,
+      role,
     },
     appSettings: {
       notificationText,
@@ -345,6 +346,12 @@ export default function Home() {
             domain: "localhost"
           });
 
+          removeCookie("activePlaylist", {
+            path: "/",
+            secure: true,
+            sameSite: true,
+            domain: 'localhost'
+          });
 
 
           navigate("/login");
@@ -497,7 +504,6 @@ export default function Home() {
       stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: data.data.favourite.favouriteData })
     }
 
-
   }, [data])
 
   useEffect(() => {
@@ -508,7 +514,6 @@ export default function Home() {
       musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: musicListData.data.mix.mixData })
 
     }
-
 
   }, [musicListData])
 
@@ -591,17 +596,40 @@ export default function Home() {
                   <span className="nav-link-text ms-1">{t("logout")}</span>
                 </a>
               </li>
-              <li className="nav-item mt-3">
-                <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin Pages</h6>
-              </li>
-              <li className="nav-item">
-                <CustomLink to="/admin/dashboard" onClick={navigationTimeOut}>
-                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i className="material-icons opacity-10">dashboard</i>
-                  </div>
-                  <span className="nav-link-text ms-1">Dashboard</span>
-                </CustomLink>
-              </li>
+
+
+              {role === "Admin" && (
+                <>
+                  <li className="nav-item mt-3">
+                    <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin Pages</h6>
+                  </li>
+                  <li className="nav-item">
+                    <CustomLink to="/admin/dashboard" onClick={navigationTimeOut}>
+                      <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i className="material-icons opacity-10">dashboard</i>
+                      </div>
+                      <span className="nav-link-text ms-1">Dashboard</span>
+                    </CustomLink>
+                  </li>
+                  <li className="nav-item">
+                    <CustomLink to="/admin/comments" onClick={navigationTimeOut}>
+                      <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i className="material-icons opacity-10">assignment</i>
+                      </div>
+                      <span className="nav-link-text ms-1">Comments</span>
+                    </CustomLink>
+                  </li>
+                  <li className="nav-item">
+                    <CustomLink to="/admin/map" onClick={navigationTimeOut}>
+                      <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i className="material-icons opacity-10">people</i>
+                      </div>
+                      <span className="nav-link-text ms-1">FanBase</span>
+                    </CustomLink>
+                  </li>
+                </>
+              )}
+
               {/* <li className="nav-item">
               <CustomLink to="/admin/messages" onClick={navigationTimeOut}>
                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -634,22 +662,6 @@ export default function Home() {
                 <span className="nav-link-text ms-1">Add Mix</span>
               </CustomLink>
             </li> */}
-              <li className="nav-item">
-                <CustomLink to="/admin/comments" onClick={navigationTimeOut}>
-                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i className="material-icons opacity-10">assignment</i>
-                  </div>
-                  <span className="nav-link-text ms-1">Comments</span>
-                </CustomLink>
-              </li>
-              <li className="nav-item">
-                <CustomLink to="/admin/map" onClick={navigationTimeOut}>
-                  <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i className="material-icons opacity-10">people</i>
-                  </div>
-                  <span className="nav-link-text ms-1">FanBase</span>
-                </CustomLink>
-              </li>
             </ul>
           </div>
 

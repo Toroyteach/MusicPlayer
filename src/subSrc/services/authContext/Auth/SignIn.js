@@ -124,24 +124,32 @@ export default function SignIn() {
       apiClient.post('/auth/login', { password, email })
         .then(response => {
 
+          const expirationTime = new Date();
+          expirationTime.setTime(expirationTime.getTime() + 7 * 24 * 60 * 60 * 1000); //Seven Days
+
           setLoading(false)
 
           setCookie("userToken", response.data.accessToken, {
+            expires: expirationTime,
             path: "/",
             secure: true,
             sameSite: true,
           });
 
           setCookie("userRefreshToken", response.data.refreshToken, {
+            expires: expirationTime,
             path: "/",
             secure: true,
             sameSite: true,
           });
 
-          setAuth({ email, password });
+          const role = response.data.userData.appData.role
+
+          setAuth({ email, role });
 
           stateDispatch({ type: SET_USER_FIREBASE_UUID, data: response.data.userData.firebaseUid })
           setCookie("firebaseUid", response.data.userData.firebaseUid, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -149,6 +157,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_USERNAME, data: response.data.userData.userBio.username })
           setCookie("username", response.data.userData.userBio.username, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -156,6 +165,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_FIRSTNAME, data: response.data.userData.userBio.firstname })
           setCookie("firstname", response.data.userData.userBio.firstname, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -163,6 +173,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_LASTNAME, data: response.data.userData.userBio.lastname })
           setCookie("lastname", response.data.userData.userBio.lastname, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -170,6 +181,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_EXCERPT, data: response.data.userData.userBio.excerpt })
           setCookie("excerpt", response.data.userData.userBio.excerpt, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -177,6 +189,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_EMAIL, data: response.data.userData.userBio.email })
           setCookie("email", response.data.userData.userBio.email, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -184,6 +197,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_NUMBER, data: response.data.userData.userBio.phone })
           setCookie("number", response.data.userData.userBio.phone, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -191,6 +205,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_USERIMAGE, data: response.data.userData.userBio.photoUrl ?? 'imageavatar.png' })
           setCookie("image", response.data.userData.userBio.photoUrl ?? 'imageavatar.png', {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -198,6 +213,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: response.data.userData.appData.totalMinutesListenec })
           setCookie("minutesListened", response.data.userData.appData.totalMinutesListenec, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -205,13 +221,15 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: response.data.userData.appData.totalPlaysCount })
           setCookie("playsCount", response.data.userData.appData.totalPlaysCount, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
           });
 
-          stateDispatch({ type: SET_USER_ROLE, data: response.data.userData.userBio.role })
-          setCookie("role", response.data.userData.appData.role, {
+          stateDispatch({ type: SET_USER_ROLE, data: response.data.userData.appData.role })
+          setCookie("role", response.data.userData.userBio.role, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -219,6 +237,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: response.data.userData.appData.allowOnlineStatus })
           setCookie("onlineStatus", response.data.userData.appData.allowOnlineStatus, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -226,6 +245,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: response.data.userData.appData.allowComments })
           setCookie("showOthersComment", response.data.userData.appData.allowComments, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -233,6 +253,7 @@ export default function SignIn() {
 
           stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: response.data.userData.appData.appDarkMode })
           setCookie("appDarkMode", response.data.userData.appData.appDarkMode, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -241,6 +262,7 @@ export default function SignIn() {
 
           musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: response.data.userData.appData.randomPlayback })
           setCookie("randomPlayback", response.data.userData.appData.randomPlayback, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -248,6 +270,7 @@ export default function SignIn() {
 
           musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: response.data.userData.appData.replayPlayback })
           setCookie("repeatPlayback", response.data.userData.appData.replayPlayback, {
+            expires: expirationTime, 
             path: "/",
             secure: true,
             sameSite: true,
@@ -291,7 +314,7 @@ export default function SignIn() {
         .catch(error => {
 
           setLoading(false)
-          setError("Your Credentials Do not Match our records")
+          setError("Error Accessing with your Credentials")
 
 
         });
@@ -345,7 +368,6 @@ export default function SignIn() {
                     <form role="form" className="text-start" onSubmit={handleSubmit}>
                       <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                       <div className="input-group input-group-outline my-3">
-
                         <input placeholder='Email or Username or Number' onChange={(e) => setEmail(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="email" className="form-control" required />
                       </div>
                       <div className="input-group input-group-outline mb-3">
@@ -362,7 +384,7 @@ export default function SignIn() {
                           <span className="visually-hidden">Loading...</span>
                         </div>}
                       </div>
-                      <p className="mt-4 text-sm text-center">
+                      <p className="mt-4 text-sm text-center text-dark">
                         Don't have an account?
                         <Link to="/signup">
                           <a className="text-primary text-gradient font-weight-bold">Dont Worry. Sign Up Here</a>

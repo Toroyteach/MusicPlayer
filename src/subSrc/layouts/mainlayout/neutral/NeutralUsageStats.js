@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 
+import Cookies from 'universal-cookie'
 
 //user details context
 import appContext from '../../../services/context/appContext.js'
@@ -7,10 +8,14 @@ import appContext from '../../../services/context/appContext.js'
 import imageBadge from '../../../assets/users/img/small-logos/logo-xd.svg'
 import userImageTable from '../../../assets/users/img/team-1.jpg'
 
-import useQuery from '../../../services/api/base/useQuery.js'
+// import useQuery from '../../../services/api/base/useQuery.js'
+
+import { useQuery } from 'react-query'
 
 //react translator hook
 import { useTranslation } from "react-i18next";
+
+import apiEndUrl from '../../../services/api/base/apiEndurl.js'
 
 export default function NeutralUsageStats() {
 
@@ -39,6 +44,9 @@ export default function NeutralUsageStats() {
     //initiate tge translator
     const { t } = useTranslation();
 
+    const cookies = new Cookies();
+    const accessToken = cookies.get('userToken')
+
     const [history, setHistory] = useState([]);
     const [historyCount, setHistoryCount] = useState([]);
 
@@ -53,7 +61,21 @@ export default function NeutralUsageStats() {
 
     const [mixItems, setMixItems] = useState([]);
 
-    const { data, loading, error } = useQuery(`/profile/userDashboard/${firebaseUid}`, 'GET');
+    //  const { data, loading, error } = useQuery(`/profile/userDashboard/${firebaseUid}`, 'GET');
+
+    const getUserDashboardDara = async () => {
+        const header = {
+            headers: { Authorization: `Bearer ${accessToken}` }
+        }
+        const res = await fetch(`${apiEndUrl}profile/userDashboard/${firebaseUid}`, header);
+        const data = await res.json()
+        return data;
+    };
+
+    const { isLoading, data } = useQuery('fetchDashboardData', getUserDashboardDara, {
+        refetchOnWindowFocus: false,
+        enabled: true,
+    },);
 
     useEffect(() => {
         if (data) {
@@ -172,7 +194,7 @@ export default function NeutralUsageStats() {
                 </div>
 
             </div>
-            {loading &&
+            {isLoading &&
                 <div className='container text-center'>
                     <span class="loader"></span>
                 </div>

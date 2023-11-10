@@ -38,7 +38,7 @@ const MusicContextState = (props) => {
     const accessToken = cookies.get('userToken')
     const [queue, setQueue] = useState(new Queue());
 
-    const [audioContext, setAudioContext] = useState(new window.AudioContext || window.webkitAudioContext);
+    const [audioContext, setAudioContext] = useState();
     const [currentIndex, setCurrentIndex] = useState(1);
     const [totalChunks, setTotalChunks] = useState(17);
     const [endPlayback, setEndPlayback] = useState(false);
@@ -100,6 +100,9 @@ const MusicContextState = (props) => {
 
     const togglePlaying = () => {
 
+        if (!audioContext) {
+            return
+        }
         state.musicSettings.playing ? audioContext.resume() : audioContext.suspend()
 
     }
@@ -152,6 +155,14 @@ const MusicContextState = (props) => {
 
     useEffect(() => {
 
+        if (!audioContext) {
+            setAudioContext(new window.AudioContext || window.webkitAudioContext)
+        }
+
+    }, [audioContext])
+
+    useEffect(() => {
+
         if (audioData) {
             queue.enqueue(audioData)
         }
@@ -167,6 +178,8 @@ const MusicContextState = (props) => {
         if (currentIndex === totalChunks) {
             setTimeout(() => {
                 audioContext.suspend()
+
+                document.title = "Toroyteach Mix Application";
             }, 8000);
         }
 

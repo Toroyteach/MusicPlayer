@@ -1,12 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 //user details context
 import appContext from '../../services/context/appContext.js'
 
-//import sample user image
-import userImageTable1 from '../../assets/users/img/team-1.jpg';
-import userImageTable2 from '../../assets/users/img/team-2.jpg';
-import userImageTable3 from '../../assets/users/img/team-3.jpg';
+import Cookies from 'universal-cookie';
+
+import apiClient from '../../services/api/base/apiClient.js';
+
+import endpoinUrl from '../../services/api/base/endpointUrl.js';
+
+import useQuery from '../../services/api/base/useQuery.js';
+
 
 //get the reducer types to help update the applcation states
 import {
@@ -21,7 +25,8 @@ import {
 
 } from '../../services/context/appState/stateTypes';
 
-import warningIcon from '../../layouts/components/toast/toastSvg/warning.svg';
+import warningIcon from '../../layouts/components/toast/toastSvg/warning.svg'
+import checkIcon from '../../layouts/components/toast/toastSvg/check.svg'
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
@@ -37,13 +42,8 @@ export default function AdminDashboard() {
 
   const {
     appSettings: {
-      cumulativeMinutesListened,
-      cumulativeDownloaded,
-      cumulativePlays,
       cummulativeQuizeAttempts,
-      usersCount,
       shazamCounts,
-      highestFavourite,
       cumulativeComments,
       visualizerActive,
       astronomyActive,
@@ -60,6 +60,24 @@ export default function AdminDashboard() {
 
   //initiate tge translator
   const { t } = useTranslation();
+
+  const cookies = new Cookies();
+  const accessToken = cookies.get('userToken')
+  const [loadingg, setLoadingg] = useState(false);
+
+  const { data, loading, error, refetch } = useQuery(`/admin/getAppSettingsData/`, 'GET');
+
+  const [usersCount, setUsersCount] = useState();
+  const [cumulativeMinutesListened, setCumulativeMinutesListened] = useState();
+  const [cumulativeDownloaded, setCumulativeDownloaded] = useState();
+  const [cumulativePlays, setCumulativePlays] = useState();
+  const [highestFavourite, setHighestFavourite] = useState();
+  const [favourited, setFavourited] = useState();
+  const [totalComments, setTotalComments] = useState();
+
+  const [usersList, setUsersList] = useState([])
+  const [mixStat, setMixStat] = useState()
+
 
   //chart data set
   const state = {
@@ -127,16 +145,47 @@ export default function AdminDashboard() {
   //update enable global dowbload option
   const updateEnableGlobalDownload = () => {
 
-    stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
-
-    let data = {
-      type: 'Warning',
-      text: 'Successfully ' + (!downloadActive ? 'Enabled' : 'Disabled') + ' Download Option for the application',
-      icon: warningIcon,
-      bgColour: '#f0ad4e',
+    const downloadStatusData = {
+      mixDownload: downloadActive ? false : true
     }
 
-    dispatchNotification(data)
+    setLoadingg(true)
+    //Make post request to change the status
+    apiClient.patch('/admin/updateApplicationSettings', downloadStatusData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoadingg(false)
+        if (response.data.status === 'succes') {
+          stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
+
+          let data = {
+            type: 'Warning',
+            text: 'Successfully ' + (!downloadActive ? 'Enabled' : 'Disabled') + ' Download Option for the application',
+            icon: warningIcon,
+            bgColour: '#f0ad4e',
+          }
+
+          dispatchNotification(data)
+        }
+
+      })
+      .catch(error => {
+
+        setLoadingg(false)
+        let data = {
+          type: t("error"),
+          text: t("error-updateing-your-settings") + " " + (!downloadActive ? t("enabled") : t("disabled")),
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
 
   }
 
@@ -159,17 +208,129 @@ export default function AdminDashboard() {
   //update enable see other users online status
   const updateEnableGlobalUsersToViewOtherUsersOnlineActivity = () => {
 
-    stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
-
-    let data = {
-      type: 'Warning',
-      text: 'Successfully ' + (!viewOtherUsers ? 'Enabled' : 'Disabled') + ' View Online Users for the Entire application',
-      icon: warningIcon,
-      bgColour: '#f0ad4e',
+    const onlineStatusData = {
+      viewOtherUsers: viewOtherUsers ? false : true
     }
 
-    dispatchNotification(data)
+    setLoadingg(true)
+    //Make post request to change the status
+    apiClient.patch('/admin/updateApplicationSettings', onlineStatusData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
 
+        setLoadingg(false)
+        if (response.data.status === 'succes') {
+          stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
+
+          let data = {
+            type: 'Warning',
+            text: 'Successfully ' + (!viewOtherUsers ? 'Enabled' : 'Disabled') + ' View Online Users for the Entire application',
+            icon: warningIcon,
+            bgColour: '#f0ad4e',
+          }
+
+          dispatchNotification(data)
+        }
+
+      })
+      .catch(error => {
+
+        setLoadingg(false)
+        let data = {
+          type: t("error"),
+          text: t("error-updateing-your-settings") + " " + (!viewOtherUsers ? t("enabled") : t("disabled")),
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
+
+
+  }
+
+
+  const getUsersRList = () => {
+    apiClient.get('/admin/allUsers', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoadingg(false)
+        if (response.data.status === 'succes') {
+
+          setUsersList(response.data.data)
+
+        }
+
+      })
+      .catch(error => {
+
+        let data = {
+          type: t("error"),
+          text: "Error Getting Users List",
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
+  }
+
+  const enableDisableUsers = (value) => {
+
+    const userFirebaseId = value.id
+
+    const userStatusData = {
+      status: value.status ? false : true
+    }
+
+    setLoadingg(true)
+    //Make post request to change the status
+    apiClient.post(`/admin/disableUser/${userFirebaseId}`, userStatusData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoadingg(false)
+        if (response.data.status === 'succes') {
+
+          getUsersRList()
+
+          let data = {
+            type: t("success"),
+            text: "Successuly",
+            icon: checkIcon,
+            bgColour: '#5cb85c',
+          }
+
+          dispatchNotification(data)
+        }
+
+
+      })
+      .catch(error => {
+
+        setLoadingg(false)
+        let data = {
+          type: t("error"),
+          text: "Errir Disabling User",
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
   }
 
   //dispatch all notiifcations from on place
@@ -186,6 +347,102 @@ export default function AdminDashboard() {
     stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
   }
+
+  useEffect(() => {
+
+    if (data) {
+      if (data.status === 'succes') {
+        stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: data.data.appData.mixDownload })
+        stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: data.data.appData.viewOtherUsers })
+
+        setUsersCount(data.data.appData.usersCount)
+        setCumulativeMinutesListened(data.data.appData.totalMinutesListened)
+        setCumulativeDownloaded(data.data.appData.totalDownloaded)
+        setCumulativePlays(data.data.appData.totalPlays)
+        setHighestFavourite(data.data.appData.highestFavourites)
+        setFavourited(data.data.appData.mostFavourite)
+        setTotalComments(data.data.appData)
+
+        // set data for the music mix Graph
+        // if (data.data.mixStatData.length > 0) {
+
+        //   const mixListItems = []
+        //   const mixPlaysItems = []
+        //   const mixDownloadedItems = []
+        //   const mixListFavouriteItems = []
+        //   const uniqueItemsSet = new Set();
+
+        //   data.data.mixStatData.forEach(item => {
+
+        //     if (!uniqueItemsSet.has(item.id)) {
+
+        //       uniqueItemsSet.add(item.id);
+
+        //       mixListItems.push({
+        //         commentsEnabled: item.commentsEnabled,
+        //         mixId: item.mixId,
+        //         status: item.status,
+        //         title: item.title,
+        //         genre: item.genre,
+        //         songsCount: item.songsCount,
+        //         duration: item.duration,
+        //       });
+
+        //       mixPlaysItems.push({
+        //         mixPlaysItems: item.playCount,
+        //       });
+
+        //       mixDownloadedItems.push({
+        //         mixDownloadedItems: item.downloaded,
+        //       });
+
+        //       mixListFavouriteItems.push({
+        //         mixListFavouriteItems: item.favourited,
+        //       });
+        //     }
+
+        //   })
+
+
+        //   console.log(data.data.mixStatData)
+
+        //   const graphStateData = {
+        //     labels: mixListItems,
+        //     datasets: [{
+        //       label: 'Plays',
+        //       backgroundColor: 'rgba(35,192,192,1)',
+        //       borderColor: 'rgba(0,0,0,1)',
+        //       borderWidth: 2,
+        //       data: mixPlaysItems
+        //     },
+        //     {
+        //       label: 'Downloaded',
+        //       backgroundColor: 'rgba(75,192,192,1)',
+        //       borderColor: 'rgba(0,0,0,1)',
+        //       borderWidth: 2,
+        //       data: mixDownloadedItems
+        //     },
+        //     {
+        //       label: 'Favourites Count',
+        //       backgroundColor: 'rgba(55,192,192,1)',
+        //       borderColor: 'rgba(0,0,0,1)',
+        //       borderWidth: 2,
+        //       data: mixListFavouriteItems
+        //     }]
+        //   };
+
+        //   setMixStat(graphStateData)
+        // }
+
+      }
+    }
+
+  }, [data])
+
+
+  useEffect(() => {
+    getUsersRList()
+  }, [])
 
 
   return (
@@ -381,6 +638,12 @@ export default function AdminDashboard() {
 
       </div>
 
+      {(loadingg || loading) &&
+        <div className='container text-center'>
+          <span class="loader"></span>
+        </div>
+      }
+
       <div className='row mt-4'>
         <div className='col-lg-6 col-md-6 mt-0 mb-4'>
           <div className="row">
@@ -397,152 +660,38 @@ export default function AdminDashboard() {
                       <thead>
                         <tr>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username</th>
+                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Role</th>
                           <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Joined</th>
                           <th className="text-secondary opacity-7"></th>
                         </tr>
                       </thead>
                       <tbody>
 
-                        <tr>
-                          <td>
-                            <div className="d-flex px-2 py-1">
-                              <div>
-                                <img src={userImageTable1} className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
-                              </div>
-                              <div className="d-flex flex-column justify-content-center">
-                                <h6 className="mb-0 text-sm">Anthony Toroyteach</h6>
-                                <p className="text-xs text-secondary mb-0">john@creative-tim.com</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <p className="text-xs font-weight-bold mb-0">Admin</p>
-                          </td>
-                          <td className="align-middle text-center text-sm">
-                            <span className="badge badge-sm bg-gradient-success">Online</span>
-                          </td>
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                        </tr>
+                        {(usersList || []).map((user, i) => (
 
-                        <tr>
-                          <td>
-                            <div className="d-flex px-2 py-1">
-                              <div>
-                                <img src={userImageTable3} className="avatar avatar-sm me-3 border-radius-lg" alt="user3" />
+                          <tr key={i}>
+                            <td>
+                              <div className="d-flex px-2 py-1">
+                                <div>
+                                  <img src={(user.photoUrl) ? endpoinUrl + user.photoUrl : " "} className="avatar avatar-sm me-3 border-radius-lg" alt={user.lastname} />
+                                </div>
+                                <div className="d-flex flex-column justify-content-center">
+                                  <h6 className="mb-0 text-sm">{user.firstname +" "+ user.lastname}</h6>
+                                  <p className="text-xs text-secondary mb-0">{user.email}</p>
+                                </div>
                               </div>
-                              <div className="d-flex flex-column justify-content-center">
-                                <h6 className="mb-0 text-sm">Santa Clause</h6>
-                                <p className="text-xs text-secondary mb-0">santa@creativetim.com</p>
+                            </td>
+                            <td>
+                              <p className="text-xs font-weight-bold mb-0">{user.role}</p>
+                            </td>
+                            <td className="align-middle text-center text-sm">
+                              <div className="form-switch">
+                                <input onChange={() => enableDisableUsers({ id: user.uid, status: user.disabled })} className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={(user.disabled) ? true : false} />
                               </div>
-                            </div>
-                          </td>
-                          <td>
-                            <p className="text-xs font-weight-bold mb-0">User</p>
-                          </td>
-                          <td className="align-middle text-center text-sm">
-                            <span className="badge badge-sm bg-gradient-success">Online</span>
-                          </td>
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">19/09/17</span>
-                          </td>
-                        </tr>
+                            </td>
+                          </tr>
 
-
-                        <tr>
-                          <td>
-                            <div className="d-flex px-2 py-1">
-                              <div>
-                                <img src={userImageTable2} className="avatar avatar-sm me-3 border-radius-lg" alt="user2" />
-                              </div>
-                              <div className="d-flex flex-column justify-content-center">
-                                <h6 className="mb-0 text-sm">Emms Kachems</h6>
-                                <p className="text-xs text-secondary mb-0">ems@creativetim.com</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <p className="text-xs font-weight-bold mb-0">User</p>
-                          </td>
-                          <td className="align-middle text-center text-sm">
-                            <span className="badge badge-sm bg-gradient-secondary">Offline</span>
-                          </td>
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">11/01/19</span>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div className="d-flex px-2 py-1">
-                              <div>
-                                <img src={userImageTable1} className="avatar avatar-sm me-3 border-radius-lg" alt="user3" />
-                              </div>
-                              <div className="d-flex flex-column justify-content-center">
-                                <h6 className="mb-0 text-sm">Biyenda Scofield</h6>
-                                <p className="text-xs text-secondary mb-0">brenda@creativetim.com</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <p className="text-xs font-weight-bold mb-0">User</p>
-                          </td>
-                          <td className="align-middle text-center text-sm">
-                            <span className="badge badge-sm bg-gradient-success">Online</span>
-                          </td>
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">19/09/17</span>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div className="d-flex px-2 py-1">
-                              <div>
-                                <img src={userImageTable3} className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
-                              </div>
-                              <div className="d-flex flex-column justify-content-center">
-                                <h6 className="mb-0 text-sm">Rose Toroyteach</h6>
-                                <p className="text-xs text-secondary mb-0">rose@creativetim.com</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <p className="text-xs font-weight-bold mb-0">User</p>
-                          </td>
-                          <td className="align-miuserImageTable1ddle text-center text-sm">
-                            <span className="badge badge-sm bg-gradient-success">Online</span>
-                          </td>
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div className="d-flex px-2 py-1">
-                              <div>
-                                <img src={userImageTable1} className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
-                              </div>
-                              <div className="d-flex flex-column justify-content-center">
-                                <h6 className="mb-0 text-sm">Sam Toroyteach</h6>
-                                <p className="text-xs text-secondary mb-0">sam@creativetim.com</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <p className="text-xs font-weight-bold mb-0">User</p>
-                          </td>
-                          <td className="align-middle text-center text-sm">
-                            <span className="badge badge-sm bg-gradient-success">Online</span>
-                          </td>
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                        </tr>
+                        ))}
 
                       </tbody>
                     </table>
@@ -603,12 +752,12 @@ export default function AdminDashboard() {
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable users to see what others are Listening</label>
                           </div>
                         </li>
-                        <li className="list-group-item border-0 px-0">
+                        {/* <li className="list-group-item border-0 px-0">
                           <div className="form-check form-switch ps-0">
                             <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" />
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Direct Commenting</label>
                           </div>
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                   </div>

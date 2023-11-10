@@ -45,7 +45,7 @@ const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
     const { data, loading, error } = useQuery(`/comments/singleMix/${currentMixId}`, 'GET');
     const [load, setLoad] = useState(false);
 
-    const rootComments = backendComments.filter(
+    const rootComments = (backendComments || []).filter(
         (backendComment) => backendComment.parentId === null
     );
 
@@ -176,7 +176,87 @@ const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
     useEffect(() => {
         if (data) {
             if (data.status === 'success') {
-                setBackendComments(data.data);
+
+                if (allowComments) {
+
+                    const newArray = []
+                    const uniqueItemsSet = new Set();
+
+                    data.data.forEach(item => {
+
+                        if (!uniqueItemsSet.has(item.id)) {
+
+                            if(item.publicView === false){
+                                return
+                            }
+
+                            if(item.status != "allow"){
+                                return
+                            }
+
+                            uniqueItemsSet.add(item.id);
+
+                            newArray.push({
+                                body: item.body,
+                                dateCreated: item.dateCreated,
+                                id: item.id,
+                                mixItem: item.mixItem,
+                                mixItemId: item.mixItemId,
+                                parentId: item.parentId,
+                                publicView: item.publicView,
+                                status:item.status,
+                                userId: item.userId,
+                                userPic: item.userPic,
+                                username: item.username,
+                            });
+
+                        }
+
+                    })
+
+                    setBackendComments(newArray);
+
+                } else {
+
+                    const newArray = []
+                    const uniqueItemsSet = new Set();
+
+                    data.data.forEach(item => {
+
+                        if (!uniqueItemsSet.has(item.id)) {
+
+                            if(item.userId != firebaseUid){
+                                return
+                            }
+
+                            if(item.status != "allow"){
+                                return
+                            }
+
+                            uniqueItemsSet.add(item.id);
+
+                            newArray.push({
+                                body: item.body,
+                                dateCreated: item.dateCreated,
+                                id: item.id,
+                                mixItem: item.mixItem,
+                                mixItemId: item.mixItemId,
+                                parentId: item.parentId,
+                                publicView: item.publicView,
+                                status:item.status,
+                                userId: item.userId,
+                                userPic: item.userPic,
+                                username: item.username,
+                            });
+
+                        }
+
+                    })
+
+                    setBackendComments(newArray);
+
+                }
+
                 // console.log(data.data)
 
                 // getCommentsApi().then((data) => {
