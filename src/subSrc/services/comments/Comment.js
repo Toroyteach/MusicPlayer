@@ -42,7 +42,7 @@ const Comment = ({
     return (
         <div key={comment.id} className="d-flex flex-start">
 
-            <img className="rounded-circle shadow-1-strong me-3" src={endpoinUrl+comment.userPic} alt="avatar" width="65" height="65" />
+            <img className="rounded-circle shadow-1-strong me-3" src={comment.userPic} alt="avatar" width="65" height="65" />
 
             <div className="flex-grow-1 flex-shrink-1 text-body">
                 <div>

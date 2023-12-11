@@ -1,6 +1,6 @@
 import React, { useRef, useState, useContext } from 'react'
 
-import useQuery from '../../api/base/useQuery.js';
+import { FacebookAuth, GithubAuth, GoogleAuth } from '../firebaseAuth.js';
 
 import appContext from '../../context/appContext.js';
 
@@ -24,36 +24,24 @@ import {
   SET_USER_EXCERPT,
   SET_USER_NUMBER,
   SET_USER_USERIMAGE,
-  SET_USER_ACTIVEPLAYLIST,
-  SET_USER_LASTSONG,
-  SET_USER_LAST_SEEKTIME,
   SET_USER_TOTALMINUTESLISTENED,
   SET_USER_TOTAL_PLAYS_COUNT,
   SET_USER_ROLE,
-  SET_USER_HISTORY_LIST,
-  SET_USER_SHAZAM_LIST,
-  SET_USER_COMMENTS_COUNT,
-  SET_USER_COMMENTS,
-  SET_USER_FAVOURITES_COUNT,
-  SET_USER_FAVOURITE_LIST_ADD,
-  SET_USER_IDENTIFIED_SONGS_COUNT,
   SET_USER_FIREBASE_UUID,
   SET_SHOW_MY_ONLINE_STATUS,
   SET_SHOW_OTHERS_COMMENTS,
-  SET_GLOBAL_LANGUAGE,
   SET_MAIN_APP_DARKMODE,
 } from '../../context/appState/stateTypes.js';
 
 import {
   SET_TOGGLE_RANDOM,
   SET_TOGGLE_REPEAT,
-  SET_ALLMUSICMIXES,
-  SET_ACTIVE_PLAYLIST_ARRAY
 } from '../../music/musicState/musicStateTypes';
 
 //custom input validation with Regular Expressions
 import useEmailValidation from '../../hooks/formValidation/useEmailValidation';
 import usePasswordValidation from '../../hooks/formValidation/usePasswordValidation';
+import { async } from '@firebase/util';
 
 export default function SignIn() {
 
@@ -88,34 +76,9 @@ export default function SignIn() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [buttonClicked, setButtonClicked] = useState(false);
-  const [requestData, setRequestData] = useState({})
-  //const { data, loading, error } = useQuery('/auth/login', 'POST', requestData, { enabled: false, refetchOnWindowFocus: false });
-
   //const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
-    // if(validEmail && validPassword){
-
-    //   setRequestData({
-    //     email,
-    //     password
-    //   })
-
-    //   // Set the buttonClicked state to true to trigger the request
-    //   setButtonClicked(true);
-
-    //   if (data) {
-    //     //set cookier    
-
-    //     console.log(data)
-
-    //   }
-
-    // }
-
 
     if (validEmail && validPassword) {
 
@@ -129,14 +92,14 @@ export default function SignIn() {
 
           setLoading(false)
 
-          setCookie("userToken", response.data.accessToken, {
+          setCookie("userToken", response.data.newToken.accessToken, {
             expires: expirationTime,
             path: "/",
             secure: true,
             sameSite: true,
           });
 
-          setCookie("userRefreshToken", response.data.refreshToken, {
+          setCookie("userRefreshToken", response.data.newToken.refreshToken, {
             expires: expirationTime,
             path: "/",
             secure: true,
@@ -320,9 +283,385 @@ export default function SignIn() {
         });
 
     }
-
-
   }
+
+  const facebookAuthLoginButton = async () => {
+    setLoading(true)
+    const auth = await FacebookAuth()
+    setLoading(false)
+  }
+  const githubAuthLoginButton = async () => {
+    setLoading(true)
+    const auth = await GithubAuth()
+
+    if(!auth){
+      setLoading(false)
+      return
+    }
+
+    const datObj = {
+      id: auth.user.uid,
+      email:  auth.user.email,
+      username:  auth.user.displayName ? auth.user.displayName : null,
+      phone: auth.user.phoneNumber ? auth.user.phoneNumber : null,
+      photoUrl:  auth.user.photoURL ? auth.user.photoURL : null,
+      role: "User"
+    }
+
+    apiClient.post('/admin/loginSocial', datObj)
+      .then(response => {
+
+        const expirationTime = new Date();
+        expirationTime.setTime(expirationTime.getTime() + 7 * 24 * 60 * 60 * 1000); //Seven Days
+
+        setLoading(false)
+
+        setCookie("userToken", response.data.newToken.accessToken, {
+          expires: expirationTime,
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        setCookie("userRefreshToken", response.data.newToken.refreshToken, {
+          expires: expirationTime,
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        const role = response.data.userData.appData.role
+
+        setAuth({ email, role });
+
+        stateDispatch({ type: SET_USER_FIREBASE_UUID, data: response.data.userData.firebaseUid })
+        setCookie("firebaseUid", response.data.userData.firebaseUid, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_USERNAME, data: response.data.userData.userBio.username })
+        setCookie("username", response.data.userData.userBio.username, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_FIRSTNAME, data: response.data.userData.userBio.firstname })
+        setCookie("firstname", response.data.userData.userBio.firstname, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_LASTNAME, data: response.data.userData.userBio.lastname })
+        setCookie("lastname", response.data.userData.userBio.lastname, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_EXCERPT, data: response.data.userData.userBio.excerpt })
+        setCookie("excerpt", response.data.userData.userBio.excerpt, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_EMAIL, data: response.data.userData.userBio.email })
+        setCookie("email", response.data.userData.userBio.email, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_NUMBER, data: response.data.userData.userBio.phone })
+        setCookie("number", response.data.userData.userBio.phone, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_USERIMAGE, data: response.data.userData.userBio.photoUrl ?? 'imageavatar.png' })
+        setCookie("image", response.data.userData.userBio.photoUrl ?? 'imageavatar.png', {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: response.data.userData.appData.totalMinutesListenec })
+        setCookie("minutesListened", response.data.userData.appData.totalMinutesListenec, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: response.data.userData.appData.totalPlaysCount })
+        setCookie("playsCount", response.data.userData.appData.totalPlaysCount, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_ROLE, data: response.data.userData.appData.role })
+        setCookie("role", response.data.userData.userBio.role, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: response.data.userData.appData.allowOnlineStatus })
+        setCookie("onlineStatus", response.data.userData.appData.allowOnlineStatus, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: response.data.userData.appData.allowComments })
+        setCookie("showOthersComment", response.data.userData.appData.allowComments, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: response.data.userData.appData.appDarkMode })
+        setCookie("appDarkMode", response.data.userData.appData.appDarkMode, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+
+        musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: response.data.userData.appData.randomPlayback })
+        setCookie("randomPlayback", response.data.userData.appData.randomPlayback, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: response.data.userData.appData.replayPlayback })
+        setCookie("repeatPlayback", response.data.userData.appData.replayPlayback, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        navigate('/music', { replace: true });
+      })
+      .catch(error => {
+
+        setLoading(false)
+        setError("Error Accessing with your Credentials")
+
+
+      });
+  }
+
+  const googleAuthLoginButton = async () => {
+    setLoading(true)
+    const auth = await GoogleAuth()
+
+    if(!auth){
+      setLoading(false)
+      return
+    }
+
+    const datObj = {
+      id: auth.user.uid,
+      email:  auth.user.email,
+      username:  auth.user.displayName ? auth.user.displayName : null,
+      phone: auth.user.phoneNumber ? auth.user.phoneNumber : null,
+      photoUrl:  auth.user.photoURL ? auth.user.photoURL : null,
+      role: "User"
+    }
+
+    apiClient.post('/admin/loginSocial', datObj)
+      .then(response => {
+
+        const expirationTime = new Date();
+        expirationTime.setTime(expirationTime.getTime() + 7 * 24 * 60 * 60 * 1000); //Seven Days
+
+        setLoading(false)
+
+        setCookie("userToken", response.data.newToken.accessToken, {
+          expires: expirationTime,
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        setCookie("userRefreshToken", response.data.newToken.refreshToken, {
+          expires: expirationTime,
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        const role = response.data.userData.appData.role
+
+        setAuth({ email, role });
+
+        stateDispatch({ type: SET_USER_FIREBASE_UUID, data: response.data.userData.firebaseUid })
+        setCookie("firebaseUid", response.data.userData.firebaseUid, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_USERNAME, data: response.data.userData.userBio.username })
+        setCookie("username", response.data.userData.userBio.username, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_FIRSTNAME, data: response.data.userData.userBio.firstname })
+        setCookie("firstname", response.data.userData.userBio.firstname, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_LASTNAME, data: response.data.userData.userBio.lastname })
+        setCookie("lastname", response.data.userData.userBio.lastname, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_EXCERPT, data: response.data.userData.userBio.excerpt })
+        setCookie("excerpt", response.data.userData.userBio.excerpt, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_EMAIL, data: response.data.userData.userBio.email })
+        setCookie("email", response.data.userData.userBio.email, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_NUMBER, data: response.data.userData.userBio.phone })
+        setCookie("number", response.data.userData.userBio.phone, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_USERIMAGE, data: response.data.userData.userBio.photoUrl ?? 'imageavatar.png' })
+        setCookie("image", response.data.userData.userBio.photoUrl ?? 'imageavatar.png', {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: response.data.userData.appData.totalMinutesListenec })
+        setCookie("minutesListened", response.data.userData.appData.totalMinutesListenec, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: response.data.userData.appData.totalPlaysCount })
+        setCookie("playsCount", response.data.userData.appData.totalPlaysCount, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_USER_ROLE, data: response.data.userData.appData.role })
+        setCookie("role", response.data.userData.userBio.role, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: response.data.userData.appData.allowOnlineStatus })
+        setCookie("onlineStatus", response.data.userData.appData.allowOnlineStatus, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: response.data.userData.appData.allowComments })
+        setCookie("showOthersComment", response.data.userData.appData.allowComments, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: response.data.userData.appData.appDarkMode })
+        setCookie("appDarkMode", response.data.userData.appData.appDarkMode, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+
+        musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: response.data.userData.appData.randomPlayback })
+        setCookie("randomPlayback", response.data.userData.appData.randomPlayback, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: response.data.userData.appData.replayPlayback })
+        setCookie("repeatPlayback", response.data.userData.appData.replayPlayback, {
+          expires: expirationTime, 
+          path: "/",
+          secure: true,
+          sameSite: true,
+        });
+
+        navigate('/music', { replace: true });
+      })
+      .catch(error => {
+
+        setLoading(false)
+        setError("Error Accessing with your Credentials")
+
+
+      });
+  }
+
+  // const twitterAuthLoginButton = async () => {
+
+  //   const auth = await FacebookAuth()
+  // }
 
   const socialOnClick = (e) => {
 
@@ -337,21 +676,21 @@ export default function SignIn() {
           <div className="container my-auto">
             <div className="row">
               <div className="col-lg-4 col-md-8 col-12 mx-auto">
-                <div className="card z-index-0 fadeIn3 fadeInBottom">
+                <div className="card z-index-0 fadeIn3 fadeInBottom ffx">
                   <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div className="bg-gradient-secondary shadow-primary border-radius-lg py-3 pe-1">
                       <h4 className="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
                       <div className="row mt-3 px-3 py-3">
-                        <div className="col-3 text-center ms-auto cursor-pointer" onClick={() => { socialOnClick('Facebook/Meta') }}>
+                        {/* <div className="col-3 text-center ms-auto cursor-pointer" onClick={facebookAuthLoginButton}>
                           <i className="fa fa-facebook text-white text-lg"></i>
-                        </div>
-                        <div className="col-3 text-center ms-auto cursor-pointer" onClick={() => { socialOnClick('Twitter') }}>
+                        </div> */}
+                        {/* <div className="col-4 text-center ms-auto cursor-pointer" onClick={() => { socialOnClick('he') }}>
                           <i className="fa fa-twitter text-white text-lg"></i>
+                        </div> */}
+                        <div className="col-6 text-center me-auto cursor-pointer" onClick={githubAuthLoginButton }>
+                          <i className="fa fa-github text-white text-lg"></i>
                         </div>
-                        <div className="col-3 text-center me-auto cursor-pointer" onClick={() => { socialOnClick('Apple') }}>
-                          <i className="fa fa-apple text-white text-lg"></i>
-                        </div>
-                        <div className="col-3 text-center me-auto cursor-pointer" onClick={() => { socialOnClick('Google') }}>
+                        <div className="col-6 text-center me-auto cursor-pointer" onClick={googleAuthLoginButton }>
                           <i className="fa fa-google text-white text-lg"></i>
                         </div>
                       </div>
@@ -368,10 +707,10 @@ export default function SignIn() {
                     <form role="form" className="text-start" onSubmit={handleSubmit}>
                       <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                       <div className="input-group input-group-outline my-3">
-                        <input placeholder='Email or Username or Number' onChange={(e) => setEmail(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="email" className="form-control" required />
+                        <input placeholder='Email or Username or Number' onChange={(e) => setEmail(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="email" className=" form-control" required />
                       </div>
                       <div className="input-group input-group-outline mb-3">
-                        <input placeholder='Password' onChange={(e) => setPassword(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="password" className="form-control" required />
+                        <input placeholder='Password' onChange={(e) => setPassword(e.target.value)} aria-describedby="uidnote" autoComplete="off" type="password" className=" form-control" required />
                       </div>
                       <div className="form-check form-switch d-flex align-items-center mb-3">
                         <input className="form-check-input" type="checkbox" id="rememberMe" />
@@ -384,7 +723,7 @@ export default function SignIn() {
                           <span className="visually-hidden">Loading...</span>
                         </div>}
                       </div>
-                      <p className="mt-4 text-sm text-center text-dark">
+                      <p className="mt-4 text-sm text-center authFormControl">
                         Don't have an account?
                         <Link to="/signup">
                           <a className="text-primary text-gradient font-weight-bold">Dont Worry. Sign Up Here</a>

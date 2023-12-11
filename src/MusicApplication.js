@@ -21,12 +21,8 @@ import Home from './subSrc/layouts/mainlayout/main/Home.js';
 
 // Admin pages
 import Comments from './subSrc/pages/Admin/Comments.js';
-import UsersList from './subSrc/pages/Admin/UsersList.js';
-import UploadMix from './subSrc/pages/Admin/UploadMix.js';
-import UploadQuiz from './subSrc/pages/Admin/UploadQuiz.js';
 import Map from './subSrc/pages/Admin/Map.js'
 import Notifications from './subSrc/pages/Notifications.js';
-import AdminMessages from './subSrc/pages/Admin/AdminMessages.js';
 import AdminDashboard from './subSrc/pages/Admin/AdminDashboard.js';
 
 

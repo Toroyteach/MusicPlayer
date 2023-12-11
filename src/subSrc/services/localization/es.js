@@ -195,4 +195,30 @@ export const es = {
     'There-is-an-error-accessing-the-Mix-Item': 'Hay un error al acceder al elemento de mezcla',
     'success': 'éxito',
     'warning': 'advertencia',
+
+
+    //later additions
+    // 'favoutes-list': '',
+    // 'success-uploading-image': '',
+    // 'success-rating-mix': '',
+    // 'gen-images-appears-here': '',
+    // 'error-updateing-your-settings': '',
+    // 'go-back': '',
+    // 'error': '',
+    // 'success': '',
+    // 'warning': '',
+    // 'success-deleted-text': '',
+    // 'success-canceled-text': '',
+    // 'enable-artificial-weather': '',
+    // 'delete-my-account-together-with-data': '',
+    // 'music-visualizer': '',
+    // 'dark-mode': '',
+    // 'audio-visualizer': '',
+    // 'are-your-sure': '',
+    // 'delete-warning-text': '',
+    // 'choose-image': '',
+    // 'upload-image': '',
+    // 'failed-uploading-image': '',
+    // 'success-uploading-image': '',
+    // 'your-generated-ai': ''
 }

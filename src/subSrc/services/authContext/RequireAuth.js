@@ -11,6 +11,7 @@ const RequireAuth = () => {
 
     if (!auth?.user && ((cookies.get('userToken') === 'null' && cookies.get('userRefreshToken') === 'null') || !cookies.get('userToken') || !cookies.get('userRefreshToken'))) {
 
+        //TODO:check for undefined if the token doest return
         return <Navigate to='/login' state={{ from: location }} replace />
 
     }

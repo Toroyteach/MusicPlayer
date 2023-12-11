@@ -68,7 +68,7 @@ export default function GuestPlayer() {
                         <h2>{t("house-music-mix")}</h2>
                     </div>
 
-                    <div className='upperBox'>
+                    {/* <div className='upperBox'>
                         <div className="music-box">
                             <div className="album">
                                 <div className="photo">
@@ -124,7 +124,7 @@ export default function GuestPlayer() {
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="section-title footer-title">
                         <Link to="/music">

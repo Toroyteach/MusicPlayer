@@ -11,19 +11,19 @@ import {
 } from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDuQsxmbACpfB3M_1hZTD8DcqN_E1UMAoc",
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
 
-    authDomain: "musicapplication-16b96.firebaseapp.com",
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
 
-    projectId: "musicapplication-16b96",
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 
-    storageBucket: "musicapplication-16b96.appspot.com",
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
 
-    messagingSenderId: "962660042151",
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 
-    appId: "1:962660042151:web:741c9c16a1e1ef671b6282",
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
 
-    measurementId: "G-16JEB447WQ"
+    measurementId: process.env.REACT_APP_RAPID_SHAZAM_API_KEY
 
 };
 

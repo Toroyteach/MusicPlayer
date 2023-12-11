@@ -9,13 +9,20 @@ import MusicApplication from './MusicApplication.js';
 
 import { AuthProvider } from './subSrc/services/authContext/AuthProvider.js';
 
-import MusicContextState from './subSrc/services/music/MusicContextState.js';
-
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient(
+  {
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * (60 * 1000), // 10 mins
+        cacheTime: 15 * (60 * 1000), // 15 mins
+      },
+    },
+  }
+);
 
 root.render(
   <React.StrictMode>

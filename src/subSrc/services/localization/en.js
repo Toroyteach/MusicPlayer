@@ -137,6 +137,7 @@ export const en = {
     'Failed-uploading-image' : 'Failed to Upload Profile Image',
     'success-uploading-image' : 'Successfully Uploaded Profile Image',
     'success-rating-mix' : 'Successfully Added your Rating',
+    'update-password' : 'update password',
 
     //About
     'for-fans-and-music-lovers': 'For Fans and Music Lovers',
@@ -164,7 +165,7 @@ export const en = {
 
     //Guest Landing page
     'house-music-mix': 'House music mix',
-    'click-here-to-sign-in': 'Click here to sign in or Demo App',
+    'click-here-to-sign-in': 'Click here to sign in',
     'designed-by': 'Desgined by',
 
     //intro onBoarding Section

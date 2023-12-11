@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,8 @@ const CommentForm = ({
         },
     } = useContext(appContext)
 
+    const [dPic, setDpic] = useState()
+
     const { t } = useTranslation();
 
     const [text, setText] = useState(initialText);
@@ -34,6 +36,16 @@ const CommentForm = ({
         setText("");
     };
 
+    useEffect(() => {
+        const stringUrl = userImage.startsWith("https")
+
+        if(!stringUrl){
+            setDpic(endpoinUrl + userImage)
+        } else {
+            setDpic(userImage)   
+        }
+    }, [])
+
     return (
 
         <div className="card-footer pb-6 border-0" >
@@ -41,7 +53,7 @@ const CommentForm = ({
 
                 <div className="d-flex flex-start w-100">
                     <img className="rounded-circle shadow-1-strong me-3"
-                        src={endpoinUrl + userImage} alt="avatar" width="40"
+                        src={dPic} alt="avatar" width="40"
                         height="40" />
                     <div className="form-outline w-100">
                         <textarea className="form-control" id="textAreaExample" rows="4"

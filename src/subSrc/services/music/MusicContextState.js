@@ -1,5 +1,7 @@
 import React, { useReducer, useState, useEffect, useContext } from 'react'
 
+import { Howl, Howler } from 'howler';
+
 import musicContext from './musicContext'
 
 import appContext from '../context/appContext';
@@ -18,7 +20,11 @@ import clippedFileUrl from '../api/base/clippedFileUrl';
 
 import {
     SET_CURRENT_SONG,
-    SET_FAVOURITE_MIX_ITEM
+    SET_FAVOURITE_MIX_ITEM,
+    SET_TOGGLE_PLAYING,
+    SET_MIX_ITEM_DURATION,
+    SET_ABLE_TO_PLAY_OR_LOADING,
+    SET_MUSIC_PLAYING_STATUS
 } from '../../services/music/musicState/musicStateTypes';
 
 const MusicContextState = (props) => {
@@ -38,23 +44,32 @@ const MusicContextState = (props) => {
     const accessToken = cookies.get('userToken')
     const [queue, setQueue] = useState(new Queue());
 
+    const [audioBuffer, setAudioBuffer] = useState(null);
+    // const [sourceNode, setSourceNode] = useState(null);
+
+
     const [audioContext, setAudioContext] = useState();
     const [currentIndex, setCurrentIndex] = useState(1);
     const [totalChunks, setTotalChunks] = useState(17);
     const [endPlayback, setEndPlayback] = useState(false);
-
     const [currentTime, setCurrentTime] = useState(0)
     const [duration, setDuration] = useState(0)
+    const [audio, setAudio] = useState(null);
 
     const fetchChunkedFiles = async () => {
-        const title = "quepasa"//state.musicSettings.activePlaylist[state.musicSettings.currentSong].title
+        if (typeof state.musicSettings.currentSong !== 'number') {
+            return;
+        }
+
+        const title = state.musicSettings.activePlaylist[state.musicSettings.currentSong]?.title;
         const header = {
             headers: { Authorization: `Bearer ${accessToken}` }
-        }
+        };
         const res = await fetch(`${clippedFileUrl}?title=${title}&clippedId=${currentIndex}.opus`, header);
-        const arrayBuffer = await res.arrayBuffer()
-        const decodedAudio = await audioContext.decodeAudioData(arrayBuffer)
-        return decodedAudio;
+        const arrayBuffer = await res.arrayBuffer();
+        let arrayBufferView = new Uint8Array(arrayBuffer)
+        return arrayBufferView;
+
     };
 
     const { isLoading, isError, error, data: audioData, refetch, remove, status } = useQuery('fetchAudio', fetchChunkedFiles, {
@@ -62,57 +77,90 @@ const MusicContextState = (props) => {
         enabled: false,
     },);
 
+
+    const [startedAt, setStartedAt] = useState()
+    const [pausedAt, setPausedAt] = useState(0)
+    const [sourceNode, setSourceNode] = useState([]);
     const playNextItem = () => {
-        if (!audioContext || queue.isEmpty()) {
+
+        if (queue.isEmpty()) {
+            return;
+        }
+
+        Howler.volume(0.2);
+
+        if (queue.isEmpty()) {
             return;
         }
 
         const dataArr = queue.peek();
-        const playSound = audioContext.createBufferSource();
-        playSound.buffer = dataArr;
-        playSound.connect(audioContext.destination);
-        playSound.onended = () => {
+        let blob = new Blob([dataArr], { type: 'music/opus' })
+        let howlSource = URL.createObjectURL(blob)
+        let audio = new Howl({
+            src: [howlSource],
+            html5: true,
+            format: ['opus']
+        });
 
+        
+        audio.on('end', () => {
+            
             queue.dequeue();
 
+            console.log(currentIndex)
+            
             if (!queue.isEmpty()) {
                 playNextItem();
-            } else {
-                audioContext.close()
             }
-        };
-
-        playSound.start(audioContext.currentTime);
-
-
+        })
+        
+        setAudio(audio)
+        
         if (currentIndex <= totalChunks) {
-
+            
             setCurrentIndex(currentIndex => currentIndex + 1);
-
+            
             setTimeout(() => {
                 remove('fetchAudio')
                 refetch();
             }, 4000);
-
+            
         }
-
+        
+        audio.play()
     };
 
     const togglePlaying = () => {
 
-        if (!audioContext) {
+        if (audio == null) {
             return
         }
-        state.musicSettings.playing ? audioContext.resume() : audioContext.suspend()
+        
+        state.musicSettings.playing ? audio.play() : audio.pause()
 
     }
 
     //handles and enables moving the seek to move the audio to desired timeline
     const handleProgress = (e) => {
 
-        // let compute = (e.target.value * duration) / 100
-        // setCurrentTime(compute)
-        // audio.currentTime = compute
+        let compute = (e.target.value * duration) / 100
+        setCurrentTime(compute)
+        let chunks =  state.musicSettings.activePlaylist[state.musicSettings.currentSong]?.chunks
+        let percent = e.target.value
+        const seekChinkItem = Math.floor((percent / 100) * chunks)
+
+        //TODO ON MOUSE RELEASE
+        dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
+        setCurrentIndex(seekChinkItem)
+
+        setTimeout(() => {
+            refetch()
+        }, 300)
+
+        setTimeout(() => {
+            dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
+            playNextItem()
+        }, 2300)
 
     }
 
@@ -134,32 +182,58 @@ const MusicContextState = (props) => {
 
     }
 
+    const convertTimeToSeconds = (time) => {
+        const timeArray = time.split(':').map(Number);
+
+        if (timeArray.length === 3) {
+            const [hours, minutes, seconds] = timeArray;
+            return hours * 3600 + minutes * 60 + seconds;
+        }
+
+        else if (timeArray.length === 2) {
+            const [minutes, seconds] = timeArray;
+            return minutes * 60 + seconds;
+        }
+
+        else if (timeArray.length === 1) {
+            return timeArray[0];
+        }
+
+        return null;
+    }
+
     const SetCurrent = (id) => {
 
-        //set the dispatch playing to false
-        // dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
+        dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
 
-        //add the correct method to fetch the correct file path
-        // audio.src = state.musicSettings.activePlaylist[id].fileUrl;
+        dispatch({ type: SET_MUSIC_PLAYING_STATUS, data: false })
+        dispatch({ type: SET_TOGGLE_PLAYING, data: false })
+
 
         //set the secleted song in dispatch
         dispatch({ type: SET_CURRENT_SONG, data: id })
 
+        //sets the chunks count to 1
+        setCurrentIndex(1)
+
+        queue.clear()
+
+        setTimeout(() => {
+            refetch()
+        }, 300)
+
         //change the document title dynamically to the mix name
         const name = state.musicSettings.activePlaylist[id].title + ' - Toroyteach Music Application'
+        const duration = convertTimeToSeconds(state.musicSettings.activePlaylist[id].duration)
+
+        dispatch({ type: SET_MIX_ITEM_DURATION, data: duration })
 
         document.title = name;
 
-        playNextItem()
+        setTimeout(() => {
+            dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
+        }, 2000)
     }
-
-    useEffect(() => {
-
-        if (!audioContext) {
-            setAudioContext(new window.AudioContext || window.webkitAudioContext)
-        }
-
-    }, [audioContext])
 
     useEffect(() => {
 
@@ -170,14 +244,10 @@ const MusicContextState = (props) => {
     }, [audioData])
 
     useEffect(() => {
-        refetch();
-    }, [])
-
-    useEffect(() => {
 
         if (currentIndex === totalChunks) {
             setTimeout(() => {
-                audioContext.suspend()
+                audio.stop()
 
                 document.title = "Toroyteach Mix Application";
             }, 8000);
@@ -214,7 +284,6 @@ const MusicContextState = (props) => {
                 volume: state.musicSettings.volume,
                 duration: state.musicSettings.duration,
                 currentTime: currentTime,
-                playNextItem: playNextItem,
                 handleForward1Minute,
                 handleback30,
                 handleProgress,

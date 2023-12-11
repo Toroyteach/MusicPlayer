@@ -11,6 +11,8 @@ import apiClient from '../../../services/api/base/apiClient.js';
 
 import useQuery from '../../../services/api/base/useQuery.js';
 
+import endpointCoverArtUrl from '../../../services/api/base/endPointCoverArtUrl.js';
+
 //import necessary files to make state and context consistent
 import appContext from '../../../services/context/appContext.js';
 
@@ -33,6 +35,7 @@ import {
   SET_CURRENT_SONG,
   SET_FAVOURITE_MIX_ITEM,
   SET_ACTIVE_PLAYLIST_ARRAY,
+  SET_MUSIC_PLAYING_STATUS
 } from '../../../services/music/musicState/musicStateTypes';
 
 //import check icon to use in the custom toast icon
@@ -68,29 +71,16 @@ export default function MainPlayer() {
     activePlaylist,
     musicStateDispatch,
     random,
-    volume,
     playNextItem,
     SetCurrent,
     repeat,
     musicSettings: {
       playOrLoading,
       likedItem,
-      completePlaylist,
       mixList,
+      playingStatus,
     },
   } = useContext(musicContext)
-
-  // const VisualizerOptions = [
-  //   {
-  //     label: "Default",
-  //     value: "default",
-  //   },
-  //   {
-  //     label: "Bars",
-  //     value: "bars",
-
-  //   },
-  // ];
 
   //initiate tge translator
 
@@ -245,20 +235,38 @@ export default function MainPlayer() {
   //handles the actual playing and changing of the play pause buttons
   const handlePlayPause = () => {
 
-    stateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
+    if (currentSong === null) {
+      let data = {
+        type: t("error"),
+        text: "Please Select an Item before moving forward",
+        icon: warningIcon,
+        bgColour: '#f0ad4e',
+      }
 
-    if (playing) {
+      dispatchNotification(data)
 
-      gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
-      gsap.fromTo($(".btn-play"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, display: "block", scale: 1, ease: Power2.easeInOut });
+      return
+    }
 
+    const chanegPlayState = () => {
+      if (playing) {
+        gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
+        gsap.fromTo($(".btn-play"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, display: "block", scale: 1, ease: Power2.easeInOut });
+      } else {
+        gsap.to($(".btn-play"), { duration: 0.5, x: 20, opacity: 0, scale: 0.3, display: "none", ease: Power2.easeInOut });
+        gsap.fromTo($(".btn-pause"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, scale: 1, display: "block", ease: Power2.easeInOut });
 
+      }
+    }
+
+    if (!playingStatus) {
+      playNextItem()
+      chanegPlayState()
+      musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
+      musicStateDispatch({ type: SET_MUSIC_PLAYING_STATUS, data: true })
     } else {
-
-      gsap.to($(".btn-play"), { duration: 0.5, x: 20, opacity: 0, scale: 0.3, display: "none", ease: Power2.easeInOut });
-      gsap.fromTo($(".btn-pause"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, scale: 1, display: "block", ease: Power2.easeInOut });
-
-
+      chanegPlayState()
+      musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
     }
 
   }
@@ -272,6 +280,19 @@ export default function MainPlayer() {
       return
     }
 
+    if (currentSong === null) {
+      let data = {
+        type: t("error"),
+        text: "Please Select an Item before moving forward",
+        icon: warningIcon,
+        bgColour: '#f0ad4e',
+      }
+
+      dispatchNotification(data)
+
+      return
+    }
+
     const newMixItem = {
       title: activePlaylist[currentSong].title,
       artist: activePlaylist[currentSong].genre,
@@ -280,15 +301,8 @@ export default function MainPlayer() {
 
     if (likedItem) {
 
-      // //get the current item from active playlist and remove it from the list
-      // const idx = favouriteItems.find((match) => match.id === activePlaylist[currentSong].id);
-      // const oldList = Object.assign([], favouriteItems);
-
-
       // oldList.splice(idx, 1);
       handleRemoveFavourite(newMixItem)
-      //will add a new list without this one
-      // stateDispatch({ type: SET_USER_FAVOURITE_LIST_REMOVE, data: oldList })
 
     } else {
 
@@ -490,22 +504,21 @@ export default function MainPlayer() {
     <GenreList key={idx} className={list.class} name={list.name} handleOnClick={() => handleChooseFavPlaylist(list.name)} />
   ))
 
-
   //method to handle dispatching and handling playing the next song
   const nextMixItem = () => {
 
 
     if (currentSong === activePlaylist.length - 1) {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: 0 })
+      musicStateDispatch({ type: SET_CURRENT_SONG, data: 0 })
 
     } else if (random) {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: Math.floor(Math.random() * activePlaylist.length) })
+      musicStateDispatch({ type: SET_CURRENT_SONG, data: Math.floor(Math.random() * activePlaylist.length) })
 
     } else {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: currentSong + 1 })
+      musicStateDispatch({ type: SET_CURRENT_SONG, data: currentSong + 1 })
 
     }
 
@@ -516,11 +529,11 @@ export default function MainPlayer() {
 
     if (currentSong === 0) {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
+      musicStateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
 
     } else {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
+      musicStateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
 
     }
 
@@ -540,7 +553,6 @@ export default function MainPlayer() {
     stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
   }
-
 
   //use effect to check the favourite states of each mix item
   useEffect(() => {
@@ -580,9 +592,21 @@ export default function MainPlayer() {
 
         <div className="playback_blur"></div>
 
-        <Link to="/single" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
-          <div className="playback_thumb"></div>
-        </Link>
+        {
+          typeof currentSong === 'number' ? (
+            <Link to={`/music/single/${activePlaylist[currentSong]?.mixId}`} aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
+              <div className="playback_thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+activePlaylist[currentSong]?.coverArt})`}}></div>
+            </Link>
+          ) : (
+            <div className="playback_thumb_none">
+              <span className="loaderNoMusicChosen"></span>
+              <div className="alert alert-success" role="alert">
+                Select an Item to continue
+              </div>
+            </div>
+          )
+        }
+
 
         <div className="playback_extras text_center">
           {/* handle repeat the current mix */}
@@ -629,8 +653,8 @@ export default function MainPlayer() {
         </div>
 
         <div className="playback_info">
-          <div className="title">{activePlaylist[currentSong]?.title}</div>
-          <div className="artist">{activePlaylist[currentSong]?.genre}</div>
+          <div className="title">{typeof currentSong === 'number' ? activePlaylist[currentSong]?.title : ''}</div>
+          <div className="artist">{typeof currentSong === 'number' ? activePlaylist[currentSong]?.genre : ''}</div>
         </div>
 
         <div className="">
@@ -639,7 +663,7 @@ export default function MainPlayer() {
             <div className="playback_timeline_start-time">{fmtMSS(currentTime)}</div>
 
             <div className="playback_timeline_slider">
-              <input onChange={handleProgress} value={duration ? (currentTime * 100) / duration : 0} className="cursor-pointer" type="range" name="progresBar" id="prgbar" style={{ width: "100%" }} />
+              <input onMouseUp={handleProgress} className="cursor-pointer" type="range" name="progresBar" id="prgbar" style={{ width: "100%" }} />
             </div>
 
             <div className="playback_timeline_end-time">{fmtMSS(duration)}</div>
@@ -648,7 +672,7 @@ export default function MainPlayer() {
           <div className="p-2 playback_btn_wrapper">
 
             <i className="btn-prev fa fa-step-backward" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("previous")} onClick={prevMixItem}></i>
-            <i className="btn-prev fa fa-reply" data-bs-toggle="tooltip" data-bs-placement="top" title={t("back-30sec")} aria-hidden="true" onClick={handleback30}></i>
+            {/* <i className="btn-prev fa fa-reply" data-bs-toggle="tooltip" data-bs-placement="top" title={t("back-30sec")} aria-hidden="true" onClick={handleback30}></i> */}
 
             <div className="btn-switch" onClick={handlePlayPause} data-bs-toggle="tooltip" data-bs-placement="top" title={t("play-pause")}>
 
@@ -656,7 +680,7 @@ export default function MainPlayer() {
 
             </div>
 
-            <i className="btn-next fa fa-share" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("forwad-30sec")} onClick={handleForward1Minute}></i>
+            {/* <i className="btn-next fa fa-share" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("forwad-30sec")} onClick={handleForward1Minute}></i> */}
             <i className="btn-next fa fa-step-forward" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("next")} onClick={nextMixItem}></i>
 
           </div>
@@ -679,7 +703,7 @@ export default function MainPlayer() {
             {(activePlaylist || []).map((song, i) => (
               <li className={'list_item ' + (currentSong === i ? 'selected' : '')} key={i}>
 
-                <div className="thumb"> </div>
+                <div className="thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+song.coverArt})`}}> </div>
                 <div className="info" onClick={() => { SetCurrent(i) }}>
                   <div className="title">{song.title}</div>
                   <div className="artist">{song.genre}</div>

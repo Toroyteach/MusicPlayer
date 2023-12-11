@@ -2467,7 +2467,7 @@
     /* media queries fro the main landing page of backend */
     /* mostly for special phones and mobile Devices */
     .changeView {
-        height: 73vh;
+        height: 79vh;
     }
 
     .breadcrumb>.text-sm {
@@ -7098,7 +7098,7 @@
     .navbar-vertical.navbar-expand-xs .navbar-collapse {
         display: block;
         overflow: auto;
-        height: calc(104vh - 370px);
+        height: calc(104vh - 380px);
     }
 
     .background_image {
@@ -7287,7 +7287,7 @@
     .navbar-vertical.navbar-expand-xs .navbar-collapse {
         display: block;
         overflow: auto;
-        height: calc(104vh - 370px);
+        height: calc(104vh - 380px);
     }
 
     .background_image {
@@ -7477,7 +7477,7 @@
     .navbar-vertical.navbar-expand-xs .navbar-collapse {
         display: block;
         overflow: auto;
-        height: calc(104vh - 370px);
+        height: calc(104vh - 380px);
     }
 
     .background_image {
@@ -7666,7 +7666,7 @@
     .navbar-vertical.navbar-expand-xs .navbar-collapse {
         display: block;
         overflow: auto;
-        height: calc(104vh - 370px);
+        height: calc(104vh - 380px);
     }
 
     .background_image {

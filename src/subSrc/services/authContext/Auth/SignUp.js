@@ -53,6 +53,8 @@ export default function SignUp() {
   //error messages notifiation
   const [errMsg, setErrMsg] = useState('');
 
+  const [isChecked, setIsChecked] = useState(false);
+
   //Handle get data
   const [requestData, setRequestData] = useState({ /* your request data here */ });
 
@@ -64,7 +66,7 @@ export default function SignUp() {
 
     e.preventDefault();
 
-    if (validFirstname && validLastname && validEmail && validPassword && validUsername && validNumber) {
+    if (validFirstname && validLastname && validEmail && validPassword && validUsername && validNumber && isChecked) {
 
       setLoading(true)
 
@@ -113,11 +115,14 @@ export default function SignUp() {
                   <div className="position-relative bg-gradient-secondary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style={{ backgroundImage: 'url(' + backgroundImage + ')', backgroundSize: "cover" }}>
                   </div>
                 </div>
-                <div className="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+                <div style={{ maxHeight: "750px", overflow: "auto" }} className="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
                   <div className="card card-plain">
                     <div className="card-header">
                       <h4 className="font-weight-bolder">Sign Up</h4>
-                      <p className="mb-0">Enter your email and password to register</p>
+                      <p className="mb-0">Enter your email and password to register:<br/>
+                      Use a mix of uppercase and lowercase letters:<br/>
+                      Include at least one special character, such as @, !, or #.:
+                      </p>
                       <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     </div>
 
@@ -130,29 +135,29 @@ export default function SignUp() {
                     <div className="card-body" style={{ backgroundColor: "#fff" }}>
                       <form role="form" onSubmit={handleSubmit}>
                         <div className="input-group input-group-outline mb-2">
-                          <input placeholder='Firstname' id='firstname' aria-invalid={validFirstname ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setFirstname(e.target.value)} type="text" className="form-control" required />
+                          <input placeholder='Firstname' id='firstname' aria-invalid={validFirstname ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setFirstname(e.target.value)} type="text" className="form-control inputFormlight" required />
                         </div>
                         <div className="input-group input-group-outline mb-2">
-                          <input placeholder='Lastname' id='lastname' aria-invalid={validLastname ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setLastname(e.target.value)} type="text" className="form-control" required />
+                          <input placeholder='Lastname' id='lastname' aria-invalid={validLastname ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setLastname(e.target.value)} type="text" className="form-control inputFormlight" required />
                         </div>
                         <div className="input-group input-group-outline mb-2">
-                          <input placeholder='Email' id='email' aria-invalid={validEmail ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" required />
+                          <input placeholder='Email' id='email' aria-invalid={validEmail ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setEmail(e.target.value)} type="email" className="form-control inputFormlight" required />
                         </div>
                         <div className="input-group input-group-outline mb-2">
-                          <input placeholder='Password' id='password' aria-invalid={validPassword ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" required />
+                          <input placeholder='Password' id='password' aria-invalid={validPassword ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setPassword(e.target.value)} type="password" className="form-control inputFormlight" required />
                         </div>
                         <div className="input-group input-group-outline mb-2">
-                          <input placeholder='Confirm Password' id='confirm-password' aria-invalid={validPassword ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" type="password" className="form-control" required />
+                          <input placeholder='Confirm Password' id='confirm-password' aria-invalid={validPassword ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" type="password" className="form-control inputFormlight" required />
                         </div>
                         <div className="input-group input-group-outline mb-2">
-                          <input placeholder='Number' id='phonenumber' aria-invalid={validNumber ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setNumber(e.target.value)} type="number" className="form-control" required />
+                          <input placeholder='Number' id='phonenumber' aria-invalid={validNumber ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setNumber(e.target.value)} type="number" className="form-control inputFormlight" required />
                         </div>
                         <div className="input-group input-group-outline mb-2">
-                          <input placeholder='username' id='username' aria-invalid={validUsername ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setUsername(e.target.value)} type="text" className="form-control" required />
+                          <input placeholder='username' id='username' aria-invalid={validUsername ? "false" : "true"} aria-describedby="uidnote" autoComplete="off" onChange={(e) => setUsername(e.target.value)} type="text" className="form-control inputFormlight" required />
                         </div>
                         <div className="form-check form-check-info text-start ps-0">
-                          <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                          <label className="form-check-label" for="flexCheckDefault">
+                          <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={isChecked} onChange={() => setIsChecked((prev) => !prev)} />
+                          <label className="form-check-label text-dark" for="flexCheckDefault">
                             I agree the <a href="/#" className="text-dark font-weight-bolder">Terms and Conditions</a>
                           </label>
                         </div>
@@ -160,7 +165,7 @@ export default function SignUp() {
                           <ReCAPTCHA sitekey={capchaKey} onChange={onCaptchaChange} />
                         </div>
                         <div className="text-center">
-                          <button type="submit" className="btn btn-lg bg-gradient-success btn-lg w-100 mt-4 mb-0" disabled={!validFirstname || !validLastname || !validEmail || !validPassword || !validNumber || !validUsername || !isRobot ? true : false}>Sign Up</button>
+                          <button type="submit" className="btn btn-lg bg-gradient-success btn-lg w-100 mt-4 mb-0" disabled={!validFirstname || !validLastname || !validEmail || !validPassword || !validNumber || !validUsername || !isRobot || !isChecked ? true : false}>Sign Up</button>
                         </div>
                       </form>
                     </div>
@@ -168,25 +173,15 @@ export default function SignUp() {
                       {loading && <div class="spinner-grow text-center" role="status">
                         <span class="visually-hidden">Loading...</span>
                       </div>}
-                      <p className="mb-2 text-md mx-auto">
-                        Already have an account? Or sign in with Social Accounts<br />
+                      <p className="mb-2 text-md mx-auto text-dark">
+                        Already have an account? Or sign in 
                         <Link to="/login">
-                          <a className="text-primary text-gradient font-weight-bold">Here</a>
+                          <a className="text-primary text-gradient font-weight-bold"> Here</a>
                         </Link>
                       </p>
                     </div>
                   </div>
-                  <footer className="footer position-absolute bottom-2 py-2 w-100">
-                    <div className="container">
-                      <div className="align-items-center justify-content-lg-between">
-                        <div className="copyright text-center text-sm text-lg-start">
-                          ©
-                          made with <i className="fa fa-heart"></i> by
-                          <a href="https://bellenorthedynamics.com" className="font-weight-bold" target="_blank"> Toroyteach</a>
-                        </div>
-                      </div>
-                    </div>
-                  </footer>
+                  <br/>
                 </div>
               </div>
             </div>

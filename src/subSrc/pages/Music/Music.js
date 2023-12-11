@@ -21,6 +21,10 @@ import OnlineListeners from './pages/OnlineListeners';
 
 import appContext from '../../services/context/appContext.js';
 
+import musicContext from '../../services/music/musicContext.js';
+
+import endpointCoverArtUrl from '../../services/api/base/endPointCoverArtUrl.js';
+
 //import custom component for intro js dependecies
 import ApplicationTour from '../../services/intro-tour/ApplicationTour.js';
 
@@ -40,11 +44,12 @@ export default function Music() {
   // Global State
   const {
     stateDispatch,
-    musicSettings: {
-      currentSong,
-      activePlaylist,
-    },
   } = useContext(appContext)
+
+  const {
+    currentSong,
+    activePlaylist,
+  } = useContext(musicContext)
 
   //initiate tge translator
   const { t } = useTranslation();
@@ -180,10 +185,10 @@ export default function Music() {
             <div className="mini-player" onClick={handleOpenMiniPlayer} id='musicPlayerIntro'>
               <div className="track_info_wrapper miniPlayer">
                 <div className="track_info">
-                  <div className="thumb"></div>
+                {(typeof currentSong === 'number') && (<div className="thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+activePlaylist[currentSong]?.coverArt})`}}></div>)}
                   <div className="info">
-                    <div className="title">{activePlaylist[currentSong].title}</div>
-                    <div className="artist">{activePlaylist[currentSong].artistName}</div>
+                    <div className="title">{activePlaylist[currentSong]?.title}</div>
+                    <div className="artist">{activePlaylist[currentSong]?.genre}</div>
                   </div>
                 </div>
               </div>
@@ -225,7 +230,7 @@ export default function Music() {
       <OnlineListeners />
 
       {/* this section will have the calm your anxiety pictures */}
-      <CalmAnxiety />
+      {/* <CalmAnxiety /> */}
 
       {/* this section will host the astronomy picture of the day */}
       <Astronomy />

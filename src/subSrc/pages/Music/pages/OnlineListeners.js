@@ -61,7 +61,7 @@ export default function OnlineListeners() {
             <div className="connect_btn_wrapper item col" onMouseEnter={onEnter} onMouseLeave={onLeave}>
               <div className="connect_btn">
                 <div className="connect_btn_text">
-                  <img src={endpoinUrl + userImage} width={"100%"} class="rounded-circle" alt="Cinque Terre" />
+                  <img src={userImage} width={"100%"} class="rounded-circle" alt="Cinque Terre" />
                   <div>{username}</div>
                 </div>
               </div>
@@ -81,7 +81,7 @@ export default function OnlineListeners() {
                     return (
                       // Your custom JSX for this user
                       <div key={index} className="item col" onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                        <div className="thumb"><img src={endpoinUrl + user.displayPicUrl} alt="User Pic" width={"100%"} class="rounded-circle" /></div>
+                        <div className="thumb"><img src={user.displayPicUrl} alt="User Pic" width={"100%"} class="rounded-circle" /></div>
                         <div className="info">
                           <div className="name">{user.userName}</div>
                           <div className="desc">{user.activeSong}</div>

@@ -654,7 +654,7 @@ export default function AdminDashboard() {
                     <h6 className="text-white text-capitalize ps-3">New Users</h6>
                   </div>
                 </div>
-                <div className="card-body px-0 pb-2">
+                <div className="card-body px-0 pb-2" style={{ maxHeight: "600px", overflow: "auto" }}>
                   <div className="table-responsive p-0">
                     <table className="table align-items-center mb-0">
                       <thead>
@@ -673,7 +673,7 @@ export default function AdminDashboard() {
                             <td>
                               <div className="d-flex px-2 py-1">
                                 <div>
-                                  <img src={(user.photoUrl) ? endpoinUrl + user.photoUrl : " "} className="avatar avatar-sm me-3 border-radius-lg" alt={user.lastname} />
+                                  <img src={(user.photoUrl) ? user.photoUrl : " "} className="avatar avatar-sm me-3 border-radius-lg" alt={user.lastname} />
                                 </div>
                                 <div className="d-flex flex-column justify-content-center">
                                   <h6 className="mb-0 text-sm">{user.firstname +" "+ user.lastname}</h6>

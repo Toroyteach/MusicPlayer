@@ -141,9 +141,8 @@ const ApplicationState = (props) => {
   }
 
   //load the image only once from Nasa and use reducer to main state of it.
-  const NASA_API_KEY = '';
-  const END_POINT = 'https://api.nasa.gov/planetary/apod?api_key=aQK0MCbvf5b9EN5j1ZSr0mKnxKH3ZAB9VLvhbit0';
-  //const EPOCH_POINT = 'https://api.nasa.gov/EPIC/archive/natural/2019/05/30/png/epic_1b_20190530011359.png?api_key=aQK0MCbvf5b9EN5j1ZSr0mKnxKH3ZAB9VLvhbit0';
+  const NASA_API_KEY = process.env.REACT_APP_NASA_API_KEY;
+  const END_POINT = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`;
 
   useEffect(() => {
 

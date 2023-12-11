@@ -8,16 +8,11 @@ import { useCookies, Cookies } from "react-cookie";
 
 import apiClient from "../api/base/apiClient";
 
-import useQuery from "../api/base/useQuery.js"
+import apiEndUrl from "../api/base/apiEndurl";
+
+import { useQuery } from "react-query";
 
 import appContext from "../context/appContext";
-
-import {
-    getComments as getCommentsApi,
-    createComment as createCommentApi,
-    updateComment as updateCommentApi,
-    deleteComment as deleteCommentApi,
-} from "./api";
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
@@ -36,14 +31,34 @@ const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
     //initiate tge translator
     const { t } = useTranslation();
 
+    const cookies = new Cookies();
+    const accessToken = cookies.get('userToken')
+
     const [backendComments, setBackendComments] = useState([]);
 
     const [activeComment, setActiveComment] = useState(null);
 
     const [cookie, setCookie, removeCookie] = useCookies(["userToken"]);
 
-    const { data, loading, error } = useQuery(`/comments/singleMix/${currentMixId}`, 'GET');
+    // const { data, loading, error } = useQuery(`/comments/singleMix/${currentMixId}`, 'GET');
+    
+    
+    
     const [load, setLoad] = useState(false);
+    const getMixCommentsData = async () => {
+        const header = {
+            headers: { Authorization: `Bearer ${accessToken}` }
+        }
+        const res = await fetch(`${apiEndUrl}comments/singleMix/${currentMixId}`, header);
+        const data = await res.json()
+        return data;
+    };
+
+    const { isLoading, data } = useQuery('fetchMixCommentsData', getMixCommentsData, {
+        refetchOnWindowFocus: false,
+        enabled: true,
+    },);
+
 
     const rootComments = (backendComments || []).filter(
         (backendComment) => backendComment.parentId === null
@@ -268,7 +283,7 @@ const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
 
     return (
         <>
-            {load &&
+            {(isLoading || load) &&
                 <div className='container text-center'>
                     <span class="loader"></span>
                 </div>

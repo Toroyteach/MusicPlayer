@@ -27,6 +27,10 @@ class Queue {
         return this.items.length;
     }
 
+    clear() {
+        return this.items = [];
+    }
+
     isEmpty() {
         return this.items.length === 0;
     }

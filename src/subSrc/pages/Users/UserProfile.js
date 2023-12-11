@@ -6,6 +6,8 @@ import apiClient from '../../services/api/base/apiClient';
 
 import useAuth from '../../services/authContext/useAuth';
 
+import { useQuery } from 'react-query';
+
 import endpoinUrl from '../../services/api/base/endpointUrl';
 import webSocketUrl from '../../services/api/base/webSocketUrl';
 
@@ -177,6 +179,9 @@ export default function UserProfile() {
 
       })
       .catch(error => {
+
+        console.log(error.message)
+
         setLoading(false)
 
         let data = {
@@ -440,6 +445,51 @@ export default function UserProfile() {
 
   }
 
+  const handleUpdatePassword = () => {
+    const cookies = new Cookies();
+    const accessToken = cookies.get('userToken')
+
+    setLoading(true)
+    //Make post request to change the status
+    apiClient.get(`/auth/updatePassword/${email}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => {
+
+        setLoading(false)
+
+        if (response.status === 200) {
+
+          let data = {
+            type: t("success"),
+            text: "Succesfully Sent Passwor Resent Link to your Email",
+            icon: checkIcon,
+            bgColour: '#5cb85c',
+          }
+
+          dispatchNotification(data)
+        }
+
+
+      })
+      .catch(error => {
+
+        setLoading(false)
+
+        let data = {
+          type: t("error"),
+          text: "Error Sending Passwor Resent Link to your Email",
+          icon: warningIcon,
+          bgColour: '#f0ad4e',
+        }
+
+        dispatchNotification(data)
+
+      });
+  }
+
   const handleUpload = async () => {
     if (selectedFile) {
       const formData = new FormData();
@@ -519,6 +569,15 @@ export default function UserProfile() {
   const navigate = useNavigate();
   const [audio] = useState(new Audio(thanosSnapAudioFile));
   const deleteUsersAccount = () => {
+
+    setTimeout(() => {
+      navigate("/login")
+    }, 18000)
+
+    audio.play()
+    stateDispatch({ type: SET_THANOS_SNAP_ANIMATION, data: true })
+
+    return
 
     swal({
       title: t("are-your-sure"),
@@ -649,7 +708,7 @@ export default function UserProfile() {
   const handleSubscribe = () => {
     const socket = io(webSocketUrl);
 
-    const songTitle = activePlaylist[currentSong].title ?? ''
+    const songTitle = activePlaylist && activePlaylist.length > 0 ? (activePlaylist[currentSong]?.title ?? '') : '';
 
     socket.emit('onlineListeners', {
       userName: username,
@@ -661,24 +720,50 @@ export default function UserProfile() {
   const handleUnsubscribe = () => {
     const socket = io(webSocketUrl);
 
-    const songTitle = activePlaylist[currentSong].title ?? ''
-
     socket.emit('unsubscribe', {
       userName: username,
-      activeSong: songTitle,
-      displayPicUrl: userImage
+      activeSong: '',
+      displayPicUrl: ''
     });
   }
 
   const [imageProfile, setImageProfile] = useState()
   useEffect(() => {
-
-    if (!userImage) {
-      setImageProfile(imageAvatar)
+    if (userImage != 'imageavatar.png') {
+      setImageProfile(userImage)
     } else {
-      setImageProfile(endpoinUrl + userImage)
+      setImageProfile(imageAvatar)
     }
   }, [userImage])
+
+
+  const [images, setImages] = useState([])
+  const getUnsplashImages = async () => {
+
+    const unsplashToken = 'Mf6CHASBHiRxPTZ-i6vw4NSuXEKJmjHVkDzlTXt1WdA' //process.env.REACT_APP_UNSPLASH_KEY
+
+    const header = {
+      headers: { Authorization: `Client-ID ${unsplashToken}` }
+    }
+    const res = await fetch(`https://api.unsplash.com/photos/`, header);
+    const data = await res.json()
+    return data;
+  };
+
+  const { isLoading, data } = useQuery('fetchUnsplashImage', getUnsplashImages, {
+    refetchOnWindowFocus: false,
+    enabled: true,
+  },);
+
+  useEffect(() => {
+
+    if (data) {
+
+      setImages(data.slice(0, 10));
+
+    }
+
+  }, [data])
 
   return (
     <>
@@ -781,29 +866,20 @@ export default function UserProfile() {
               </div>
 
               <div className='col-xl-5 col-md-5 col-sm-12 col-lg-5' id="fadeOutPlatformSettings">
-                <div className="card card-plain h-100">
+                <div className="card card-plain h-100" style={{maxHeight: "40vh"}}>
                   <div className="card-header pb-0 p-3">
                   </div>
                   <br />
                   <Carousel fade>
-                    <Carousel.Item>
-                      <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(15).webp" alt="First slide" />
+                    {images.map((item, index) => (
+                      <Carousel.Item key={index}>
 
-                    </Carousel.Item>
-
-                    <Carousel.Item>
-                      {/* <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp" alt="Second slide" /> */}
-
-                      <ModalImage
-                        small='https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp'
-                        large='https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp'
-                        alt="Hello World!"
-                      />
-                    </Carousel.Item>
-
-                    <Carousel.Item>
-                      <img className="d-block w-100" src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(23).webp" alt="Third slide" />
-                    </Carousel.Item>
+                        {/* If you want to use a different size, you can replace 'full' with another key like 'raw', 'regular', etc. */}
+                        {item.urls && item.urls.small && (
+                          <ModalImage small={item.urls.raw+'&h=350&w=350&dpr=2'} alt={`Slide ${index + 1}`} />
+                        )}
+                      </Carousel.Item>
+                    ))}
                   </Carousel>
                 </div>
               </div>
@@ -848,7 +924,7 @@ export default function UserProfile() {
                     <label data-error="wrong" data-success="right" htmlFor="orangeForm-email">{t("choose-image")}</label>
                   </div>
 
-                  <div className='container'>
+                  {/* <div className='container'>
                     <div className='row'>
                       <div className="col-6">
                         <input type="password" id="orangeForm-password" onChange={(e) => setPassword(e.target.value)} className="form-control validate" />
@@ -859,7 +935,7 @@ export default function UserProfile() {
                         <label data-error="wrong" data-success="right" htmlFor="orangeForm-password">{t("your-confirm-password")}</label>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="col-6">
                     <input type="text" id="orangeForm-username" defaultValue={username} onChange={(e) => setUsernameu(e.target.value)} className="form-control validate" />
@@ -879,6 +955,7 @@ export default function UserProfile() {
               </form>
             </div>
             <div className="modal-footer">
+              <button type="button" className="btn btn-warning" onClick={handleUpdatePassword}>{t("update-password")}</button>
               <button type="button" className="btn btn-secondary" onClick={handleUpload} data-bs-dismiss="modal">{t("upload-image")}</button>
               <button type="button" className="btn btn-primary" onClick={() => { handleUpdateUserData() }}>{t("update")}</button>
             </div>

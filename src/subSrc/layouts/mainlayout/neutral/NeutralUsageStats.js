@@ -2,13 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import Cookies from 'universal-cookie'
 
-//user details context
 import appContext from '../../../services/context/appContext.js'
-
-import imageBadge from '../../../assets/users/img/small-logos/logo-xd.svg'
-import userImageTable from '../../../assets/users/img/team-1.jpg'
-
-// import useQuery from '../../../services/api/base/useQuery.js'
 
 import { useQuery } from 'react-query'
 
@@ -22,22 +16,6 @@ export default function NeutralUsageStats() {
     const {
         userData: {
             firebaseUid,
-            // history,
-            favourite: {
-                // favouriteCount,
-                // favouriteItems
-            },
-            shazam: {
-                // shazamCount,
-                // shazamItems
-            },
-            comments: {
-                // commentsCount,
-                // commentsItems
-            },
-        },
-        musicSettings: {
-            mixList
         }
     } = useContext(appContext);
 
@@ -60,8 +38,6 @@ export default function NeutralUsageStats() {
     const [shazamItemsCount, setShazamItemsCount] = useState([]);
 
     const [mixItems, setMixItems] = useState([]);
-
-    //  const { data, loading, error } = useQuery(`/profile/userDashboard/${firebaseUid}`, 'GET');
 
     const getUserDashboardDara = async () => {
         const header = {
@@ -93,13 +69,45 @@ export default function NeutralUsageStats() {
                 setShazamItems(data.data.shazam.shazamData)
                 setShazamItemsCount(data.data.shazam.shazamCount)
 
-                setMixItems(data.data.musicList)
+                const mixArray = []
+                const uniqueItemsSet = new Set();
+
+                data.data.musicList.forEach(item => {
+
+                    if (!uniqueItemsSet.has(item.mixId)) {
+
+                        if(item.status === "disabled"){
+                            return
+                        }
+
+                        uniqueItemsSet.add(item.mixId);
+
+                        mixArray.push({
+                            commentsEnabled: item.commentsEnabled,
+                            description: item.description,
+                            duration: item.duration,
+                            genre: item.genre,
+                            mixId: item.mixId,
+                            songsCount: item.songsCount,
+                            status: item.status,
+                            title: item.title,
+                        });
+
+                    }
+
+                })
+                setMixItems(mixArray)
             }
         }
     }, [data])
 
     return (
         <>
+            {isLoading &&
+                <div className='container text-center'>
+                    <span class="loader"></span>
+                </div>
+            }
             <div className="row mt-0">
                 <div className="col-lg-4 col-md-6 mt-4 mb-4">
                     <div className="card h-100">
@@ -107,6 +115,7 @@ export default function NeutralUsageStats() {
                             <h6>{t("history-plays")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                                <span className="font-weight-bold">&nbsp; {historyCount}</span>
                             </p>
                         </div>
                         <div className="card-body p-3" style={{ maxHeight: "200px", overflow: "auto" }}>
@@ -137,7 +146,7 @@ export default function NeutralUsageStats() {
                             <h6>{t("favourites")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                                <span className="font-weight-bold">{favouriteItemsCount}</span>
+                                <span className="font-weight-bold">&nbsp; {favouriteItemsCount}</span>
                             </p>
                         </div>
                         <div className="card-body p-3" style={{ maxHeight: "200px", overflow: "auto" }}>
@@ -168,7 +177,7 @@ export default function NeutralUsageStats() {
                             <h6>{t("identified-songs")}</h6>
                             <p className="text-sm">
                                 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                                <span className="font-weight-bold">{shazamItemsCount}</span>
+                                <span className="font-weight-bold">&nbsp; {shazamItemsCount}</span>
                             </p>
                         </div>
                         <div className="card-body p-3">
@@ -194,11 +203,6 @@ export default function NeutralUsageStats() {
                 </div>
 
             </div>
-            {isLoading &&
-                <div className='container text-center'>
-                    <span class="loader"></span>
-                </div>
-            }
 
             <div className="row mb-4">
                 <div className="col-lg-8 col-md-6 mb-md-0 mb-4">

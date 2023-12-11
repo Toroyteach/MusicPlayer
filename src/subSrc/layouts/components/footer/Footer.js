@@ -1,13 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
 
-import Queue from '../../../services/music/Queue.js';
+import { Link } from 'react-router-dom';
 
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
-
-import Cookies from 'universal-cookie';
 
 //import necessary files to make state and context consistent
 import appContext from '../../../services/context/appContext.js';//'../context/appContext.js'
@@ -19,20 +15,23 @@ import '../../../assets/users/css/style.css';
 import { TbBrandShazam } from 'react-icons/tb';
 
 //import cool alerts from sweetalerts
-import swal from 'sweetalert';
+// import swal from 'sweetalert';
 
 //import axios for the shazam api
-import axios from 'axios';
+// import axios from 'axios';
 
 //import the reducer function states to make consistent states
 import {
-
   SET_TOGGLE_PLAYING,
   SET_CURRENT_SONG,
-  SET_VOLUME
-
+  SET_MUSIC_PLAYING_STATUS
 } from '../../../services/music/musicState/musicStateTypes';
 
+import { SET_NOTIFIATION_TEXT_ITEM } from '../../../services/context/appState/stateTypes.js';
+
+import warningIcon from '../toast/toastSvg/warning.svg'
+
+import endpointCoverArtUrl from '../../../services/api/base/endPointCoverArtUrl.js';
 
 import PlayLoad from '../../../pages/Music/components/loader/PlayLoad.js';
 import { t } from 'i18next';
@@ -44,7 +43,6 @@ export default function Footer() {
     stateDispatch,
     userData: {
       username,
-      favourite,
     },
     appSettings: {
       thanosSnapVisible,
@@ -57,130 +55,55 @@ export default function Footer() {
     activePlaylist,
     musicStateDispatch,
     random,
-    volume,
     playNextItem,
-    SetCurrent,
     musicSettings: {
       playOrLoading,
-      mixList
+      playingStatus,
     },
   } = useContext(musicContext)
-
-  //////
-  // testing Code
-  // const cookies = new Cookies();
-  // const accessToken = cookies.get('userToken')
-  // const audioFilesEndpoint = 'http://localhost:3010/music/clippedMix';
-  // const [queue, setQueue] = useState(new Queue());
-
-  ///
-  ///
-
-  // const [audioContext, setAudioContext] = useState(null);
-  // const [currentIndex, setCurrentIndex] = useState(1);
-  // const [totalChunks, setTotalChunks] = useState(16);
-
-  // const fetchChunkedFiles = async () => {
-  //   const title = "quepasa"//state.musicSettings.activePlaylist[state.musicSettings.currentSong].title
-  //   const header = {
-  //     headers: { Authorization: `Bearer ${accessToken}` }
-  //   }
-  //   const res = await fetch(`${audioFilesEndpoint}?title=${title}&clippedId=${currentIndex}.opus`, header);
-  //   const arrayBuffer = await res.arrayBuffer()
-  //   const decodedAudio = await audioContext.decodeAudioData(arrayBuffer)
-  //   return decodedAudio;
-  // };
-
-  // const { isLoading, isError, error, data: audioData, refetch, remove, status } = useQuery('fetchAudio', fetchChunkedFiles, {
-  //   refetchOnWindowFocus: false,
-  //   enabled: false,
-  // },);
-
-
-  // useEffect(() => {
-  //   const context = new (window.AudioContext || window.webkitAudioContext)();
-  //   setAudioContext(context);
-  // }, []);
-
-  // useEffect(() => {
-
-  //   if (audioData) {
-  //     queue.enqueue(audioData)
-  //   }
-
-  // }, [audioData])
-
-
-  // const playAudio = () => {
-  //   if (!audioContext || queue.isEmpty()) {
-  //     console.log('Queue is empty')
-  //     return;
-  //   }
-
-  //   const playNextItem = () => {
-  //     if (queue.isEmpty()) {
-  //       return;
-  //     }
-
-  //     const dataArr = queue.peek();
-  //     const playSound = audioContext.createBufferSource();
-  //     playSound.buffer = dataArr;
-  //     playSound.connect(audioContext.destination);
-  //     playSound.onended = () => {
-
-  //       queue.dequeue();
-
-  //       if (!queue.isEmpty()) {
-
-  //         playNextItem();
-
-  //       }
-  //     };
-
-  //     playSound.start(audioContext.currentTime);
-
-  //     if(currentIndex <= totalChunks){
-
-  //       setCurrentIndex((prevIndex) => prevIndex + 1);
-
-  //       setTimeout(() => {
-  //         remove('fetchAudio')
-  //         refetch();
-  //       }, 4000);
-
-  //     }
-  //   };
-
-  //   // Start playing the first item from the queue
-  //   playNextItem();
-  // };
-
-  // const addCurrentItem = () => {
-
-  //   SetCurrent()
-  // }
-
-  ////
 
   //handles the actual playing and changing of the play pause buttons
   // const [showSpinner, setShowSpinner] = useState(false)
   const playAndPause = () => {
 
-    musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
+    if (currentSong === null) {
+      let data = {
+        type: t("error"),
+        text: "Please Select an Item in Music Section before moving forward",
+        icon: warningIcon,
+        bgColour: '#f0ad4e',
+      }
 
-    if (playing) {
+      dispatchNotification(data)
 
-      //sets the pause button to show
-      gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
-      gsap.fromTo($(".btn-play"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, display: "block", scale: 1, ease: Power2.easeInOut });
+      return
+    }
+
+    const chanegPlayState = () => {
+      if (playing) {
+
+        //sets the pause button to show
+        gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
+        gsap.fromTo($(".btn-play"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, display: "block", scale: 1, ease: Power2.easeInOut });
 
 
+      } else {
+
+        //sets the play button to show
+        gsap.to($(".btn-play"), { duration: 0.5, x: 20, opacity: 0, scale: 0.3, display: "none", ease: Power2.easeInOut });
+        gsap.fromTo($(".btn-pause"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, scale: 1, display: "block", ease: Power2.easeInOut });
+
+      }
+    }
+
+    if (!playingStatus) {
+      playNextItem()
+      chanegPlayState()
+      musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
+      musicStateDispatch({ type: SET_MUSIC_PLAYING_STATUS, data: true })
     } else {
-
-      //sets the play button to show
-      gsap.to($(".btn-play"), { duration: 0.5, x: 20, opacity: 0, scale: 0.3, display: "none", ease: Power2.easeInOut });
-      gsap.fromTo($(".btn-pause"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, scale: 1, display: "block", ease: Power2.easeInOut });
-
+      chanegPlayState()
+      musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
     }
 
   }
@@ -219,7 +142,7 @@ export default function Footer() {
   }
 
   // self State
-  const handleVolume = (e) => musicStateDispatch({ type: SET_VOLUME, data: e })
+  // const handleVolume = (e) => musicStateDispatch({ type: SET_VOLUME, data: e })
 
 
   //shazam details to send to rapid api
@@ -227,7 +150,7 @@ export default function Footer() {
   //   method: 'POST',
   //   headers: {
   //     'content-type': 'text/plain',
-  //     'X-RapidAPI-Key': 'e2c7ca4b6amshd3130528089f43cp1a6adbjsn3e37ffb98f27',
+  //     'X-RapidAPI-Key': process.env.REACT_APP_RAPID_SHAZAM_API_KEY,
   //     'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
   //   },
   //   body: '"Generate one on your own for testing and send the body with the content-type as text/plain"'
@@ -235,50 +158,50 @@ export default function Footer() {
 
 
   const handleShazam = () => {
-    swal({
-      text: 'Search for a movie. e.g. "Dark Knight".',
-      content: "input",
-      button: {
-        text: "Search!",
-        closeModal: false,
-      },
-    }).then(name => {
+    // swal({
+    //   text: 'Search for a movie. e.g. "Dark Knight".',
+    //   content: "input",
+    //   button: {
+    //     text: "Search!",
+    //     closeModal: false,
+    //   },
+    // }).then(name => {
 
-      if (!name) throw null;
+    //   if (!name) throw {null};
 
-      return fetch(`https://itunes.apple.com/search?term=${name}&entity=movie`);
+    //   return fetch(`https://itunes.apple.com/search?term=${name}&entity=movie`);
 
-    }).then(results => {
+    // }).then(results => {
 
-      return results.json();
+    //   return results.json();
 
-    }).then(json => {
+    // }).then(json => {
 
-      const movie = json.results[0];
+    //   const movie = json.results[0];
 
-      if (!movie) {
-        return swal("No movie was found!");
-      }
+    //   if (!movie) {
+    //     return swal("No movie was found!");
+    //   }
 
-      const name = movie.trackName;
-      const imageURL = movie.artworkUrl100;
+    //   const name = movie.trackName;
+    //   const imageURL = movie.artworkUrl100;
 
-      swal({
-        title: "Top result:",
-        text: name,
-        icon: imageURL,
-      });
+    //   swal({
+    //     title: "Top result:",
+    //     text: name,
+    //     icon: imageURL,
+    //   });
 
-    }).catch(err => {
+    // }).catch(err => {
 
-      if (err) {
-        swal("Oh noes!", "The AJAX request failed!", "error");
-      } else {
-        swal.stopLoading();
-        swal.close();
-      }
+    //   if (err) {
+    //     swal("Oh noes!", "The AJAX request failed!", "error");
+    //   } else {
+    //     swal.stopLoading();
+    //     swal.close();
+    //   }
 
-    });
+    // });
 
     // axios.request(options).then(function (response) {
     //   console.log(response.data);
@@ -301,15 +224,45 @@ export default function Footer() {
     //     console.error(err);
     //   });
 
-    //   fetch('https://shazam.p.rapidapi.com/songs/v2/detect?timezone=America%2FChicago&locale=en-US', options)
-    // .then(response => response)
-    // .then(response => console.log(response))
-    // .catch(err => console.error(err));
+    // fetch('https://shazam.p.rapidapi.com/songs/v2/detect?timezone=America%2FChicago&locale=en-US', options)
+    //   .then(response => response)
+    //   .then(response => console.log(response))
+    //   .catch(err => console.error(err));
   }
 
-  // const handlePop = () => {
-  //   // playNextItem()
-  // };
+  //function to set or show cutsom toast notification
+  const dispatchNotification = (data) => {
+
+    const notice = {
+      id: Math.floor((Math.random() * 101) + 1),
+      title: data.type,
+      description: data.text,
+      backgroundColor: data.bgColour,
+      icon: data.icon
+    };
+
+    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+
+  }
+
+
+  const handleKeyPress = (event) => {
+    if (event.key === ' ' || event.key === 'Spacebar') {
+      // Handle spacebar press
+      //Trigger the Play Puase of the audio
+      // playAndPause()
+    }
+  };
+
+  useEffect(() => {
+    // Attach event listener when component mounts
+    document.addEventListener('keydown', handleKeyPress);
+
+    // Detach event listener when component unmounts
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []); 
 
   return (
     <footer className={thanosSnapVisible ? 'footer py-4 fadeOut' : 'footer py-4'} id="fadeOut">
@@ -326,28 +279,25 @@ export default function Footer() {
           </div>
 
           <div className="col-lg-6 col-md-6 col-sm-12">
-            {/* <button onClick={addCurrentItem}>
-              {isLoading ? 'Loading...' : isError ? 'Error' : 'Play'}
-            </button>
-
-            <button onClick={handlePop}>
-              POP
-            </button> */}
 
             {/* Mini Music */}
             <div className="mini-player-footer">
 
-              <Link to={`/music/single/dtLzqJlkKMwpPdTQoTMG`}>
+
+
+
+              <Link to={`/music/single/${activePlaylist[currentSong]?.mixId}`} style={{pointerEvents: (currentSong != undefined || currentSong != null) ? '' : 'none'}}>
                 <div className="track_info_wrapper" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
                   <div className="track_info">
-                    <div className="thumb"></div>
+                    {(typeof currentSong === 'number') && (<div className="thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+activePlaylist[currentSong]?.coverArt})`}}></div>)}
                     <div className="info">
-                      <div className="title ">{activePlaylist[currentSong]?.title}</div>
-                      <div className="artist ">{activePlaylist[currentSong]?.artistName}</div>
+                      <div className="title">{typeof currentSong === 'number' ? activePlaylist[currentSong]?.title : ''}</div>
+                      <div className="title">{typeof currentSong === 'number' ? activePlaylist[currentSong]?.genre : ''}</div>
                     </div>
                   </div>
                 </div>
               </Link>
+
 
               <div className="mini-player_btn_wrapper">
 
@@ -363,12 +313,12 @@ export default function Footer() {
 
               </div>
 
-              <div className='btn-VolumeIcon' >
+              {/* <div className='btn-VolumeIcon' >
                 <i className="cursor-pointer fa fa-volume-up" aria-hidden="true"></i>
                 <div className="volumeDropDown ">
                   <input type="range" orient="vertical" name="volBar" id="volBar" value={Math.round(volume * 100)} onChange={(e) => handleVolume(e.target.value / 100)} />
                 </div>
-              </div>
+              </div> */}
 
               <div className='btn-ShazamIcon' >
                 {/* <i className="cursor-pointer fa fa-search-plus" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to Identify"></i> */}

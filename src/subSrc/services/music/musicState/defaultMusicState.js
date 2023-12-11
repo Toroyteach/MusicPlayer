@@ -32,7 +32,7 @@ const allMusicListCount = [
 
 //Music player states
 const musicSettings = {
-    currentSong: 0,
+    currentSong: null,
     activePlaylist: [],
     completePlaylist: song_list,
     repeat: false,
@@ -46,6 +46,7 @@ const musicSettings = {
     likedItem: false,
     mixList: allMusicListCount,
     playOrLoading: false,
+    playingStatus: false,
 }
 
 //the reducer states

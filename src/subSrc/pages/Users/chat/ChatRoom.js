@@ -30,6 +30,7 @@ function ChatRoom() {
             </Link>
 
             <div className="--dark-theme" id="chat">
+
                 <div className="chat__conversation-board">
 
                     <ChatList roomId={room} />

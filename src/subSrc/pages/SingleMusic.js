@@ -18,6 +18,8 @@ import Comments from "../services/comments/Comments.js"
 
 import endpoinUrl from '../services/api/base/endpointUrl';
 
+import endpointCoverArtUrl from '../services/api/base/endPointCoverArtUrl'
+
 //waveform for the cool audio seek
 import WaveSurfer from "wavesurfer.js";
 //import WebAudio from 'wavesurfer.js/src/webaudio';
@@ -53,6 +55,7 @@ export default function SingleMusic() {
 
   const [rating, setRating] = useState('')
   const [title, setTitle] = useState('')
+  const [coverArt, setCoverArt] = useState()
   const [description, setDescription] = useState('')
 
   const [allowCommentsOnMix, setAllowCommentsOnMix] = useState(true)
@@ -122,6 +125,7 @@ export default function SingleMusic() {
         setTitle(data.data.mixItemDoc.title)
         setDescription(data.data.mixItemDoc.description)
         setRating(data.data.ratingsDoc ? data.data.ratingsDoc.rating : 0)
+        setCoverArt(endpointCoverArtUrl+data.data.mixItemDoc.coverArt)
 
         setAllowCommentsOnMix(data.data.mixItemDoc.commentsEnabled)
       }
@@ -214,10 +218,10 @@ export default function SingleMusic() {
 
             <div className="card">
               <div className="row g-0">
-                <div className="col-md-3" style={{ display: "flex" }}>
-                  <img src={coverImage} className="img-responsive rounded-start" alt="Magnifico" style={{ maxWidth: "100%", maxHeight: "auto", justifyContent: "center" }} />
+                <div className="col-md-4" style={{ display: "flex" }}>
+                  <img src={coverArt} className="img-responsive rounded-start" alt="Magnifico" style={{ maxWidth: "100%", maxHeight: "auto", justifyContent: "center" }} />
                 </div>
-                <div className="col-md-9">
+                <div className="col-md-8">
                   <div className="card-body">
                     <h5 className="card-title">{title}</h5>
                     <p className="card-text text-body">{description}.</p>

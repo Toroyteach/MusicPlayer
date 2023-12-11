@@ -6,14 +6,16 @@ import appContext from '../../../../services/context/appContext';
 
 import endpoinUrl from '../../../../services/api/base/endpointUrl';
 
+import imageAvatar from '../../../../assets/users/img/imageavatar.png'
+
 function ChatList({ roomId }) {
     const containerRef = useRef(null);
 
     const {
         userData: {
-          firebaseUid,
+            firebaseUid,
         },
-      } = useContext(appContext)
+    } = useContext(appContext)
 
     const user = 'PvksVIX69lcl3KQKssH7784rVhC2'
     const chats = useChat(roomId);
@@ -28,9 +30,14 @@ function ChatList({ roomId }) {
         <>
 
             {(chats.length == 0) &&
-                <div className="spinner-grow" style={{ width: "3rem", height: "3rem" }} role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+                <>
+                    <div className="alert alert-warning" role="alert">
+                        Opps looks like there No Chats Yet. Be the first to Drop one.
+                    </div>
+                    <div className="spinner-grow" style={{ width: "3rem", height: "3rem" }} role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </>
             }
 
             <div ref={containerRef}>
@@ -58,10 +65,10 @@ function Chat({ chat, isOwnChat }) {
 
                     <div className={['chat__conversation-board__message__person', isOwnChat && 'ownChat'].join(' ')}>
                         <div className="chat__conversation-board__message__person__avatar">
-                            <img src={endpoinUrl+userPic} alt={username} />
+                            <img src={(userPic != 'imageavatar.png') ? userPic : imageAvatar} alt={username} />
                         </div>
                     </div>
-                        <span className="chat__conversation-board__message__person__nickname">{username}</span>
+                    <span className="chat__conversation-board__message__person__nickname">{username}</span>
 
                     <div className="chat__conversation-board__message__context">
                         {/* <h4 className="sender">{isOwnChat ? 'You' : username}</h4> */}
