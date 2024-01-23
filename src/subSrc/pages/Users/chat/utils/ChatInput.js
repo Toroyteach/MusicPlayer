@@ -1,5 +1,6 @@
 
 import { useState, useContext } from 'react';
+import { useSelector } from 'react-redux';
 // import { useAuth } from '../../hooks/useAuth';
 import { sendChat } from '../../../../services/firebase/firebase'
 
@@ -9,13 +10,15 @@ import { useTranslation } from "react-i18next";
 
 function ChatInput({ roomId }) {
 
-    const {
-        userData: {
-          firebaseUid,
-          userImage,
-          username
-        },
-      } = useContext(appContext)
+    // const {
+    //     userData: {
+    //       firebaseUid,
+    //       userImage,
+    //       username
+    //     },
+    //   } = useContext(appContext)
+
+    const userData = useSelector((state) => state.user.data)
 
     //const { user } = useAuth();
     const [value, setValue] = useState('');
@@ -26,7 +29,7 @@ function ChatInput({ roomId }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        sendChat(roomId, firebaseUid, value, userImage, username);
+        sendChat(roomId, userData.firebaseUid, value, userData.userImage, userData.username);
         setValue('');
     };
 

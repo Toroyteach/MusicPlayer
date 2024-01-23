@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 
+import { useSelector } from 'react-redux'
 import Cookies from 'universal-cookie'
+
 
 import appContext from '../../../services/context/appContext.js'
 
@@ -13,11 +15,14 @@ import apiEndUrl from '../../../services/api/base/apiEndurl.js'
 
 export default function NeutralUsageStats() {
 
-    const {
-        userData: {
-            firebaseUid,
-        }
-    } = useContext(appContext);
+    // const {
+    //     userData: {
+    //         firebaseUid,
+    //     }
+    // } = useContext(appContext);
+
+    const musicData = useSelector((state) => state.music.data);
+    const userData = useSelector((state) => state.music.data)
 
     //initiate tge translator
     const { t } = useTranslation();
@@ -37,13 +42,13 @@ export default function NeutralUsageStats() {
     const [shazamItems, setShazamItems] = useState([]);
     const [shazamItemsCount, setShazamItemsCount] = useState([]);
 
-    const [mixItems, setMixItems] = useState([]);
+    // const [mixItems, setMixItems] = useState([]);
 
     const getUserDashboardDara = async () => {
         const header = {
             headers: { Authorization: `Bearer ${accessToken}` }
         }
-        const res = await fetch(`${apiEndUrl}profile/userDashboard/${firebaseUid}`, header);
+        const res = await fetch(`${apiEndUrl}profile/userDashboard/${userData.firebaseUid}`, header);
         const data = await res.json()
         return data;
     };
@@ -69,34 +74,34 @@ export default function NeutralUsageStats() {
                 setShazamItems(data.data.shazam.shazamData)
                 setShazamItemsCount(data.data.shazam.shazamCount)
 
-                const mixArray = []
-                const uniqueItemsSet = new Set();
+                // const mixArray = []
+                // const uniqueItemsSet = new Set();
 
-                data.data.musicList.forEach(item => {
+                // data.data.musicList.forEach(item => {
 
-                    if (!uniqueItemsSet.has(item.mixId)) {
+                //     if (!uniqueItemsSet.has(item.mixId)) {
 
-                        if(item.status === "disabled"){
-                            return
-                        }
+                //         if(item.status === "disabled"){
+                //             return
+                //         }
 
-                        uniqueItemsSet.add(item.mixId);
+                //         uniqueItemsSet.add(item.mixId);
 
-                        mixArray.push({
-                            commentsEnabled: item.commentsEnabled,
-                            description: item.description,
-                            duration: item.duration,
-                            genre: item.genre,
-                            mixId: item.mixId,
-                            songsCount: item.songsCount,
-                            status: item.status,
-                            title: item.title,
-                        });
+                //         mixArray.push({
+                //             commentsEnabled: item.commentsEnabled,
+                //             description: item.description,
+                //             duration: item.duration,
+                //             genre: item.genre,
+                //             mixId: item.mixId,
+                //             songsCount: item.songsCount,
+                //             status: item.status,
+                //             title: item.title,
+                //         });
 
-                    }
+                //     }
 
-                })
-                setMixItems(mixArray)
+                // })
+                // setMixItems(mixArray)
             }
         }
     }, [data])
@@ -228,7 +233,7 @@ export default function NeutralUsageStats() {
                                     <tbody>
 
 
-                                        {(mixItems || []).map((song, i) => (
+                                        {(musicData.mixList || []).map((song, i) => (
 
                                             <tr key={i}>
                                                 <td>

@@ -189,30 +189,6 @@ export default (state, action) => {
         userData: { ...state.userData, lastQuizDate: action.data }
       }
 
-    case SET_SHOW_MY_ONLINE_STATUS:
-      return {
-        ...state,
-        userData: { ...state.userData, allowOnlineStatus: action.data }
-      }
-
-    case SET_SHOW_OTHERS_COMMENTS:
-      return {
-        ...state,
-        userData: { ...state.userData, allowComments: action.data }
-      }
-
-    case SET_ARTIFICIAL_WEATHER:
-      return {
-        ...state,
-        userData: { ...state.userData, allowWeather: action.data }
-      }
-
-    case SET_ALLOW_RANDOM_QUIZ:
-      return {
-        ...state,
-        userData: { ...state.userData, allowQuize: action.data }
-      }
-
     case SET_USER_FAVOURITE_LIST_ADD:
       {
 
@@ -260,17 +236,42 @@ export default (state, action) => {
 
       }
 
-      case SET_ONLINE_USERS_LIST:
-        {
-  
-          const newHistory = {
-            ...state,
-            appSettings: { ...state.appSettings, onlineList: action.data }
-          }
-  
-          return newHistory
-  
+    case SET_SHOW_MY_ONLINE_STATUS:
+      return {
+        ...state,
+        userData: { ...state.userData, allowOnlineStatus: action.data }
+      }
+
+    case SET_SHOW_OTHERS_COMMENTS:
+      return {
+        ...state,
+        userData: { ...state.userData, allowComments: action.data }
+      }
+
+    case SET_ARTIFICIAL_WEATHER:
+      return {
+        ...state,
+        userData: { ...state.userData, allowWeather: action.data }
+      }
+
+    case SET_ALLOW_RANDOM_QUIZ:
+      return {
+        ...state,
+        userData: { ...state.userData, allowQuize: action.data }
+      }
+
+
+    case SET_ONLINE_USERS_LIST:
+      {
+
+        const newHistory = {
+          ...state,
+          appSettings: { ...state.appSettings, onlineList: action.data }
         }
+
+        return newHistory
+
+      }
 
     //Application stats
     case SET_CUMMULATIVE_MINUTES_LISTENED:

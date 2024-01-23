@@ -3,6 +3,8 @@ import React, { useContext, useEffect } from 'react'
 //cookie for enabling and disabling application tour
 import Cookies from 'universal-cookie';
 
+import { useSelector, useDispatch } from 'react-redux';
+
 // import '../../assets/users/style.css';
 import $ from 'jquery';
 import { gsap, Power2, Expo, Elastic } from 'gsap';
@@ -38,18 +40,23 @@ import {
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
 import ImageGen from './pages/ImageGen.js';
+import { set_enable_application_tour } from '../../services/redux/app/reducer/appReducer.js';
 
 export default function Music() {
 
   // Global State
-  const {
-    stateDispatch,
-  } = useContext(appContext)
+  // const {
+  //   stateDispatch,
+  // } = useContext(appContext)
 
-  const {
-    currentSong,
-    activePlaylist,
-  } = useContext(musicContext)
+  // const {
+  //   currentSong,
+  //   activePlaylist,
+  // } = useContext(musicContext)
+
+  const dispatch = useDispatch()
+  const musicData = useSelector((state) => state.music.data)
+  const userData = useSelector((state) => state.user.data)
 
   //initiate tge translator
   const { t } = useTranslation();
@@ -144,7 +151,8 @@ export default function Music() {
 
   const onPlayButtonClickInitiateTour = () => {
 
-    stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: true })
+    dispatch(set_enable_application_tour(true))
+    // stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: true })
 
   }
 
@@ -156,7 +164,8 @@ export default function Music() {
 
     if (cookies.get('showTour') != 'show') {
 
-      stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: true })
+      dispatch(set_enable_application_tour(true))
+      // stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: true })
 
     }
 
@@ -185,10 +194,10 @@ export default function Music() {
             <div className="mini-player" onClick={handleOpenMiniPlayer} id='musicPlayerIntro'>
               <div className="track_info_wrapper miniPlayer">
                 <div className="track_info">
-                {(typeof currentSong === 'number') && (<div className="thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+activePlaylist[currentSong]?.coverArt})`}}></div>)}
+                {(typeof musicData.currentSong === 'number') && (<div className="thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+musicData.activePlaylist[musicData.currentSong]?.coverArt})`}}></div>)}
                   <div className="info">
-                    <div className="title">{activePlaylist[currentSong]?.title}</div>
-                    <div className="artist">{activePlaylist[currentSong]?.genre}</div>
+                    <div className="title">{musicData.activePlaylist[musicData.currentSong]?.title}</div>
+                    <div className="artist">{musicData.activePlaylist[musicData.currentSong]?.genre}</div>
                   </div>
                 </div>
               </div>

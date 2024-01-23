@@ -1,5 +1,8 @@
-import { t } from 'i18next';
 import React, { useContext, useState } from 'react'
+
+import { useSelector } from 'react-redux';
+import { t } from 'i18next';
+
 
 import NeutralUsageStats from '../../layouts/mainlayout/neutral/NeutralUsageStats';
 
@@ -11,12 +14,14 @@ import { useTranslation } from "react-i18next";
 
 export default function UserDashboard() {
 
-  const {
-    userData: {
-      totalPlaysCount,
-      totalMinutesListened,
-    },
-  } = useContext(appContext);
+  // const {
+  //   userData: {
+  //     totalPlaysCount,
+  //     totalMinutesListened,
+  //   },
+  // } = useContext(appContext);
+
+  const userData = useSelector((state) => state.user.data)
 
   //initiate tge translator
   const { t } = useTranslation();
@@ -33,7 +38,7 @@ export default function UserDashboard() {
               </div>
               <div className="text-end pt-1">
                 <p className="text-sm mb-0 text-capitalize text-secondary">{t("total-played")}</p>
-                <h4 className="mb-0">{totalPlaysCount}</h4>
+                <h4 className="mb-0">{userData.totalPlaysCount}</h4>
               </div>
             </div>
             <hr className="dark horizontal my-0" />
@@ -51,7 +56,7 @@ export default function UserDashboard() {
               </div>
               <div className="text-end pt-1">
                 <p className="text-sm mb-0 text-capitalize">{t("total-minutes-listened")}</p>
-                <h4 className="mb-0">{totalMinutesListened}min</h4>
+                <h4 className="mb-0">{userData.totalMinutesListened}min</h4>
               </div>
             </div>
             <hr className="dark horizontal my-0" />

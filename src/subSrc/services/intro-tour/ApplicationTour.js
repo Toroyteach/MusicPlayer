@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Steps } from 'intro.js-react';
 import 'intro.js/introjs.css';
 
@@ -20,26 +22,31 @@ import { t } from 'i18next';
 
 import { useTranslation } from "react-i18next";
 import '../../services/localization/i18n';
+import { set_aside_navigation_open_app_tour, set_enable_application_tour } from '../redux/app/reducer/appReducer.js';
 
 
 export default function ApplicationTour() {
 
-    const {
-        stateDispatch,
-        userData: {
-            username,
-        },
-        appSettings: {
-            enableApplicationTour,
-        },
-    } = useContext(appContext)
+    // const {
+    //     stateDispatch,
+    //     userData: {
+    //         username,
+    //     },
+    //     appSettings: {
+    //         enableApplicationTour,
+    //     },
+    // } = useContext(appContext)
+
+    const userData = useSelector((state) => state.user.data)
+    const appData = useSelector((state) => state.app.data)
+    const dispatch = useDispatch()
 
     const { t } = useTranslation();
 
     //the steps in the application
     const steps = [
         {
-            title: t("welcome") + username,
+            title: t("welcome") + userData.username,
             intro: t("intro-text"),
         },
         {
@@ -87,11 +94,11 @@ export default function ApplicationTour() {
             title: t("message-page"),
             intro: t("message-page-text"),
         },
-        {
-            element: '#notificationsIntro',
-            title: t("notifications-page"),
-            intro: t("notifications-page-text"),
-        },
+        // {
+        //     element: '#notificationsIntro',
+        //     title: t("notifications-page"),
+        //     intro: t("notifications-page-text"),
+        // },
         {
             element: '#aboutIntro',
             title: t("about-page"),
@@ -122,8 +129,9 @@ export default function ApplicationTour() {
 
     const onExit = () => {
 
-        stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: false })
-        
+        dispatch(set_enable_application_tour(false))
+        // stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: false })
+
     };
 
     //check the next step so we can activate the aside if mobile device
@@ -132,12 +140,16 @@ export default function ApplicationTour() {
         switch (nextStepIndex) {
             case 6:
                 //sispactch to set the navigation to true and show it
-                stateDispatch({ type: SET_ASIDE_NAVIGATION_OPEN_APP_TOUR, data: true })
+                dispatch(set_aside_navigation_open_app_tour(true))
+
+                // stateDispatch({ type: SET_ASIDE_NAVIGATION_OPEN_APP_TOUR, data: true })
                 break;
 
             case 14:
                 //dispatch set aside navigation to false
-                stateDispatch({ type: SET_ASIDE_NAVIGATION_OPEN_APP_TOUR, data: false })
+                dispatch(set_aside_navigation_open_app_tour(false))
+
+                // stateDispatch({ type: SET_ASIDE_NAVIGATION_OPEN_APP_TOUR, data: false })
                 break;
         }
     }
@@ -148,7 +160,9 @@ export default function ApplicationTour() {
 
         cookies.set('showTour', 'show', { path: '/' }); // expires: expires, secure: true, sameSite: 'none'
 
-        stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: false })
+        dispatch(set_enable_application_tour(false))
+
+        // stateDispatch({ type: SET_ENABLE_APPLICATION_TOUR, data: false })
 
     }
 
@@ -165,7 +179,7 @@ export default function ApplicationTour() {
 
     return (
         <Steps
-            enabled={enableApplicationTour}
+            enabled={appData.enableApplicationTour}
             steps={steps}
             initialStep={0}
             onExit={onExit}

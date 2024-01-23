@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 
+import { useDispatch } from 'react-redux';
+
 import Cookies from 'universal-cookie';
 
 import appContext from '../../services/context/appContext';
@@ -23,6 +25,7 @@ import Tab from 'react-bootstrap/Tab';
 import { SET_NOTIFIATION_TEXT_ITEM } from '../../services/context/appState/stateTypes';
 
 import '../../../subSrc/assets/users/mdcomment.css';
+import { set_notifiation_text_item } from '../../services/redux/app/reducer/appReducer';
 
 
 export default function Comments() {
@@ -30,6 +33,8 @@ export default function Comments() {
     const {
         stateDispatch,
     } = useContext(appContext)
+
+    const dispatch = useDispatch()
 
     const cookies = new Cookies();
     const accessToken = cookies.get('userToken')
@@ -62,7 +67,8 @@ export default function Comments() {
             icon: data.icon
         };
 
-        stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+        dispatch(set_notifiation_text_item(notice))
+        // stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
     }
 

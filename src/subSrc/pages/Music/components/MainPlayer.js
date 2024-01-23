@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 
 import { Link } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
 
@@ -46,41 +47,53 @@ import warningIcon from '../../../layouts/components/toast/toastSvg/error.svg';
 
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
+import { set_active_playlist_array, 
+  set_current_song, set_favourite_mix_item, 
+  set_music_playing_status, 
+  set_toggle_playing, 
+  set_toggle_random, set_toggle_repeat } 
+  from '../../../services/redux/music/reducer/musicReducer.js';
+import { set_user_favouritelist_add } from '../../../services/redux/user/reducer/userReducer.js';
+import { set_notifiation_text_item } from '../../../services/redux/app/reducer/appReducer.js';
 
 export default function MainPlayer() {
 
   // Global State
-  const {
-    stateDispatch,
-    userData: {
-      firebaseUid,
-      favourite: {
-        favouriteItems,
-      }
-    }
-  } = useContext(appContext)
+  // const {
+  //   stateDispatch,
+  //   userData: {
+  //     firebaseUid,
+  //     favourite: {
+  //       favouriteItems,
+  //     }
+  //   }
+  // } = useContext(appContext)
 
   const {
-    handleForward1Minute,
-    handleback30,
-    handleProgress,
-    currentTime,
-    duration,
-    currentSong,
-    playing,
-    activePlaylist,
-    musicStateDispatch,
-    random,
+    // handleForward1Minute,
+    // handleback30,
+    // handleProgress,
+    // currentTime,
+    // duration,
+    // currentSong,
+    // playing,
+    // activePlaylist,
+    // musicStateDispatch,
+    // random,
     playNextItem,
     SetCurrent,
-    repeat,
-    musicSettings: {
-      playOrLoading,
-      likedItem,
-      mixList,
-      playingStatus,
-    },
+    // repeat,
+    // musicSettings: {
+    //   playOrLoading,
+    //   likedItem,
+    //   mixList,
+    //   playingStatus,
+    // },
   } = useContext(musicContext)
+
+  const dispatch = useDispatch()
+  const userData = useSelector((state) => state.user.data)
+  const musicData = useSelector((state) => state.music.data)
 
   //initiate tge translator
 
@@ -113,12 +126,13 @@ export default function MainPlayer() {
         setLoading(false)
         if (response.data.status === 'succes') {
 
-          musicStateDispatch({ type: SET_FAVOURITE_MIX_ITEM, data: likedItem ? false : true })
+          dispatch(set_favourite_mix_item(musicData.likedItem ? false : true))
+          // musicStateDispatch({ type: SET_FAVOURITE_MIX_ITEM, data: likedItem ? false : true })
 
 
           let data = {
             type: 'Success',
-            text: t("successfully-added ") + activePlaylist[currentSong].title + t("to-your-favourites-list"),
+            text: t("successfully-added ") + musicData.activePlaylist[musicData.currentSong].title + t("to-your-favourites-list"),
             icon: checkIcon,
             bgColour: '#5cb85c',
           }
@@ -133,7 +147,7 @@ export default function MainPlayer() {
         setLoading(false)
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!repeat ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!musicData.repeat ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -162,7 +176,8 @@ export default function MainPlayer() {
         setLoading(false)
         if (response.data.status === 'succes') {
 
-          musicStateDispatch({ type: SET_FAVOURITE_MIX_ITEM, data: false })
+          dispatch(set_favourite_mix_item(false))
+          // musicStateDispatch({ type: SET_FAVOURITE_MIX_ITEM, data: false })
 
         }
 
@@ -172,7 +187,7 @@ export default function MainPlayer() {
         setLoading(false)
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!repeat ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!musicData.repeat ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -183,7 +198,7 @@ export default function MainPlayer() {
   };
 
   const getRecentFavList = () => {
-    apiClient.get(`/profile/getUserFavouriteList/${firebaseUid}`, {
+    apiClient.get(`/profile/getUserFavouriteList/${userData.firebaseUid}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -191,7 +206,8 @@ export default function MainPlayer() {
 
       if (response.data.status === 'success') {
 
-        stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: response.data.data.favourite.favouriteData ?? [] })
+        dispatch(set_user_favouritelist_add(response.data.data.favourite.favouriteData))
+        // stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: response.data.data.favourite.favouriteData ?? [] })
 
       }
 
@@ -235,7 +251,7 @@ export default function MainPlayer() {
   //handles the actual playing and changing of the play pause buttons
   const handlePlayPause = () => {
 
-    if (currentSong === null) {
+    if (musicData.currentSong === null) {
       let data = {
         type: t("error"),
         text: "Please Select an Item before moving forward",
@@ -249,7 +265,7 @@ export default function MainPlayer() {
     }
 
     const chanegPlayState = () => {
-      if (playing) {
+      if (musicData.playing) {
         gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
         gsap.fromTo($(".btn-play"), { duration: 0.2, x: -20, opacity: 0, scale: 0.3, display: "none" }, { x: 0, opacity: 1, display: "block", scale: 1, ease: Power2.easeInOut });
       } else {
@@ -259,14 +275,14 @@ export default function MainPlayer() {
       }
     }
 
-    if (!playingStatus) {
+    if (!musicData.musicPlayingStatus) {
       playNextItem()
       chanegPlayState()
-      musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
-      musicStateDispatch({ type: SET_MUSIC_PLAYING_STATUS, data: true })
+      dispatch(set_toggle_playing(musicData.playing ? false : true))
+      dispatch(set_music_playing_status(true))
     } else {
       chanegPlayState()
-      musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
+      dispatch(set_toggle_playing(musicData.playing ? false : true))
     }
 
   }
@@ -276,11 +292,11 @@ export default function MainPlayer() {
   //handle when user clicks the favourite button
   const handleLikeMixItem = () => {
 
-    if (activePlaylist.length == 0) {
+    if (musicData.activePlaylist.length == 0) {
       return
     }
 
-    if (currentSong === null) {
+    if (musicData.currentSong === null) {
       let data = {
         type: t("error"),
         text: "Please Select an Item before moving forward",
@@ -294,12 +310,12 @@ export default function MainPlayer() {
     }
 
     const newMixItem = {
-      title: activePlaylist[currentSong].title,
-      artist: activePlaylist[currentSong].genre,
-      mixId: activePlaylist[currentSong].mixId,
+      title: musicData.activePlaylist[musicData.currentSong].title,
+      artist: musicData.activePlaylist[musicData.currentSong].genre,
+      mixId: musicData.activePlaylist[musicData.currentSong].mixId,
     };
 
-    if (likedItem) {
+    if (musicData.likedItem) {
 
       // oldList.splice(idx, 1);
       handleRemoveFavourite(newMixItem)
@@ -319,7 +335,7 @@ export default function MainPlayer() {
   //handle Random icon active or not based on user action
   const handleRandomClick = () => {
     const randomPlaybackData = {
-      randomPlayback: random ? false : true
+      randomPlayback: musicData.random ? false : true
     }
 
     setLoading(true)
@@ -334,7 +350,8 @@ export default function MainPlayer() {
         setLoading(false)
 
         if (response.data.status === 'succes') {
-          musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: response.data.data.randomPlayback })
+          dispatch(set_toggle_random(response.data.data.randomPlayback))
+          // musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: response.data.data.randomPlayback })
           setCookie("randomPlayback", response.data.data.randomPlayback, {
             path: "/",
             secure: true,
@@ -359,7 +376,7 @@ export default function MainPlayer() {
         setLoading(false)
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!random ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!musicData.random ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -374,7 +391,7 @@ export default function MainPlayer() {
   const handleReplayMixItem = () => {
 
     const replybackData = {
-      replayPlayback: repeat ? false : true
+      replayPlayback: musicData.repeat ? false : true
     }
 
     setLoading(true)
@@ -388,7 +405,8 @@ export default function MainPlayer() {
 
         setLoading(false)
         if (response.data.status === 'succes') {
-          musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: response.data.data.replayPlayback })
+          dispatch(set_toggle_repeat(response.data.data.replayPlayback))
+          // musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: response.data.data.replayPlayback })
           setCookie("repeatPlayback", response.data.data.replayPlayback, {
             path: "/",
             secure: true,
@@ -413,7 +431,7 @@ export default function MainPlayer() {
         setLoading(false)
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!repeat ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!musicData.repeat ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -437,11 +455,11 @@ export default function MainPlayer() {
       // Generic helper function that can be used for the three operations:        
       const operation = (list1, list2, isUnion = false) => list1.filter(a => isUnion === list2.some(b => a.mixId === b.mixId));
 
-      newPlaylist = operation(mixList, favouriteItems, true)
+      newPlaylist = operation(musicData.mixList, userData.favourite.favouriteItems, true)
 
     } else {
 
-      newPlaylist = mixList
+      newPlaylist = musicData.mixList
 
     }
 
@@ -462,7 +480,8 @@ export default function MainPlayer() {
 
         if (response.data.status === 'succes') {
 
-          musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
+          dispatch(set_active_playlist_array(newPlaylist))
+          // musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: newPlaylist })
           setCookie("activePlaylist", response.data.data.activePlaylist, {
             path: "/",
             secure: true,
@@ -487,7 +506,7 @@ export default function MainPlayer() {
         setLoading(false)
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!random ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!musicData.random ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -508,17 +527,20 @@ export default function MainPlayer() {
   const nextMixItem = () => {
 
 
-    if (currentSong === activePlaylist.length - 1) {
+    if (musicData.currentSong === musicData.activePlaylist.length - 1) {
 
-      musicStateDispatch({ type: SET_CURRENT_SONG, data: 0 })
+      dispatch(set_current_song(0))
+      // musicStateDispatch({ type: SET_CURRENT_SONG, data: 0 })
 
-    } else if (random) {
+    } else if (musicData.random) {
 
-      musicStateDispatch({ type: SET_CURRENT_SONG, data: Math.floor(Math.random() * activePlaylist.length) })
+      dispatch(set_current_song(Math.floor(Math.random() * musicData.activePlaylist.length)))
+      // musicStateDispatch({ type: SET_CURRENT_SONG, data: Math.floor(Math.random() * activePlaylist.length) })
 
     } else {
 
-      musicStateDispatch({ type: SET_CURRENT_SONG, data: currentSong + 1 })
+      dispatch(set_current_song(musicData.currentSong + 1))
+      // musicStateDispatch({ type: SET_CURRENT_SONG, data: musicData.currentSong + 1 })
 
     }
 
@@ -527,13 +549,15 @@ export default function MainPlayer() {
   //function to handle dispatching previous song
   const prevMixItem = () => {
 
-    if (currentSong === 0) {
+    if (musicData.currentSong === 0) {
 
-      musicStateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
+      dispatch(set_current_song(musicData.activePlaylist.length - 1))
+      // musicStateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
 
     } else {
 
-      musicStateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
+      dispatch(set_current_song(musicData.currentSong - 1))
+      // musicStateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
 
     }
 
@@ -550,14 +574,15 @@ export default function MainPlayer() {
       icon: data.icon
     };
 
-    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+    dispatch(set_notifiation_text_item(notice))
+    // stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
   }
 
   //use effect to check the favourite states of each mix item
   useEffect(() => {
 
-    if (likedItem) {
+    if (musicData.likedItem) {
 
       gsap.to($(".btn-heartOff"), { duration: 0.5, opacity: 1, display: "none", x: 70 });
       gsap.fromTo($(".btn-heartOn"), { x: -20, opacity: 0, scale: 0.3, display: "none" }, { duration: 0.5, x: 0, opacity: 1, scale: 1, display: "block", ease: "elastic.inOut(1, 0.3)", y: 6 });
@@ -569,19 +594,21 @@ export default function MainPlayer() {
 
     }
 
-  }, [likedItem])
+  }, [musicData.likedItem])
 
   useEffect(() => {
 
-    if (playing) {
+    if (musicData.playing) {
 
       //setPlayPauseBtn(true)
 
     } else {
-      setPlayPauseBtn(playOrLoading)
+      setPlayPauseBtn(musicData.playOrLoading)
     }
 
-  }, [playOrLoading])
+  }, [musicData.playOrLoading])
+
+  // console.log(musicData.playOrLoading, musicData.playing)
 
   return (
 
@@ -593,9 +620,9 @@ export default function MainPlayer() {
         <div className="playback_blur"></div>
 
         {
-          typeof currentSong === 'number' ? (
-            <Link to={`/music/single/${activePlaylist[currentSong]?.mixId}`} aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
-              <div className="playback_thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+activePlaylist[currentSong]?.coverArt})`}}></div>
+          typeof musicData.currentSong === 'number' ? (
+            <Link to={`/music/single/${musicData.activePlaylist[musicData.currentSong]?.mixId}`} aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
+              <div className="playback_thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+musicData.activePlaylist[musicData.currentSong]?.coverArt})`}}></div>
             </Link>
           ) : (
             <div className="playback_thumb_none">
@@ -611,12 +638,12 @@ export default function MainPlayer() {
         <div className="playback_extras text_center">
           {/* handle repeat the current mix */}
           <div className='icon btn-RepeatIcon'>
-            <i className={'cursor-pointer fa fa-repeat ' + (repeat ? 'activeIcons' : '')} aria-hidden="true" onClick={handleReplayMixItem}></i>
+            <i className={'cursor-pointer fa fa-repeat ' + (musicData.repeat ? 'activeIcons' : '')} aria-hidden="true" onClick={handleReplayMixItem}></i>
           </div>
 
           {/* handle shuffle mix list items */}
           <div className='icon btn-ShuffleIcon'>
-            <i className={'cursor-pointer fa fa-random ' + (random ? 'activeIcons' : '')} aria-hidden="true" onClick={handleRandomClick}></i>
+            <i className={'cursor-pointer fa fa-random ' + (musicData.random ? 'activeIcons' : '')} aria-hidden="true" onClick={handleRandomClick}></i>
           </div>
 
           {/* select current active playlist */}
@@ -653,20 +680,20 @@ export default function MainPlayer() {
         </div>
 
         <div className="playback_info">
-          <div className="title">{typeof currentSong === 'number' ? activePlaylist[currentSong]?.title : ''}</div>
-          <div className="artist">{typeof currentSong === 'number' ? activePlaylist[currentSong]?.genre : ''}</div>
+          <div className="title">{typeof musicData.currentSong === 'number' ? musicData.activePlaylist[musicData.currentSong]?.title : ''}</div>
+          <div className="artist">{typeof musicData.currentSong === 'number' ? musicData.activePlaylist[musicData.currentSong]?.genre : ''}</div>
         </div>
 
         <div className="">
 
           <div className="p-2 playback_timeline">
-            <div className="playback_timeline_start-time">{fmtMSS(currentTime)}</div>
+            <div className="playback_timeline_start-time">{fmtMSS(musicData.currentTime)}</div>
 
             <div className="playback_timeline_slider">
-              <input onMouseUp={handleProgress} className="cursor-pointer" type="range" name="progresBar" id="prgbar" style={{ width: "100%" }} />
+              <input onMouseUp={musicData.handleProgress} className="cursor-pointer" type="range" name="progresBar" id="prgbar" style={{ width: "100%" }} />
             </div>
 
-            <div className="playback_timeline_end-time">{fmtMSS(duration)}</div>
+            <div className="playback_timeline_end-time">{fmtMSS(musicData.duration)}</div>
           </div>
 
           <div className="p-2 playback_btn_wrapper">
@@ -676,7 +703,7 @@ export default function MainPlayer() {
 
             <div className="btn-switch" onClick={handlePlayPause} data-bs-toggle="tooltip" data-bs-placement="top" title={t("play-pause")}>
 
-              <PlayLoad isLoading={playPauseBtn} isPlaying={playing} sourceButton={'main'} />
+              <PlayLoad isLoading={musicData.playOrLoading} isPlaying={musicData.playing} sourceButton={'main'} />
 
             </div>
 
@@ -693,15 +720,15 @@ export default function MainPlayer() {
 
       <div className="list_wrapper">
 
-        {(!activePlaylist || activePlaylist.length === 0) ? (
+        {(!musicData.activePlaylist || musicData.activePlaylist.length === 0) ? (
           <div className="alert alert-warning">
             The playlist is empty. Please add some songs.
           </div>
         ) : (
           <ul className="list">
 
-            {(activePlaylist || []).map((song, i) => (
-              <li className={'list_item ' + (currentSong === i ? 'selected' : '')} key={i}>
+            {(musicData.activePlaylist || []).map((song, i) => (
+              <li className={'list_item ' + (musicData.currentSong === i ? 'selected' : '')} key={i}>
 
                 <div className="thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+song.coverArt})`}}> </div>
                 <div className="info" onClick={() => { SetCurrent(i) }}>

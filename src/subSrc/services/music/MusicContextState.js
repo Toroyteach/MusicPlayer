@@ -1,5 +1,7 @@
 import React, { useReducer, useState, useEffect, useContext } from 'react'
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Howl, Howler } from 'howler';
 
 import musicContext from './musicContext'
@@ -26,46 +28,61 @@ import {
     SET_ABLE_TO_PLAY_OR_LOADING,
     SET_MUSIC_PLAYING_STATUS
 } from '../../services/music/musicState/musicStateTypes';
+import { increment_current_chunk_index, reset_chunk_index, set_able_to_play_or_loading, set_current_chunk_index, set_current_song, set_favourite_mix_item, set_mix_item_duration, set_music_playing_status, set_toggle_playing } from '../redux/music/reducer/musicReducer';
 
 const MusicContextState = (props) => {
 
-    const {
-        userData: {
-            favourite: {
-                favouriteItems,
-            }
-        }
-    } = useContext(appContext)
+    // const {
+    //     userData: {
+    //         favourite: {
+    //             favouriteItems,
+    //         }
+    //     }
+    // } = useContext(appContext)
+
+    const userData = useSelector((state) => state.user.data)
+    const musicData = useSelector((state) => state.music.data)
+    const dispatch = useDispatch()
 
     // initialize the reducer with the default state of the application
-    const [state, dispatch] = useReducer(musicReducer, defaultMusicState)
+    // const [state, dispatch] = useReducer(musicReducer, defaultMusicState)
 
     const cookies = new Cookies();
     const accessToken = cookies.get('userToken')
     const [queue, setQueue] = useState(new Queue());
 
-    const [audioBuffer, setAudioBuffer] = useState(null);
+    // const [audioBuffer, setAudioBuffer] = useState(null);
     // const [sourceNode, setSourceNode] = useState(null);
 
 
-    const [audioContext, setAudioContext] = useState();
-    const [currentIndex, setCurrentIndex] = useState(1);
-    const [totalChunks, setTotalChunks] = useState(17);
-    const [endPlayback, setEndPlayback] = useState(false);
+    // const [audioContext, setAudioContext] = useState();
+    // const [currentIndex, setCurrentIndex] = useState(1);
+    // const [totalChunks, setTotalChunks] = useState(17);
+    // const [endPlayback, setEndPlayback] = useState(false);
     const [currentTime, setCurrentTime] = useState(0)
-    const [duration, setDuration] = useState(0)
+    // const [duration, setDuration] = useState(0)
     const [audio, setAudio] = useState(null);
 
     const fetchChunkedFiles = async () => {
-        if (typeof state.musicSettings.currentSong !== 'number') {
+        if (typeof musicData.currentSong !== 'number') {
             return;
         }
 
-        const title = state.musicSettings.activePlaylist[state.musicSettings.currentSong]?.title;
+        if (musicData.currentChunkIndex == musicData.activePlaylist[musicData.currentSong]?.chunks && musicData.currentChunkIndex != undefined) {
+
+            setTimeout(() => {
+                audio.stop()
+                document.title = "Toroyteach Mix Application";
+            }, 9000);
+
+            return;
+        }
+
+        const title = musicData.activePlaylist[musicData.currentSong]?.title;
         const header = {
             headers: { Authorization: `Bearer ${accessToken}` }
         };
-        const res = await fetch(`${clippedFileUrl}?title=${title}&clippedId=${currentIndex}.opus`, header);
+        const res = await fetch(`${clippedFileUrl}?title=${title}&clippedId=${musicData.currentChunkIndex}.opus`, header);
         const arrayBuffer = await res.arrayBuffer();
         let arrayBufferView = new Uint8Array(arrayBuffer)
         return arrayBufferView;
@@ -78,10 +95,10 @@ const MusicContextState = (props) => {
     },);
 
 
-    const [startedAt, setStartedAt] = useState()
-    const [pausedAt, setPausedAt] = useState(0)
-    const [sourceNode, setSourceNode] = useState([]);
-    const playNextItem = () => {
+    // const [startedAt, setStartedAt] = useState()
+    // const [pausedAt, setPausedAt] = useState(0)
+    // const [sourceNode, setSourceNode] = useState([]);
+    const playNextItem = () => { 
 
         if (queue.isEmpty()) {
             return;
@@ -89,9 +106,7 @@ const MusicContextState = (props) => {
 
         Howler.volume(0.2);
 
-        if (queue.isEmpty()) {
-            return;
-        }
+        const start = performance.now();
 
         const dataArr = queue.peek();
         let blob = new Blob([dataArr], { type: 'music/opus' })
@@ -102,31 +117,36 @@ const MusicContextState = (props) => {
             format: ['opus']
         });
 
-        
+        const end = performance.now();
+
+        console.log(`Execution time: ${end - start} ms`);
+
+        setAudio(audio)
+
         audio.on('end', () => {
-            
+
             queue.dequeue();
 
-            console.log(currentIndex)
-            
             if (!queue.isEmpty()) {
                 playNextItem();
+            } else {
+                audio.stop()
             }
         })
-        
-        setAudio(audio)
-        
-        if (currentIndex <= totalChunks) {
-            
-            setCurrentIndex(currentIndex => currentIndex + 1);
-            
+
+
+        if (musicData.currentChunkIndex < musicData.activePlaylist[musicData.currentSong]?.chunks) {
+
+            //dispatch currentChunkIndex
+            dispatch(increment_current_chunk_index())
+
             setTimeout(() => {
                 remove('fetchAudio')
                 refetch();
             }, 4000);
-            
+
         }
-        
+
         audio.play()
     };
 
@@ -135,30 +155,33 @@ const MusicContextState = (props) => {
         if (audio == null) {
             return
         }
-        
-        state.musicSettings.playing ? audio.play() : audio.pause()
+
+        musicData.playing ? audio.play() : audio.pause()
 
     }
 
     //handles and enables moving the seek to move the audio to desired timeline
     const handleProgress = (e) => {
 
-        let compute = (e.target.value * duration) / 100
+        let compute = (e.target.value * musicData.duration) / 100
         setCurrentTime(compute)
-        let chunks =  state.musicSettings.activePlaylist[state.musicSettings.currentSong]?.chunks
+        let chunks = musicData.activePlaylist[musicData.currentSong]?.chunks
         let percent = e.target.value
         const seekChinkItem = Math.floor((percent / 100) * chunks)
 
         //TODO ON MOUSE RELEASE
-        dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
-        setCurrentIndex(seekChinkItem)
+        dispatch(set_able_to_play_or_loading(true))
+        // dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
+        dispatch(set_current_chunk_index(seekChinkItem))
+        // setCurrentIndex(seekChinkItem)
 
         setTimeout(() => {
             refetch()
         }, 300)
 
         setTimeout(() => {
-            dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
+            dispatch(set_able_to_play_or_loading(false))
+            // dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
             playNextItem()
         }, 2300)
 
@@ -204,17 +227,22 @@ const MusicContextState = (props) => {
 
     const SetCurrent = (id) => {
 
-        dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
+        dispatch(set_able_to_play_or_loading(true))
+        // dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
 
-        dispatch({ type: SET_MUSIC_PLAYING_STATUS, data: false })
-        dispatch({ type: SET_TOGGLE_PLAYING, data: false })
+        dispatch(set_music_playing_status(false))
+        dispatch(set_toggle_playing(false))
+        // dispatch({ type: SET_MUSIC_PLAYING_STATUS, data: false })
+        // dispatch({ type: SET_TOGGLE_PLAYING, data: false })
 
 
         //set the secleted song in dispatch
-        dispatch({ type: SET_CURRENT_SONG, data: id })
+        dispatch(set_current_song(id))
+        // dispatch({ type: SET_CURRENT_SONG, data: id })
 
         //sets the chunks count to 1
-        setCurrentIndex(1)
+        dispatch(reset_chunk_index())
+        // setCurrentIndex(1)
 
         queue.clear()
 
@@ -223,15 +251,17 @@ const MusicContextState = (props) => {
         }, 300)
 
         //change the document title dynamically to the mix name
-        const name = state.musicSettings.activePlaylist[id].title + ' - Toroyteach Music Application'
-        const duration = convertTimeToSeconds(state.musicSettings.activePlaylist[id].duration)
+        const name = musicData.activePlaylist[id].title + ' - Toroyteach Music Application'
+        const duration = convertTimeToSeconds(musicData.activePlaylist[id].duration)
 
-        dispatch({ type: SET_MIX_ITEM_DURATION, data: duration })
+        dispatch(set_mix_item_duration(duration))
+        // dispatch({ type: SET_MIX_ITEM_DURATION, data: duration })
 
         document.title = name;
 
         setTimeout(() => {
-            dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
+            dispatch(set_able_to_play_or_loading(false))
+            // dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
         }, 2000)
     }
 
@@ -245,52 +275,33 @@ const MusicContextState = (props) => {
 
     useEffect(() => {
 
-        if (currentIndex === totalChunks) {
-            setTimeout(() => {
-                audio.stop()
-
-                document.title = "Toroyteach Mix Application";
-            }, 8000);
-        }
-
-    }, [currentIndex])
-
-    useEffect(() => {
-
         togglePlaying()
 
-    }, [state.musicSettings.playing])
+    }, [musicData.playing])
 
     useEffect(() => {
 
-        if (!state.musicSettings.activePlaylist || state.musicSettings.activePlaylist.length === 0) {
+        if (!musicData.activePlaylist || musicData.activePlaylist.length === 0 || musicData.activePlaylist === undefined) {
             return;
         }
 
-        const result = favouriteItems.find((match) => match.mixId === state.musicSettings.activePlaylist[state.musicSettings.currentSong].mixId)
+        const result = userData.favourite.favouriteItems.find((match) => match.mixId === musicData.activePlaylist[musicData.currentSong].mixId)
         // dispatch set favourite icon to true
-        dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: result ? true : false })
+        dispatch(set_favourite_mix_item(result ? true : false))
+        // dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: result ? true : false })
 
-    }, [state.musicSettings.currentSong])
+    }, [musicData.currentSong])
 
     return (
         <musicContext.Provider
             value={{
-                currentSong: state.musicSettings.currentSong,
-                activePlaylist: state.musicSettings.activePlaylist,
-                repeat: state.musicSettings.repeat,
-                random: state.musicSettings.random,
-                playing: state.musicSettings.playing,
-                volume: state.musicSettings.volume,
-                duration: state.musicSettings.duration,
                 currentTime: currentTime,
                 handleForward1Minute,
                 handleback30,
                 handleProgress,
                 SetCurrent,
                 playNextItem,
-                musicStateDispatch: dispatch,
-                ...state,
+                // musicStateDispatch: dispatch,
             }}
         >
             {props.children}

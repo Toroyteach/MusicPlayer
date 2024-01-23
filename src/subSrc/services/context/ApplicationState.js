@@ -1,5 +1,6 @@
 import React, { useReducer, useState, useEffect, createContext } from 'react'
 
+import { useDispatch, useSelector } from 'react-redux';
 import appReducer from './appState/appReducer.js';
 import appContext from './appContext.js';
 
@@ -35,6 +36,7 @@ import Cookies from 'universal-cookie';
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
 import i18n from 'i18next';
+import { set_astronomy_picture } from '../redux/app/reducer/appReducer.js';
 
 //const ThemeUpdateContext = createContext();
 
@@ -44,7 +46,9 @@ const ApplicationState = (props) => {
   const { t } = useTranslation();
 
   // initialize the reducer with the default state of the application
-  const [state, dispatch] = useReducer(appReducer, defaultState)
+  // const [state, dispatch] = useReducer(appReducer, defaultState)
+  const dispatch = useDispatch()
+  const appData = useSelector((state) => state.app.data)
 
   const cookies = new Cookies();
 
@@ -52,16 +56,16 @@ const ApplicationState = (props) => {
   //const playlistSet = (songArr) => dispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: songArr })
 
   // Set audio playing element
-  const [audio] = useState(new Audio(state.musicSettings.activePlaylist[0].fileUrl));
+  // const [audio] = useState(new Audio(state.musicSettings.activePlaylist[0].fileUrl));
 
   //handles the playing and pausing of the audio object
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
-  const togglePlaying = () => {
+  // const togglePlaying = () => {
 
-    state.musicSettings.playing ? audio.play() : audio.pause()
+  //   state.musicSettings.playing ? audio.play() : audio.pause()
 
-  }
+  // }
 
   // Set current song
   const SetCurrent = (id) => {
@@ -82,63 +86,63 @@ const ApplicationState = (props) => {
   }
 
   // End of Song
-  const handleEndOfMix = () => {
-    //clear cookie
-    cookies.remove('mixPreviousTimeline', { path: '/' })
-    // Check for random and repeat options
-    // and set the next mix
-    //set the dispatch playing to false
-    // dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
+  // const handleEndOfMix = () => {
+  //   //clear cookie
+  //   cookies.remove('mixPreviousTimeline', { path: '/' })
+  //   // Check for random and repeat options
+  //   // and set the next mix
+  //   //set the dispatch playing to false
+  //   // dispatch({ type: SET_TOGGLE_PLAYING, data: false, })
 
-    if (state.musicSettings.random) {
+  //   if (state.musicSettings.random) {
 
-      // dispatch({ type: SET_CURRENT_SONG, data: ~~(Math.floor(Math.random() * state.musicSettings.activePlaylist.length)), })
+  //     // dispatch({ type: SET_CURRENT_SONG, data: ~~(Math.floor(Math.random() * state.musicSettings.activePlaylist.length)), })
 
-    } else {
+  //   } else {
 
-      if (state.musicSettings.repeat) {
+  //     if (state.musicSettings.repeat) {
 
-        SetCurrent(state.musicSettings.currentSong)
+  //       SetCurrent(state.musicSettings.currentSong)
 
-      } else if (state.musicSettings.currentSong === state.musicSettings.activePlaylist.length - 1) {
+  //     } else if (state.musicSettings.currentSong === state.musicSettings.activePlaylist.length - 1) {
 
-        SetCurrent(0)
+  //       SetCurrent(0)
 
-      } else {
+  //     } else {
 
-        SetCurrent(state.musicSettings.currentSong + 1)
+  //       SetCurrent(state.musicSettings.currentSong + 1)
 
-      }
+  //     }
 
-    }
-  }
+  //   }
+  // }
 
   //handles and enables moving the seek to move the audio to desired timeline
-  const handleProgress = (e) => {
+  // const handleProgress = (e) => {
 
-    let compute = (e.target.value * duration) / 100
-    setCurrentTime(compute)
-    audio.currentTime = compute
+  //   let compute = (e.target.value * duration) / 100
+  //   setCurrentTime(compute)
+  //   audio.currentTime = compute
 
-  }
+  // }
 
   //handle go back 30sec
-  const handleback30 = () => {
+  // const handleback30 = () => {
 
-    let time = audio.currentTime - 30
-    setCurrentTime(time)
-    audio.currentTime = time
+  //   let time = audio.currentTime - 30
+  //   setCurrentTime(time)
+  //   audio.currentTime = time
 
-  }
+  // }
 
   //handle forward 1 minute
-  const handleForward1Minute = () => {
+  // const handleForward1Minute = () => {
 
-    let time = audio.currentTime + 60
-    setCurrentTime(time)
-    audio.currentTime = time
+  //   let time = audio.currentTime + 60
+  //   setCurrentTime(time)
+  //   audio.currentTime = time
 
-  }
+  // }
 
   //load the image only once from Nasa and use reducer to main state of it.
   const NASA_API_KEY = process.env.REACT_APP_NASA_API_KEY;
@@ -148,7 +152,8 @@ const ApplicationState = (props) => {
 
     axios.get(END_POINT)
       .then(response => {
-        dispatch({ type: SET_ASTRONOMY_PICTURE, data: response.data })
+        dispatch(set_astronomy_picture(response.data))
+        // dispatch({ type: SET_ASTRONOMY_PICTURE, data: response.data })
       })
       .catch(error => {
         console.log(error, 'failed to get astronomy pic data')
@@ -159,7 +164,7 @@ const ApplicationState = (props) => {
   //effect to make theme state on load
   useEffect(() => {
 
-    if (state.appSettings.appDarkMode === true || state.appSettings.appDarkMode === "true") {
+    if (appData.appDarkMode === true || appData.appDarkMode === "true") {
 
       document.body.classList.add('dark-version');
 
@@ -169,143 +174,143 @@ const ApplicationState = (props) => {
 
     }
 
-  }, [state.appSettings.appDarkMode])
+  }, [appData.appDarkMode])
 
   // effect to handle changing of the play pause states of the application
-  useEffect(() => {
+  // useEffect(() => {
 
-    togglePlaying()
+  //   togglePlaying()
 
-  }, [state.musicSettings.playing])
+  // }, [state.musicSettings.playing])
 
   const [cookieSeekTime, setCookieSeekTime] = useState(10);
 
   //effect to handle changes to the current song including errors and setting of cookies and any audio issues
-  useEffect(() => {
+  // useEffect(() => {
 
-    //create a method to interact with audio object and hit next to play the next item
-    SetCurrent(state.musicSettings.currentSong)
+  //   //create a method to interact with audio object and hit next to play the next item
+  //   // SetCurrent(state.musicSettings.currentSong)
 
-    //loop through the favourite list if match dispatch favourite icon else none
-    // const result = state.userData.favourite.favouriteItems.find((match) => match.id === state.musicSettings.activePlaylist[state.musicSettings.currentSong].id)
+  //   //loop through the favourite list if match dispatch favourite icon else none
+  //   // const result = state.userData.favourite.favouriteItems.find((match) => match.id === state.musicSettings.activePlaylist[state.musicSettings.currentSong].id)
 
-    //dispatch set favourite icon to true
-    // dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: result ? true : false })
+  //   //dispatch set favourite icon to true
+  //   // dispatch({ type: SET_FAVOURITE_MIX_ITEM, data: result ? true : false })
 
-    //dispatch the the browser is loading the music item.
-    //dispatch this when loading the next music or not intenret
-    // audio.onloadstart = () => {
-    //   dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
-    // }
+  //   //dispatch the the browser is loading the music item.
+  //   //dispatch this when loading the next music or not intenret
+  //   // audio.onloadstart = () => {
+  //   //   dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: true })
+  //   // }
 
-    //
-    audio.onplaying = () => {
+  //   //
+  //   audio.onplaying = () => {
 
 
-    }
+  //   }
 
-    //set call back to set cookie of timeline after 1min
-    audio.ontimeupdate = () => {
+  //   //set call back to set cookie of timeline after 1min
+  //   audio.ontimeupdate = () => {
 
-      setCurrentTime(audio.currentTime)
+  //     setCurrentTime(audio.currentTime)
 
-      //if ((Math.trunc(audio.currentTime) % 60 === 0)) {
-      console.log(audio.currentTime)
-      //set the cookie here
-      let time = audio.currentTime
+  //     //if ((Math.trunc(audio.currentTime) % 60 === 0)) {
+  //     console.log(audio.currentTime)
+  //     //set the cookie here
+  //     let time = audio.currentTime
 
-      const date = new Date()
+  //     const date = new Date()
 
-      date.setFullYear(date.getFullYear() + 1)
+  //     date.setFullYear(date.getFullYear() + 1)
 
-      cookies.set('mixPreviousTimeline', time, { path: '/', secure: true, sameSite: 'none', expires: date });
-      //}
+  //     cookies.set('mixPreviousTimeline', time, { path: '/', secure: true, sameSite: 'none', expires: date });
+  //     //}
 
-      // dispatch({ type: SET_RECENT_SEEK_TIME, data: audio.currentTime })
-    }
+  //     // dispatch({ type: SET_RECENT_SEEK_TIME, data: audio.currentTime })
+  //   }
 
-    audio.oncanplay = () => {
+  //   audio.oncanplay = () => {
 
-      setDuration(audio.duration)
-      // dispatch({ type: SET_MIX_ITEM_DURATION, data: audio.duration })
-      // dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
+  //     setDuration(audio.duration)
+  //     // dispatch({ type: SET_MIX_ITEM_DURATION, data: audio.duration })
+  //     // dispatch({ type: SET_ABLE_TO_PLAY_OR_LOADING, data: false })
 
-    }
+  //   }
 
-    audio.oncanplaythrough = () => {
-      //check if the cookie for previous time was set
-      // if (cookies.get('mixPreviousTimeline')) {
+  //   audio.oncanplaythrough = () => {
+  //     //check if the cookie for previous time was set
+  //     // if (cookies.get('mixPreviousTimeline')) {
 
-      //   let cookieTime = cookies.get('mixPreviousTimeline')
+  //     //   let cookieTime = cookies.get('mixPreviousTimeline')
 
-      //   //setCurrentTime(cookieTime)
+  //     //   //setCurrentTime(cookieTime)
 
-      //   audio.currentTime = cookieTime
+  //     //   audio.currentTime = cookieTime
 
-      // }
-    }
+  //     // }
+  //   }
 
-    audio.onended = () => {
-      handleEndOfMix()
-    }
+  //   audio.onended = () => {
+  //     handleEndOfMix()
+  //   }
 
-    //implement for when there is an error get the data
-    //show a warning toast
-    audio.onerror = () => {
+  //   //implement for when there is an error get the data
+  //   //show a warning toast
+  //   audio.onerror = () => {
 
-      const notice = {
-        id: Math.floor((Math.random() * 101) + 1),
-        title: t("warning"),
-        description: t("There-is-an-error-accessing-the-Mix-Item"),
-        backgroundColor: '#f0ad4e',
-        icon: warningIcon
-      };
+  //     const notice = {
+  //       id: Math.floor((Math.random() * 101) + 1),
+  //       title: t("warning"),
+  //       description: t("There-is-an-error-accessing-the-Mix-Item"),
+  //       backgroundColor: '#f0ad4e',
+  //       icon: warningIcon
+  //     };
 
-      dispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+  //     dispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
-      cookies.remove('mixPreviousTimeline', { path: '/' })
+  //     cookies.remove('mixPreviousTimeline', { path: '/' })
 
-    }
+  //   }
 
-    //this means the browser is downloading the audio obj
-    audio.onprogess = () => {
+  //   //this means the browser is downloading the audio obj
+  //   audio.onprogess = () => {
 
-    }
+  //   }
 
-    //called when the loading of the item has finished or will not happen any more
-    audio.onsuspend = () => {
+  //   //called when the loading of the item has finished or will not happen any more
+  //   audio.onsuspend = () => {
 
-      //show the toast of the added mix item
-      // const notice = {
-      //   id: Math.floor((Math.random() * 101) + 1),
-      //   title: 'Warning',
-      //   description: 'There is an issue accessing the Mix Item. Please check your connection and Reload',
-      //   backgroundColor: '#f0ad4e',
-      //   icon: warningIcon
-      // };
+  //     //show the toast of the added mix item
+  //     // const notice = {
+  //     //   id: Math.floor((Math.random() * 101) + 1),
+  //     //   title: 'Warning',
+  //     //   description: 'There is an issue accessing the Mix Item. Please check your connection and Reload',
+  //     //   backgroundColor: '#f0ad4e',
+  //     //   icon: warningIcon
+  //     // };
 
-      // dispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
-      // console.log('on suspended')
-      cookies.remove('mixPreviousTimeline', { path: '/' })
-    }
+  //     // dispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+  //     // console.log('on suspended')
+  //     cookies.remove('mixPreviousTimeline', { path: '/' })
+  //   }
 
-  }, [state.musicSettings.currentSong])
+  // }, [state.musicSettings.currentSong])
 
   //effect to control the volume of the audio player
-  useEffect(() => {
+  // useEffect(() => {
 
-    audio.volume = state.musicSettings.volume
+  //   audio.volume = state.musicSettings.volume
 
-  }, [state.musicSettings.volume])
+  // }, [state.musicSettings.volume])
 
   //gets the user set languagefrom db and sets it
-  useEffect(() => {
+  // useEffect(() => {
 
-    const defLang = state.appSettings.language
+  //   const defLang = state.appSettings.language
 
-    i18n.changeLanguage(defLang)
+  //   i18n.changeLanguage(defLang)
 
-  }, [])
+  // }, [])
 
   return (
     <appContext.Provider
@@ -315,17 +320,17 @@ const ApplicationState = (props) => {
         // repeat: state.musicSettings.repeat,
         // random: state.musicSettings.random,
         // playing: state.musicSettings.playing,
-        astronomyPicture: state.appSettings.astronomyPicture,
+        astronomyPicture: appData.astronomyPicture,
         // volume: state.musicSettings.volume,
         // duration: state.musicSettings.duration,
         // audioObject: audio,
         // currentTime: currentTime,
-        stateDispatch: dispatch,
+        // stateDispatch: dispatch,
         // handleForward1Minute,
         // handleback30,
         // handleProgress,
         // SetCurrent,
-        ...state,
+        // ...state,
       }}
     >
       {props.children}

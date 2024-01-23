@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useContext } from 'react';
+import { useSelector } from 'react-redux';
 // import { useAuth } from '../../hooks/useAuth';
 import { useChat } from '../../../../services/hooks/chatHooks/useChat'
 
@@ -11,11 +12,13 @@ import imageAvatar from '../../../../assets/users/img/imageavatar.png'
 function ChatList({ roomId }) {
     const containerRef = useRef(null);
 
-    const {
-        userData: {
-            firebaseUid,
-        },
-    } = useContext(appContext)
+    // const {
+    //     userData: {
+    //         firebaseUid,
+    //     },
+    // } = useContext(appContext)
+
+    const userData = useSelector((state) => state.user.data)
 
     const user = 'PvksVIX69lcl3KQKssH7784rVhC2'
     const chats = useChat(roomId);
@@ -45,7 +48,7 @@ function ChatList({ roomId }) {
                     <Chat
                         key={x.id}
                         chat={x}
-                        isOwnChat={x.userId === firebaseUid}
+                        isOwnChat={x.userId === userData.firebaseUid}
                     />
                 ))}
             </div>

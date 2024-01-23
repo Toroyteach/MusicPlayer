@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 
+import { useSelector, useDispatch } from 'react-redux';
+
 //user details context
 import appContext from '../../services/context/appContext.js'
 
@@ -34,29 +36,38 @@ import { useTranslation } from "react-i18next";
 //import the chart library
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import { set_enable_global_allow_users_see_others_online_activity, 
+  set_enable_global_download_option, 
+  set_notifiation_text_item 
+} from '../../services/redux/app/reducer/appReducer.js';
+
 Chart.register(...registerables);
 
 
 
 export default function AdminDashboard() {
 
-  const {
-    appSettings: {
-      cummulativeQuizeAttempts,
-      shazamCounts,
-      cumulativeComments,
-      visualizerActive,
-      astronomyActive,
-      shazamActive,
-      downloadActive,
-      anxietyVideos,
-      viewOtherUsers,
-    },
-    musicSettings: {
-      mixList,
-    },
-    stateDispatch
-  } = useContext(appContext);
+  // const {
+  //   appSettings: {
+  //     cummulativeQuizeAttempts,
+  //     shazamCounts,
+  //     cumulativeComments,
+  //     visualizerActive,
+  //     astronomyActive,
+  //     shazamActive,
+  //     downloadActive,
+  //     anxietyVideos,
+  //     viewOtherUsers,
+  //   },
+  //   musicSettings: {
+  //     mixList,
+  //   },
+  //   stateDispatch
+  // } = useContext(appContext);
+
+  const dispatch = useDispatch()
+  const appData = useSelector((state) => state.app.data)
+  const musicData = useSelector((state) => state.app.data)
 
   //initiate tge translator
   const { t } = useTranslation();
@@ -81,7 +92,7 @@ export default function AdminDashboard() {
 
   //chart data set
   const state = {
-    labels: mixList,
+    labels: musicData.mixList,
     datasets: [
       {
         label: 'Plays',
@@ -97,48 +108,48 @@ export default function AdminDashboard() {
   //update enable global visualizer
   const updateEnableGlobalVisualizer = () => {
 
-    stateDispatch({ type: SET_ENABLE_GLOBAL_AUDIO_VISUALIZER, data: visualizerActive ? false : true })
+    // stateDispatch({ type: SET_ENABLE_GLOBAL_AUDIO_VISUALIZER, data: visualizerActive ? false : true })
 
-    let data = {
-      type: 'Warning',
-      text: 'Successfully ' + (!visualizerActive ? t("enabled") : t("disabled")) + ' Visualizers for the application',
-      icon: warningIcon,
-      bgColour: '#f0ad4e',
-    }
+    // let data = {
+    //   type: 'Warning',
+    //   text: 'Successfully ' + (!visualizerActive ? t("enabled") : t("disabled")) + ' Visualizers for the application',
+    //   icon: warningIcon,
+    //   bgColour: '#f0ad4e',
+    // }
 
-    dispatchNotification(data)
+    // dispatchNotification(data)
 
   }
 
   //update enable global astronomy picture
   const updateEnableGlobalAstronomyPic = () => {
 
-    stateDispatch({ type: SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE, data: astronomyActive ? false : true })
+    // stateDispatch({ type: SET_ENABLE_GLOBAL_ASTRONOMY_PICTURE, data: astronomyActive ? false : true })
 
-    let data = {
-      type: 'Warning',
-      text: 'Successfully ' + (!astronomyActive ? t("enabled") : t("disabled")) + ' Astronomy for the application',
-      icon: warningIcon,
-      bgColour: '#f0ad4e',
-    }
+    // let data = {
+    //   type: 'Warning',
+    //   text: 'Successfully ' + (!astronomyActive ? t("enabled") : t("disabled")) + ' Astronomy for the application',
+    //   icon: warningIcon,
+    //   bgColour: '#f0ad4e',
+    // }
 
-    dispatchNotification(data)
+    // dispatchNotification(data)
 
   }
 
   //update enable global shazam requests
   const updateEnableGlobalShazam = () => {
 
-    stateDispatch({ type: SET_ENABLE_GLOBAL_SHAZAM_SEARCH, data: shazamActive ? false : true })
+    // stateDispatch({ type: SET_ENABLE_GLOBAL_SHAZAM_SEARCH, data: shazamActive ? false : true })
 
-    let data = {
-      type: 'Warning',
-      text: 'Successfully ' + (!shazamActive ? 'Enabled' : 'Disabled') + ' Shazam for the application',
-      icon: warningIcon,
-      bgColour: '#f0ad4e',
-    }
+    // let data = {
+    //   type: 'Warning',
+    //   text: 'Successfully ' + (!shazamActive ? 'Enabled' : 'Disabled') + ' Shazam for the application',
+    //   icon: warningIcon,
+    //   bgColour: '#f0ad4e',
+    // }
 
-    dispatchNotification(data)
+    // dispatchNotification(data)
 
   }
 
@@ -146,7 +157,7 @@ export default function AdminDashboard() {
   const updateEnableGlobalDownload = () => {
 
     const downloadStatusData = {
-      mixDownload: downloadActive ? false : true
+      mixDownload: appData.downloadActive ? false : true
     }
 
     setLoadingg(true)
@@ -160,11 +171,12 @@ export default function AdminDashboard() {
 
         setLoadingg(false)
         if (response.data.status === 'succes') {
-          stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
+          dispatch(set_enable_global_download_option(appData.downloadActive ? false : true))
+          // stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: downloadActive ? false : true })
 
           let data = {
             type: 'Warning',
-            text: 'Successfully ' + (!downloadActive ? 'Enabled' : 'Disabled') + ' Download Option for the application',
+            text: 'Successfully ' + (!appData.downloadActive ? 'Enabled' : 'Disabled') + ' Download Option for the application',
             icon: warningIcon,
             bgColour: '#f0ad4e',
           }
@@ -178,7 +190,7 @@ export default function AdminDashboard() {
         setLoadingg(false)
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!downloadActive ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!appData.downloadActive ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -192,16 +204,16 @@ export default function AdminDashboard() {
   //update enable anxiety video
   const updateEnableGlobalAnxietyVideo = () => {
 
-    stateDispatch({ type: SET_ENABLE_GLOBAL_CALM_ANXIETY, data: anxietyVideos ? false : true })
+    // stateDispatch({ type: SET_ENABLE_GLOBAL_CALM_ANXIETY, data: anxietyVideos ? false : true })
 
-    let data = {
-      type: 'Warning',
-      text: 'Successfully ' + (!anxietyVideos ? 'Enabled' : 'Disabled') + ' Anxiety video for the Entire application',
-      icon: warningIcon,
-      bgColour: '#f0ad4e',
-    }
+    // let data = {
+    //   type: 'Warning',
+    //   text: 'Successfully ' + (!anxietyVideos ? 'Enabled' : 'Disabled') + ' Anxiety video for the Entire application',
+    //   icon: warningIcon,
+    //   bgColour: '#f0ad4e',
+    // }
 
-    dispatchNotification(data)
+    // dispatchNotification(data)
 
   }
 
@@ -209,7 +221,7 @@ export default function AdminDashboard() {
   const updateEnableGlobalUsersToViewOtherUsersOnlineActivity = () => {
 
     const onlineStatusData = {
-      viewOtherUsers: viewOtherUsers ? false : true
+      viewOtherUsers: appData.viewOtherUsers ? false : true
     }
 
     setLoadingg(true)
@@ -223,11 +235,12 @@ export default function AdminDashboard() {
 
         setLoadingg(false)
         if (response.data.status === 'succes') {
-          stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
+          dispatch(set_enable_global_allow_users_see_others_online_activity(appData.viewOtherUsers ? false : true))
+          // stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: viewOtherUsers ? false : true })
 
           let data = {
             type: 'Warning',
-            text: 'Successfully ' + (!viewOtherUsers ? 'Enabled' : 'Disabled') + ' View Online Users for the Entire application',
+            text: 'Successfully ' + (!appData.viewOtherUsers ? 'Enabled' : 'Disabled') + ' View Online Users for the Entire application',
             icon: warningIcon,
             bgColour: '#f0ad4e',
           }
@@ -241,7 +254,7 @@ export default function AdminDashboard() {
         setLoadingg(false)
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!viewOtherUsers ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!appData.viewOtherUsers ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -344,7 +357,8 @@ export default function AdminDashboard() {
       icon: data.icon
     };
 
-    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+    dispatch(set_notifiation_text_item(notice))
+    // stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
   }
 
@@ -352,8 +366,10 @@ export default function AdminDashboard() {
 
     if (data) {
       if (data.status === 'succes') {
-        stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: data.data.appData.mixDownload })
-        stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: data.data.appData.viewOtherUsers })
+        dispatch(set_enable_global_download_option(data.data.appData.mixDownload))
+        dispatch(set_enable_global_allow_users_see_others_online_activity(data.data.appData.viewOtherUsers))
+        // stateDispatch({ type: SET_ENABLE_GLOBAL_DOWNLOAD_OPTION, data: data.data.appData.mixDownload })
+        // stateDispatch({ type: SET_ENABLE_GLOBAL_ALLOW_USERS_SEE_OTHERS_ONLINE_ACTIVITY, data: data.data.appData.viewOtherUsers })
 
         setUsersCount(data.data.appData.usersCount)
         setCumulativeMinutesListened(data.data.appData.totalMinutesListened)
@@ -553,7 +569,7 @@ export default function AdminDashboard() {
               </div>
               <div className="text-end pt-1">
                 <p className="text-sm mb-0 text-capitalize">Total Comments</p>
-                <h4 className="mb-0">{cumulativeComments}</h4>
+                <h4 className="mb-0">{appData.cumulativeComments}</h4>
               </div>
             </div>
             <hr className="dark horizontal my-0" />
@@ -571,7 +587,7 @@ export default function AdminDashboard() {
               </div>
               <div className="text-end pt-1">
                 <p className="text-sm mb-0 text-capitalize">Shazam Requests</p>
-                <h4 className="mb-0"> {shazamCounts}</h4>
+                <h4 className="mb-0"> {appData.shazamCounts}</h4>
               </div>
             </div>
             <hr className="dark horizontal my-0" />
@@ -589,7 +605,7 @@ export default function AdminDashboard() {
               </div>
               <div className="text-end pt-1">
                 <p className="text-sm mb-0 text-capitalize">Quize attemps</p>
-                <h4 className="mb-0">{cummulativeQuizeAttempts}</h4>
+                <h4 className="mb-0">{appData.cummulativeQuizeAttempts}</h4>
               </div>
             </div>
             <hr className="dark horizontal my-0" />
@@ -736,7 +752,7 @@ export default function AdminDashboard() {
                         </li> */}
                         <li className="list-group-item border-0 px-0">
                           <div className="form-check form-switch ps-0">
-                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={downloadActive} onChange={updateEnableGlobalDownload} />
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={appData.downloadActive} onChange={updateEnableGlobalDownload} />
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable Download options</label>
                           </div>
                         </li>
@@ -748,7 +764,7 @@ export default function AdminDashboard() {
                         </li> */}
                         <li className="list-group-item border-0 px-0">
                           <div className="form-check form-switch ps-0">
-                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={viewOtherUsers} onChange={updateEnableGlobalUsersToViewOtherUsersOnlineActivity} />
+                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked={appData.viewOtherUsers} onChange={updateEnableGlobalUsersToViewOtherUsersOnlineActivity} />
                             <label className="form-check-label text-body text-truncatemb-0" htmlFor="flexSwitchCheckDefault2">&ensp;Enable users to see what others are Listening</label>
                           </div>
                         </li>

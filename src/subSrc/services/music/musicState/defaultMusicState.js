@@ -9,6 +9,7 @@ const allMusicListCount = [
         "genre": "house-edm",
         "songsCount": "52",
         "duration": "1:43:12",
+        "chunks": 12
     },
     {
         "commentsEnabled": true,
@@ -18,6 +19,7 @@ const allMusicListCount = [
         "genre": "house-edm",
         "songsCount": "52",
         "duration": "1:43:12",
+        "chunks": 12
     },
     {
         "commentsEnabled": true,
@@ -27,6 +29,7 @@ const allMusicListCount = [
         "genre": "house-edm",
         "songsCount": "52",
         "duration": "1:43:12",
+        "chunks": 12
     }
 ]
 

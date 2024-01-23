@@ -1,5 +1,7 @@
 import React, { useContext } from 'react'
 
+import { useSelector } from 'react-redux';
+
 import appContext from '../../../services/context/appContext';
 
 import endpoinUrl from '../../../services/api/base/endpointUrl';
@@ -12,19 +14,22 @@ import { useTranslation } from "react-i18next";
 
 export default function OnlineListeners() {
 
-  const {
-    userData: {
-      username,
-      userImage,
-      allowOnlineStatus,
-    },
-    appSettings: {
-      onlineList,
-    },
-  } = useContext(appContext)
+  // const {
+  //   userData: {
+  //     username,
+  //     userImage,
+  //     allowOnlineStatus,
+  //   },
+  //   appSettings: {
+  //     onlineList,
+  //   },
+  // } = useContext(appContext)
 
   //initiate tge translator
   const { t } = useTranslation();
+
+  const userDta = useSelector((state) => state.user.data)
+  const appData = useSelector((state) => state.app.data)
 
   // //handles mause hover for active listeners
   const onEnter = (event) => {
@@ -61,18 +66,18 @@ export default function OnlineListeners() {
             <div className="connect_btn_wrapper item col" onMouseEnter={onEnter} onMouseLeave={onLeave}>
               <div className="connect_btn">
                 <div className="connect_btn_text">
-                  <img src={userImage} width={"100%"} class="rounded-circle" alt="Cinque Terre" />
-                  <div>{username}</div>
+                  <img src={userDta.userImage} width={"100%"} class="rounded-circle" alt="Cinque Terre" />
+                  <div>{userDta.username}</div>
                 </div>
               </div>
             </div>
 
             <div className="curator_list_content_desc col"><br /> Other Listners</div>
 
-            {allowOnlineStatus &&
+            {userDta.allowOnlineStatus &&
               <>
-                {(onlineList || []).map((user, index) => {
-                  if (user.userName === username) {
+                {(appData.onlineList || []).map((user, index) => {
+                  if (user.userName === userDta.username) {
                     // Condition to check if the user's name is equal to 'username'
                     return;
 

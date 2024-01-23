@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 
 import coverImage from './Music/music/Cover-Image.jpg'
 
@@ -30,21 +31,25 @@ import { useTranslation } from "react-i18next";
 import checkIcon from '../layouts/components/toast/toastSvg/check.svg';
 
 import { SET_NOTIFIATION_TEXT_ITEM } from '../services/context/appState/stateTypes';
+import { set_notifiation_text_item } from '../services/redux/app/reducer/appReducer';
 
 export default function SingleMusic() {
 
   // Global State
-  const {
-    userData: {
-      firebaseUid,
-      userImage,
-    },
-    audioObject,
-    currentTime,
-    playing,
-    duration,
-    stateDispatch,
-  } = useContext(appContext)
+  // const {
+  //   userData: {
+  //     firebaseUid,
+  //     userImage,
+  //   },
+  //   audioObject,
+  //   currentTime,
+  //   playing,
+  //   duration,
+  //   stateDispatch,
+  // } = useContext(appContext)
+
+  const userData = useSelector((state) => state.user.data)
+  const dispatch = useDispatch()
 
   let { mixId } = useParams();
 
@@ -71,7 +76,7 @@ export default function SingleMusic() {
       const ratingData = {
         mixId: mixId,
         rating: target.value,
-        userId: firebaseUid,
+        userId: userData.firebaseUid,
       }
       // Make post request to change the status
       apiClient.post('/ratings/', ratingData, {
@@ -114,7 +119,8 @@ export default function SingleMusic() {
       icon: data.icon
     };
 
-    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+    dispatch(set_notifiation_text_item(notice))
+    // stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
   }
 

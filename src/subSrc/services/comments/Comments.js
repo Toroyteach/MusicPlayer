@@ -1,4 +1,6 @@
 import { useState, useEffect, useContext } from "react";
+import { useSelector } from "react-redux";
+
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 
@@ -19,14 +21,16 @@ import { useTranslation } from "react-i18next";
 
 const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
 
-    const {
-        userData: {
-            userImage,
-            firebaseUid,
-            allowComments,
-            username,
-        },
-    } = useContext(appContext)
+    // const {
+    //     userData: {
+    //         userImage,
+    //         firebaseUid,
+    //         allowComments,
+    //         username,
+    //     },
+    // } = useContext(appContext)
+
+    const userData = useSelector((state) => state.user.data)
 
     //initiate tge translator
     const { t } = useTranslation();
@@ -96,14 +100,14 @@ const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
             id: Math.random().toString(36).substr(2, 9),
             body: text,
             parentId: parentId ? parentId : null,
-            userId: firebaseUid,
-            username: username,
+            userId: userData.firebaseUid,
+            username: userData.username,
             dateCreated: dateTimeString,
             mixItem: currentMixName,
             mixItemId: currentMixId,
             status: "allow",
-            publicView: allowComments,
-            userPic: userImage ?? '',
+            publicView: userData.allowComments,
+            userPic: userData.userImage ?? '',
         }
 
         setLoad(true)
@@ -192,7 +196,7 @@ const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
         if (data) {
             if (data.status === 'success') {
 
-                if (allowComments) {
+                if (userData.allowComments) {
 
                     const newArray = []
                     const uniqueItemsSet = new Set();
@@ -240,7 +244,7 @@ const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
 
                         if (!uniqueItemsSet.has(item.id)) {
 
-                            if(item.userId != firebaseUid){
+                            if(item.userId != userData.firebaseUid){
                                 return
                             }
 
@@ -302,7 +306,7 @@ const Comments = ({ currentMixName, currentUserId, currentMixId }) => {
                     addComment={addComment}
                     deleteComment={deleteComment}
                     updateComment={updateComment}
-                    currentUserId={firebaseUid}
+                    currentUserId={userData.firebaseUid}
                 />
             ))}
 

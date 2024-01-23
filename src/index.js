@@ -11,6 +11,10 @@ import { AuthProvider } from './subSrc/services/authContext/AuthProvider.js';
 
 import { QueryClient, QueryClientProvider } from "react-query";
 
+import { Provider } from 'react-redux'
+
+import store from './subSrc/services/redux/store'
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const queryClient = new QueryClient(
@@ -26,15 +30,17 @@ const queryClient = new QueryClient(
 
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <CookiesProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <MusicApplication />
-          </AuthProvider>
-        </BrowserRouter>
-      </CookiesProvider>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <CookiesProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <MusicApplication />
+            </AuthProvider>
+          </BrowserRouter>
+        </CookiesProvider>
+      </QueryClientProvider>
+    </Provider>
   </React.StrictMode>
 );
 

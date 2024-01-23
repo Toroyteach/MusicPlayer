@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import io from 'socket.io-client';
 
+import { useSelector, useDispatch } from 'react-redux';
+
 import apiClient from '../../services/api/base/apiClient';
 
 import useAuth from '../../services/authContext/useAuth';
@@ -50,13 +52,48 @@ import {
   SET_THANOS_SNAP_ANIMATION,
   SET_USER_EMAIL,
   SET_USER_USERNAME,
-  SET_USER_FIRSTNAME,
+  // SET_USER_FIRSTNAME,
   SET_USER_LASTNAME,
   SET_USER_EXCERPT,
   SET_USER_NUMBER,
   SET_USER_USERIMAGE,
   SET_ONLINE_USERS_LIST,
 } from '../../services/context/appState/stateTypes.js';
+
+import {
+  set_user_firstname,
+  set_user_lastname,
+  set_user_username,
+  set_user_excerpt,
+  // set_user_email,
+  set_user_number,
+  set_user_userimage,
+  // set_user_activeplaylist,
+  // set_user_lastsong,
+  // set_user_last_seektime,
+  // set_user_totalminuteslistened,
+  // set_user_total_plays_count,
+  // set_user_role,
+  // set_user_favouritelist_add,
+  // set_user_favouritelist_remove,
+  // set_user_shazamlist,
+  // set_user_historylist,
+  // set_user_favourites_count,
+  // set_user_identified_songs_count,
+  // set_user_comments,
+  // set_user_comments_count,
+  // set_user_firebase_uuid,
+  set_show_my_online_status,
+  set_show_others_comments,
+} from '../../services/redux/user/reducer/userReducer';
+
+
+import {
+  set_main_app_darkmode,
+  set_notifiation_text_item,
+  set_thanos_snap_animation
+} from '../../services/redux/app/reducer/appReducer';
+
 
 import checkIcon from '../../layouts/components/toast/toastSvg/check.svg';
 import warningIcon from '../../layouts/components/toast/toastSvg/error.svg';
@@ -79,31 +116,35 @@ import thanosSnapAudioFile from '../../services/hooks/thanosAudio/thanosSnapAudi
 export default function UserProfile() {
 
   // Global State variable
-  const {
-    userData: {
-      firstname,
-      lastname,
-      email,
-      excerpt,
-      number,
-      allowQuize,
-      allowWeather,
-      allowComments,
-      allowOnlineStatus,
-      role,
-      username,
-      userImage,
-    },
-    appSettings: {
-      appDarkMode,
-      activeSpectrum,
-      thanosSnapVisible,
-    },
-    stateDispatch,
-    activePlaylist,
-    currentSong,
-  } = useContext(appContext)
+  // const {
+  //   userData: {
+  //     firstname,
+  //     lastname,
+  //     email,
+  //     excerpt,
+  //     number,
+  //     allowQuize,
+  //     allowWeather,
+  //     allowComments,
+  //     allowOnlineStatus,
+  //     role,
+  //     username,
+  //     userImage,
+  //   },
+  //   appSettings: {
+  //     appDarkMode,
+  //     activeSpectrum,
+  //     thanosSnapVisible,
+  //   },
+  //   stateDispatch,
+  //   activePlaylist,
+  //   currentSong,
+  // } = useContext(appContext)
 
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user.data);
+  const appData = useSelector((state) => state.app.data);
+  const musicData = useSelector((state) => state.music.data);
   //initiate tge translator
   const { t } = useTranslation();
 
@@ -136,7 +177,7 @@ export default function UserProfile() {
     const cookies = new Cookies();
     const accessToken = cookies.get('userToken')
     const onlineStatusData = {
-      allowOnlineStatus: allowOnlineStatus ? false : true
+      allowOnlineStatus: userData.allowOnlineStatus ? false : true
     }
 
     setLoading(true)
@@ -152,7 +193,8 @@ export default function UserProfile() {
         setLoading(false)
 
         if (response.data.status === 'succes') {
-          stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: response.data.data.allowOnlineStatus });
+          dispatch(set_show_my_online_status(response.data.data.allowOnlineStatus))
+          // stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: response.data.data.allowOnlineStatus });
 
           setCookie("onlineStatus", response.data.data.allowOnlineStatus, {
             path: "/",
@@ -186,7 +228,7 @@ export default function UserProfile() {
 
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!allowOnlineStatus ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!userData.allowOnlineStatus ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -202,7 +244,7 @@ export default function UserProfile() {
     const cookies = new Cookies();
     const accessToken = cookies.get('userToken')
     const onlineStatusData = {
-      allowComments: allowComments ? false : true
+      allowComments: userData.allowComments ? false : true
     }
 
     setLoading(true)
@@ -217,7 +259,8 @@ export default function UserProfile() {
         setLoading(false)
 
         if (response.data.status === 'succes') {
-          stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: response.data.data.allowComments })
+          dispatch(set_show_others_comments(response.data.data.allowComments))
+          // stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: response.data.data.allowComments })
 
           setCookie("showOthersComment", response.data.data.allowComments, {
             path: "/",
@@ -243,7 +286,7 @@ export default function UserProfile() {
 
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!allowComments ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!userData.allowComments ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -260,7 +303,7 @@ export default function UserProfile() {
     const cookies = new Cookies();
     const accessToken = cookies.get('userToken')
     const onlineStatusData = {
-      appDarkMode: appDarkMode ? false : true
+      appDarkMode: appData.appDarkMode ? false : true
     }
 
     setLoading(true)
@@ -274,7 +317,8 @@ export default function UserProfile() {
 
         setLoading(false)
         if (response.data.status === 'succes') {
-          stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: response.data.data.appDarkMode })
+          dispatch(set_main_app_darkmode(response.data.data.appDarkMode))
+          // stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: response.data.data.appDarkMode })
 
           setCookie("appDarkMode", response.data.data.appDarkMode, {
             path: "/",
@@ -299,7 +343,7 @@ export default function UserProfile() {
         setLoading(false)
         let data = {
           type: t("error"),
-          text: t("error-updateing-your-settings") + " " + (!appDarkMode ? t("enabled") : t("disabled")),
+          text: t("error-updateing-your-settings") + " " + (!appData.appDarkMode ? t("enabled") : t("disabled")),
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -361,7 +405,8 @@ export default function UserProfile() {
           setLoading(false)
 
           if (validFirstnameu && response.data.data.firstname) {
-            stateDispatch({ type: SET_USER_FIRSTNAME, data: response.data.data.firstname })
+            dispatch(set_user_firstname(response.data.data.firstname));
+            // stateDispatch({ type: SET_USER_FIRSTNAME, data: response.data.data.firstname })
             setCookie("firstname", response.data.data.firstname, {
               path: "/",
               secure: true,
@@ -370,7 +415,8 @@ export default function UserProfile() {
           }
 
           if (validLastnameu && response.data.data.lastname) {
-            stateDispatch({ type: SET_USER_LASTNAME, data: response.data.data.lastname })
+            dispatch(set_user_lastname(response.data.data.lastname))
+            // stateDispatch({ type: SET_USER_LASTNAME, data: response.data.data.lastname })
             setCookie("lastname", response.data.data.lastname, {
               path: "/",
               secure: true,
@@ -379,7 +425,8 @@ export default function UserProfile() {
           }
 
           if (validUsernameu && response.data.data.username) {
-            stateDispatch({ type: SET_USER_USERNAME, data: response.data.data.username })
+            dispatch(set_user_username(response.data.data.username))
+            // stateDispatch({ type: SET_USER_USERNAME, data: response.data.data.username })
             setCookie("username", response.data.data.username, {
               path: "/",
               secure: true,
@@ -388,7 +435,8 @@ export default function UserProfile() {
           }
 
           if (validNumberu && response.data.data.phone) {
-            stateDispatch({ type: SET_USER_NUMBER, data: response.data.data.phone })
+            dispatch(set_user_number(response.data.data.phone))
+            // stateDispatch({ type: SET_USER_NUMBER, data: response.data.data.phone })
             setCookie("number", response.data.data.phone, {
               path: "/",
               secure: true,
@@ -397,7 +445,8 @@ export default function UserProfile() {
           }
 
           if (excerptu != null && response.data.data.excerpt) {
-            stateDispatch({ type: SET_USER_EXCERPT, data: response.data.data.excerpt })
+            dispatch(set_user_excerpt(response.data.data.excerpt))
+            // stateDispatch({ type: SET_USER_EXCERPT, data: response.data.data.excerpt })
             setCookie("excerpt", response.data.data.excerpt, {
               path: "/",
               secure: true,
@@ -451,7 +500,7 @@ export default function UserProfile() {
 
     setLoading(true)
     //Make post request to change the status
-    apiClient.get(`/auth/updatePassword/${email}`, {
+    apiClient.get(`/auth/updatePassword/${userData.email}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -480,7 +529,7 @@ export default function UserProfile() {
 
         let data = {
           type: t("error"),
-          text: "Error Sending Passwor Resent Link to your Email",
+          text: "Error Sending Password Resent Link to your Email",
           icon: warningIcon,
           bgColour: '#f0ad4e',
         }
@@ -516,7 +565,8 @@ export default function UserProfile() {
             if (response.data.success === true) {
 
               // Handle the response, which should contain the image URL
-              stateDispatch({ type: SET_USER_USERIMAGE, data: response.data.photoUrl })
+              dispatch(set_user_userimage(response.data.photoUrl))
+              // stateDispatch({ type: SET_USER_USERIMAGE, data: response.data.photoUrl })
 
               let data = {
                 type: t("success"),
@@ -575,7 +625,8 @@ export default function UserProfile() {
     }, 18000)
 
     audio.play()
-    stateDispatch({ type: SET_THANOS_SNAP_ANIMATION, data: true })
+    dispatch(set_thanos_snap_animation(true))
+    // stateDispatch({ type: SET_THANOS_SNAP_ANIMATION, data: true })
 
     return
 
@@ -655,65 +706,66 @@ export default function UserProfile() {
       icon: data.icon
     };
 
-    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+    dispatch(set_notifiation_text_item(notice))
+    // stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
   }
 
   //update allow random quizes
   const updateAllowRandomQuizes = () => {
 
-    stateDispatch({ type: SET_ALLOW_RANDOM_QUIZ, data: allowQuize ? false : true })
+    // stateDispatch({ type: SET_ALLOW_RANDOM_QUIZ, data: allowQuize ? false : true })
 
-    let data = {
-      type: t("success"),
-      text: t("Successfully") + (!allowQuize ? t("enabled") : t("disabled")) + ' Random Quize',
-      icon: checkIcon,
-      bgColour: '#5cb85c',
-    }
+    // let data = {
+    //   type: t("success"),
+    //   text: t("Successfully") + (!allowQuize ? t("enabled") : t("disabled")) + ' Random Quize',
+    //   icon: checkIcon,
+    //   bgColour: '#5cb85c',
+    // }
 
-    dispatchNotification(data)
+    // dispatchNotification(data)
   }
 
   //update eneable artificial weather
   const updateEnableArtificalWeather = () => {
 
-    stateDispatch({ type: SET_ARTIFICIAL_WEATHER, data: allowWeather ? false : true })
+    // stateDispatch({ type: SET_ARTIFICIAL_WEATHER, data: allowWeather ? false : true })
 
-    let data = {
-      type: t("success"),
-      text: t("Successfully") + (!allowWeather ? t("enabled") : t("disabled")) + ' Artifical Weather',
-      icon: checkIcon,
-      bgColour: '#5cb85c',
-    }
+    // let data = {
+    //   type: t("success"),
+    //   text: t("Successfully") + (!allowWeather ? t("enabled") : t("disabled")) + ' Artifical Weather',
+    //   icon: checkIcon,
+    //   bgColour: '#5cb85c',
+    // }
 
-    dispatchNotification(data)
+    // dispatchNotification(data)
 
   }
 
   //handle visualizer spectrum choice
   const handleChooseVisualizer = () => {
 
-    stateDispatch({ type: SET_SPECTRUM_TYPE, data: activeSpectrum ? false : true })
+    // stateDispatch({ type: SET_SPECTRUM_TYPE, data: activeSpectrum ? false : true })
 
-    let data = {
-      type: t("success"),
-      text: t("Successfully") + " " + (!activeSpectrum ? t("activated") : t("deactivated")) + " " + t("audio-visualizer"),
-      icon: checkIcon,
-      bgColour: '#5cb85c',
-    }
+    // let data = {
+    //   type: t("success"),
+    //   text: t("Successfully") + " " + (!activeSpectrum ? t("activated") : t("deactivated")) + " " + t("audio-visualizer"),
+    //   icon: checkIcon,
+    //   bgColour: '#5cb85c',
+    // }
 
-    dispatchNotification(data)
+    // dispatchNotification(data)
   }
 
   const handleSubscribe = () => {
     const socket = io(webSocketUrl);
 
-    const songTitle = activePlaylist && activePlaylist.length > 0 ? (activePlaylist[currentSong]?.title ?? '') : '';
+    const songTitle = musicData.activePlaylist && musicData.activePlaylist.length > 0 ? (musicData.activePlaylist[musicData.currentSong]?.title ?? '') : '';
 
     socket.emit('onlineListeners', {
-      userName: username,
+      userName: userData.username,
       activeSong: songTitle,
-      displayPicUrl: userImage
+      displayPicUrl: userData.userImage
     });
   }
 
@@ -721,7 +773,7 @@ export default function UserProfile() {
     const socket = io(webSocketUrl);
 
     socket.emit('unsubscribe', {
-      userName: username,
+      userName: userData.username,
       activeSong: '',
       displayPicUrl: ''
     });
@@ -729,12 +781,12 @@ export default function UserProfile() {
 
   const [imageProfile, setImageProfile] = useState()
   useEffect(() => {
-    if (userImage != 'imageavatar.png') {
-      setImageProfile(userImage)
+    if (userData.userImage != 'imageavatar.png') {
+      setImageProfile(userData.userImage)
     } else {
       setImageProfile(imageAvatar)
     }
-  }, [userImage])
+  }, [userData.userImage])
 
 
   const [images, setImages] = useState([])
@@ -773,7 +825,7 @@ export default function UserProfile() {
           <span className="mask  bg-gradient-primary  opacity-3"></span>
         </div>
         <div className="card card-body mx-md-1 mt-n6">
-          <div className={thanosSnapVisible ? 'row gx-4 mb-2 fadeOut' : 'row gx-4 mb-2'} id="fadeOut">
+          <div className={appData.thanosSnapVisible ? 'row gx-4 mb-2 fadeOut' : 'row gx-4 mb-2'} id="fadeOut">
             <div className="col-auto">
               <div className="avatar avatar-xl position-relative">
                 <img src={imageProfile} alt="profile_image" className="w-100 border-radius-lg shadow-sm" />
@@ -782,10 +834,10 @@ export default function UserProfile() {
             <div className="col-auto my-auto">
               <div className="h-100">
                 <h5 className="mb-1">
-                  {username}
+                  {userData.username}
                 </h5>
                 <p className="mb-0 font-weight-normal text-sm">
-                  {role}
+                  {userData.role}
                 </p>
               </div>
             </div>
@@ -795,7 +847,7 @@ export default function UserProfile() {
               </div>
             }
           </div>
-          <div className={thanosSnapVisible ? 'row fadeOutTheRest' : 'row'} id="fadeOutTheRest">
+          <div className={appData.thanosSnapVisible ? 'row fadeOutTheRest' : 'row'} id="fadeOutTheRest">
             <div className="row">
 
               <div className="col-xl-3 col-md-3 col-sm-12 col-lg-3">
@@ -814,20 +866,20 @@ export default function UserProfile() {
                   </div>
                   <div className="card-body p-3">
                     <p className="text-sm text-secondary">
-                      {excerpt}
+                      {userData.excerpt}
                     </p>
                     <hr className="horizontal gray-light my-4" />
                     <ul className="list-group">
-                      <li className="list-group-item border-0 ps-0 pt-0 text-sm text-secondary"><strong className="">{t("fullname")}:</strong> &nbsp; {firstname + " " + lastname}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("mobile")}:</strong> &nbsp; {number}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("email")}:</strong> &nbsp; {email}</li>
-                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("username")}:</strong> &nbsp; {username}</li>
+                      <li className="list-group-item border-0 ps-0 pt-0 text-sm text-secondary"><strong className="">{t("fullname")}:</strong> &nbsp; {userData.firstname + " " +userData.lastname}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("mobile")}:</strong> &nbsp; {userData.number}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("email")}:</strong> &nbsp; {userData.email}</li>
+                      <li className="list-group-item border-0 ps-0 text-sm text-secondary"><strong className="">{t("username")}:</strong> &nbsp; {userData.username}</li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <div className={thanosSnapVisible ? 'col-12 col-xl-4 fadeOutPlatformSettings' : 'col-xl-4 col-md-4 col-sm-12 col-lg-4'} id="fadeOutPlatformSettings">
+              <div className={appData.thanosSnapVisible ? 'col-12 col-xl-4 fadeOutPlatformSettings' : 'col-xl-4 col-md-4 col-sm-12 col-lg-4'} id="fadeOutPlatformSettings">
                 <div className="card card-plain h-100">
                   <div className="card-header pb-0 p-3">
                     <h6 className="mb-0">{t("platform-settings")}</h6>
@@ -837,21 +889,21 @@ export default function UserProfile() {
                     <ul className="list-group">
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefaultapptheme" checked={appDarkMode} onChange={updateEnableAppDarkMode} />
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefaultapptheme" checked={appData.appDarkMode} onChange={updateEnableAppDarkMode} />
                           <label className="form-check-label text-body text-truncate mb-0" htmlFor="flexSwitchCheckDefaultapptheme"> &ensp;{t("application-theme")}</label>
                         </div>
                       </li>
 
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefaultonlinestatus" checked={allowOnlineStatus} onChange={updateShowMyOnlineStatus} />
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefaultonlinestatus" checked={userData.allowOnlineStatus} onChange={updateShowMyOnlineStatus} />
                           <label className="form-check-label text-body text-truncate mb-0" htmlFor="flexSwitchCheckDefaultonlinestatus">&ensp;{t("show-other-listeners-my-online-status")}</label>
                         </div>
                       </li>
 
                       <li className="list-group-item border-0 px-0">
                         <div className="form-check form-switch ps-0">
-                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefaultcomments" checked={allowComments} onChange={updateShowMyComments} />
+                          <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefaultcomments" checked={userData.allowComments} onChange={updateShowMyComments} />
                           <label className="form-check-label text-body text-truncate mb-0" htmlFor="flexSwitchCheckDefaultcomments">&ensp;{t("show-other-users-my-comments")}</label>
                         </div>
                       </li>
@@ -907,15 +959,15 @@ export default function UserProfile() {
               <form>
                 <div className="row g-3 modalIntro">
                   <div className="col-6 modalIntro">
-                    <input type="text" id="orangeForm-firstname" defaultValue={firstname} onChange={(e) => setFirstnameu(e.target.value)} className="form-control validate" />
+                    <input type="text" id="orangeForm-firstname" defaultValue={userData.firstname} onChange={(e) => setFirstnameu(e.target.value)} className="form-control validate" />
                     <label data-error="wrong" data-success="right" htmlFor="orangeForm-name">{t("your-firstname")}</label>
                   </div>
                   <div className="col-6">
-                    <input type="text" id="orangeForm-lastname" defaultValue={lastname} onChange={(e) => setLastnameu(e.target.value)} className="form-control validate" />
+                    <input type="text" id="orangeForm-lastname" defaultValue={userData.lastname} onChange={(e) => setLastnameu(e.target.value)} className="form-control validate" />
                     <label data-error="wrong" data-success="right" htmlFor="orangeForm-lastname">{t("your-lastname")}</label>
                   </div>
                   <div className="col-6">
-                    <input type="email" id="orangeForm-email" value={email} className="form-control validate" />
+                    <input type="email" id="orangeForm-email" value={userData.email} className="form-control validate" />
                     <label data-error="wrong" data-success="right" htmlFor="orangeForm-email">{t("your-email")}</label>
                   </div>
 
@@ -938,17 +990,17 @@ export default function UserProfile() {
                   </div> */}
 
                   <div className="col-6">
-                    <input type="text" id="orangeForm-username" defaultValue={username} onChange={(e) => setUsernameu(e.target.value)} className="form-control validate" />
+                    <input type="text" id="orangeForm-username" defaultValue={userData.username} onChange={(e) => setUsernameu(e.target.value)} className="form-control validate" />
                     <label data-error="wrong" data-success="right" htmlFor="orangeForm-username">{t("username")}</label>
                   </div>
 
                   <div className="col-6">
-                    <input type="number" id="orangeForm-phone" defaultValue={number} onChange={(e) => setNumberu(e.target.value)} className="form-control validate" />
+                    <input type="number" id="orangeForm-phone" defaultValue={userData.number} onChange={(e) => setNumberu(e.target.value)} className="form-control validate" />
                     <label data-error="wrong" data-success="right" htmlFor="orangeForm-phone">{t("your-phonenumber")}</label>
                   </div>
 
                   <div className="col-12">
-                    <textarea className="form-control" id="excert" defaultValue={excerpt} onChange={(e) => setExcerptu(e.target.value)} rows="4"></textarea>
+                    <textarea className="form-control" id="excert" defaultValue={userData.excerpt} onChange={(e) => setExcerptu(e.target.value)} rows="4"></textarea>
                     <label data-error="wrong" data-success="right" htmlFor="excerp">{t("your-excerpt")}</label>
                   </div>
                 </div>

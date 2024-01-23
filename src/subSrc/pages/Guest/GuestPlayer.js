@@ -126,6 +126,8 @@ export default function GuestPlayer() {
                         </div>
                     </div> */}
 
+                    
+
                     <div className="section-title footer-title">
                         <Link to="/music">
                             <h2>{t("click-here-to-sign-in")}</h2>

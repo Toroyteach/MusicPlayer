@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 
+import { useSelector } from "react-redux";
 // import the file to allow changing of the language manually
 import { useTranslation } from "react-i18next";
 
@@ -16,11 +17,13 @@ const CommentForm = ({
     userPic,
 }) => {
 
-    const {
-        userData: {
-            userImage,
-        },
-    } = useContext(appContext)
+    // const {
+    //     userData: {
+    //         userImage,
+    //     },
+    // } = useContext(appContext)
+
+    const userData = useSelector((state) => state.user.data)
 
     const [dPic, setDpic] = useState()
 
@@ -37,12 +40,12 @@ const CommentForm = ({
     };
 
     useEffect(() => {
-        const stringUrl = userImage.startsWith("https")
+        const stringUrl = userData.userImage.startsWith("https")
 
         if(!stringUrl){
-            setDpic(endpoinUrl + userImage)
+            setDpic(endpoinUrl + userData.userImage)
         } else {
-            setDpic(userImage)   
+            setDpic(userData.userImage)   
         }
     }, [])
 

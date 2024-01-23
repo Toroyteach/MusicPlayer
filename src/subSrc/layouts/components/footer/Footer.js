@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import $ from 'jquery';
 import { gsap, Power2 } from 'gsap';
 
@@ -35,38 +37,45 @@ import endpointCoverArtUrl from '../../../services/api/base/endPointCoverArtUrl.
 
 import PlayLoad from '../../../pages/Music/components/loader/PlayLoad.js';
 import { t } from 'i18next';
+import { set_current_song, set_music_playing_status, set_toggle_playing } from '../../../services/redux/music/reducer/musicReducer.js';
+import { set_notifiation_text_item } from '../../../services/redux/app/reducer/appReducer.js';
 
 export default function Footer() {
 
   // Global State
-  const {
-    stateDispatch,
-    userData: {
-      username,
-    },
-    appSettings: {
-      thanosSnapVisible,
-    },
-  } = useContext(appContext)
+  // const {
+  //   stateDispatch,
+  //   userData: {
+  //     username,
+  //   },
+  //   appSettings: {
+  //     thanosSnapVisible,
+  //   },
+  // } = useContext(appContext)
 
   const {
-    currentSong,
-    playing,
-    activePlaylist,
-    musicStateDispatch,
-    random,
+    // currentSong,
+    // playing,
+    // activePlaylist,
+    // musicStateDispatch,
+    // random,
     playNextItem,
-    musicSettings: {
-      playOrLoading,
-      playingStatus,
-    },
+    // musicSettings: {
+    //   playOrLoading,
+    //   playingStatus,
+    // },
   } = useContext(musicContext)
+
+  const dispatch = useDispatch()
+  const userData = useSelector((state) => state.user.data);
+  const musicData = useSelector((state) => state.music.data);
+  const appData = useSelector((state) => state.app.data);
 
   //handles the actual playing and changing of the play pause buttons
   // const [showSpinner, setShowSpinner] = useState(false)
   const playAndPause = () => {
 
-    if (currentSong === null) {
+    if (musicData.currentSong === null) {
       let data = {
         type: t("error"),
         text: "Please Select an Item in Music Section before moving forward",
@@ -80,7 +89,7 @@ export default function Footer() {
     }
 
     const chanegPlayState = () => {
-      if (playing) {
+      if (musicData.playing) {
 
         //sets the pause button to show
         gsap.to($(".btn-pause"), { duration: 0.5, x: 20, opacity: 0, display: "none", scale: 0.3, ease: Power2.easeInOut });
@@ -96,14 +105,17 @@ export default function Footer() {
       }
     }
 
-    if (!playingStatus) {
+    if (!musicData.playingStatus) {
       playNextItem()
       chanegPlayState()
-      musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
-      musicStateDispatch({ type: SET_MUSIC_PLAYING_STATUS, data: true })
+      dispatch(set_toggle_playing(musicData.playing ? false : true))
+      dispatch(set_music_playing_status(true))
+      // musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
+      // musicStateDispatch({ type: SET_MUSIC_PLAYING_STATUS, data: true })
     } else {
       chanegPlayState()
-      musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
+      dispatch(set_toggle_playing(musicData.playing ? false : true))
+      // musicStateDispatch({ type: SET_TOGGLE_PLAYING, data: playing ? false : true })
     }
 
   }
@@ -111,17 +123,20 @@ export default function Footer() {
   //method to handle dispatching and handling playing the next song
   const nextMixItem = () => {
 
-    if (currentSong === activePlaylist.length - 1) {
+    if (musicData.currentSong === musicData.activePlaylist.length - 1) {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: 0 })
+      dispatch(set_current_song(0))
+      // stateDispatch({ type: SET_CURRENT_SONG, data: 0 })
 
-    } else if (random) {
+    } else if (musicData.random) {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: Math.floor(Math.random() * activePlaylist.length) })
+      dispatch(set_current_song(Math.floor(Math.random() * musicData.activePlaylist.length)))
+      // stateDispatch({ type: SET_CURRENT_SONG, data: Math.floor(Math.random() * activePlaylist.length) })
 
     } else {
 
-      stateDispatch({ type: SET_CURRENT_SONG, data: currentSong + 1 })
+      dispatch(set_current_song(musicData.currentSong + 1))
+      // stateDispatch({ type: SET_CURRENT_SONG, data: currentSong + 1 })
     }
 
   }
@@ -129,13 +144,15 @@ export default function Footer() {
   //function to handle dispatching previous song
   const prevMixItem = () => {
 
-    if (currentSong === 0) {
+    if (musicData.currentSong === 0) {
 
-      musicStateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
+      dispatch(set_current_song(musicData.activePlaylist.length - 1))
+      // musicStateDispatch({ type: SET_CURRENT_SONG, data: activePlaylist.length - 1 })
 
     } else {
 
-      musicStateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
+      dispatch(set_current_song(musicData.currentSong - 1))
+      // musicStateDispatch({ type: SET_CURRENT_SONG, data: currentSong - 1 })
 
     }
 
@@ -241,10 +258,10 @@ export default function Footer() {
       icon: data.icon
     };
 
-    stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
+    dispatch(set_notifiation_text_item(notice))
+    // stateDispatch({ type: SET_NOTIFIATION_TEXT_ITEM, data: notice });
 
   }
-
 
   const handleKeyPress = (event) => {
     if (event.key === ' ' || event.key === 'Spacebar') {
@@ -265,7 +282,7 @@ export default function Footer() {
   }, []); 
 
   return (
-    <footer className={thanosSnapVisible ? 'footer py-4 fadeOut' : 'footer py-4'} id="fadeOut">
+    <footer className={appData.thanosSnapVisible ? 'footer py-4 fadeOut' : 'footer py-4'} id="fadeOut">
       <div className="container-fluid">
         <div className="row align-items-center justify-content-lg-between">
 
@@ -274,7 +291,7 @@ export default function Footer() {
               ©
               {t("created-with")} <i className="fa fa-heart"></i> {t("by")}
               <a href="https://toroyteach.com" target="_blank" rel="noreferrer"> Toroyteach </a>
-              {t("for-a-cool-fan-like-you")} <span className='font-weight-bold'>{username}</span>.
+              {t("for-a-cool-fan-like-you")} <span className='font-weight-bold'>{userData.username}</span>.
             </div>
           </div>
 
@@ -286,13 +303,13 @@ export default function Footer() {
 
 
 
-              <Link to={`/music/single/${activePlaylist[currentSong]?.mixId}`} style={{pointerEvents: (currentSong != undefined || currentSong != null) ? '' : 'none'}}>
+              <Link to={`/music/single/${musicData.activePlaylist[musicData.currentSong]?.mixId}`} style={{pointerEvents: (musicData.currentSong != undefined || musicData.currentSong != null) ? '' : 'none'}}>
                 <div className="track_info_wrapper" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title={t("leave-comment")}>
                   <div className="track_info">
-                    {(typeof currentSong === 'number') && (<div className="thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+activePlaylist[currentSong]?.coverArt})`}}></div>)}
+                    {(typeof musicData.currentSong === 'number') && (<div className="thumb" style={{ backgroundImage: `url(${endpointCoverArtUrl+musicData.activePlaylist[musicData.currentSong]?.coverArt})`}}></div>)}
                     <div className="info">
-                      <div className="title">{typeof currentSong === 'number' ? activePlaylist[currentSong]?.title : ''}</div>
-                      <div className="title">{typeof currentSong === 'number' ? activePlaylist[currentSong]?.genre : ''}</div>
+                      <div className="title">{typeof musicData.currentSong === 'number' ? musicData.activePlaylist[musicData.currentSong]?.title : ''}</div>
+                      <div className="title">{typeof musicData.currentSong === 'number' ? musicData.activePlaylist[musicData.currentSong]?.genre : ''}</div>
                     </div>
                   </div>
                 </div>
@@ -305,7 +322,7 @@ export default function Footer() {
 
                 <div className="btn-switch" onClick={playAndPause} data-bs-toggle="tooltip" data-bs-placement="top" title={t("play-pause")}>
 
-                  <PlayLoad isLoading={playOrLoading} sourceButton={'footer'} />
+                  <PlayLoad isLoading={musicData.playOrLoading} sourceButton={'footer'} />
 
                 </div>
 

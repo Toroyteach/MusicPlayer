@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState, useRef } from 'react'
 
 import { Link, useMatch, useResolvedPath, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import { useSelector, useDispatch } from 'react-redux';
+
 import * as THREE from 'three';
 
 import io from 'socket.io-client';
@@ -74,37 +76,48 @@ import {
   SET_ACTIVE_PLAYLIST_ARRAY,
 } from '../../../services/music/musicState/musicStateTypes';
 
+
+import { setApp, set_online_users_list } from '../../../services/redux/app/reducer/appReducer'
+
+import { setUser, set_user_favouritelist_add } from '../../../services/redux/user/reducer/userReducer'
+
+import { setMusic, set_active_playlist_array, set_allmusicmixes } from '../../../services/redux/music/reducer/musicReducer'
+
 // import warningIcon from '../../../layouts/components/toast/toastSvg/warning.svg';
 import webSocketUrl from '../../../services/api/base/webSocketUrl.js';
 
 export default function Home() {
 
   //Global State
-  const {
-    userData: {
-      firebaseUid,
-      username,
-      allowOnlineStatus,
-      userImage,
-      role,
-    },
-    appSettings: {
-      notificationText,
-      asideNavigation,
-      thanosSnapVisible,
-    },
-    stateDispatch,
-  } = useContext(appContext)
+  // const {
+  //   userData: {
+  //     firebaseUid,
+  //     username,
+  //     allowOnlineStatus,
+  //     userImage,
+  //     role,
+  //   },
+  //   appSettings: {
+  //     notificationText,
+  //     asideNavigation,
+  //     thanosSnapVisible,
+  //   },
+  //   stateDispatch,
+  // } = useContext(appContext)
 
-  const {
-    musicStateDispatch,
-    activePlaylist,
-    currentSong,
-  } = useContext(musicContext)
+  // const {
+  //   musicStateDispatch,
+  //   activePlaylist,
+  //   currentSong,
+  // } = useContext(musicContext)
+
+  const dispatch = useDispatch()
 
   const [setCookie, removeCookie] = useCookies(["userToken", "userRefreshToken"]);
   const cookies = new Cookies();
-  // const accessToken = cookies.get('userToken')
+  const userData = useSelector((state) => state.user.data);
+  const musicData = useSelector((state) => state.music.data);
+  const appData = useSelector((state) => state.app.data);
 
   const refContainer = useRef(null);
 
@@ -113,7 +126,7 @@ export default function Home() {
   //initiate tge translator
   const { t } = useTranslation();
 
-  const { data } = useQuery(`${apiEndUrl}profile/getUserFavouriteList/${firebaseUid}`, "GET");
+  const { data } = useQuery(`${apiEndUrl}profile/getUserFavouriteList/${userData.firebaseUid}`, "GET");
   const { data: musicListData } = useQuery(`${apiEndUrl}music/getMix`, "GET");
   //use this to allow users to change the current active localisation language
   const handleChangeLanguage = (value) => {
@@ -202,22 +215,23 @@ export default function Home() {
 
         if (response.data.success === true) {
 
+          dispatch(setUser({}))
 
-          stateDispatch({ type: SET_USER_USERNAME, data: '' })
-          stateDispatch({ type: SET_USER_FIRSTNAME, data: '' })
-          stateDispatch({ type: SET_USER_LASTNAME, data: '' })
-          stateDispatch({ type: SET_USER_EXCERPT, data: '' })
-          stateDispatch({ type: SET_USER_EMAIL, data: '' })
-          stateDispatch({ type: SET_USER_NUMBER, data: '' })
-          stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: '' })
-          stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: '' })
-          stateDispatch({ type: SET_USER_ROLE, data: '' })
-          stateDispatch({ type: SET_USER_HISTORY_LIST, data: '' })
-          stateDispatch({ type: SET_USER_SHAZAM_LIST, data: '' })
-          stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: '' })
-          stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: '' })
-          stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: '' })
-          stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: '' })
+          // stateDispatch({ type: SET_USER_USERNAME, data: '' })
+          // stateDispatch({ type: SET_USER_FIRSTNAME, data: '' })
+          // stateDispatch({ type: SET_USER_LASTNAME, data: '' })
+          // stateDispatch({ type: SET_USER_EXCERPT, data: '' })
+          // stateDispatch({ type: SET_USER_EMAIL, data: '' })
+          // stateDispatch({ type: SET_USER_NUMBER, data: '' })
+          // stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: '' })
+          // stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: '' })
+          // stateDispatch({ type: SET_USER_ROLE, data: '' })
+          // stateDispatch({ type: SET_USER_HISTORY_LIST, data: '' })
+          // stateDispatch({ type: SET_USER_SHAZAM_LIST, data: '' })
+          // stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: '' })
+          // stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: '' })
+          // stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: '' })
+          // stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: '' })
 
           setAuth({});
 
@@ -408,9 +422,9 @@ export default function Home() {
 
   useEffect(() => {
 
-    if (notificationText.length != 0) {
+    if (appData.notificationText.length != 0) {
 
-      setList([...list, notificationText]);
+      setList([...list, appData.notificationText]);
 
     }
 
@@ -432,38 +446,39 @@ export default function Home() {
     // }
 
 
-  }, [notificationText]);
+  }, [appData.notificationText]);
 
   //use effect to check state changes in the Application tour to launch/remove Aside Navigation state
   useEffect(() => {
 
-    asideNavigation ? setIsActive(true) : setIsActive(false)
+    appData.asideNavigation ? setIsActive(true) : setIsActive(false)
 
-  }, [asideNavigation])
+  }, [appData.asideNavigation])
 
   useEffect(() => {
     // Connect to the WebSocket server
     const socket = io(webSocketUrl);
 
-    if (allowOnlineStatus) {
+    if (userData.allowOnlineStatus) {
 
-      const songTitle = activePlaylist[currentSong]?.title ?? ''
+      const songTitle = musicData.activePlaylist[musicData.currentSong]?.title ?? ''
 
       if (songTitle) {
         return
       }
 
       socket.emit('onlineListeners', {
-        userName: username,
+        userName: userData.username,
         activeSong: songTitle,
-        displayPicUrl: userImage
+        displayPicUrl: userData.userImage
       });
 
     }
 
     socket.on('onlineUsersList', (users) => {
       if (users.length > 0) {
-        stateDispatch({ type: SET_ONLINE_USERS_LIST, data: users })
+        dispatch(set_online_users_list(users))
+        // stateDispatch({ type: SET_ONLINE_USERS_LIST, data: users })
       }
 
     });
@@ -478,24 +493,101 @@ export default function Home() {
 
     if (((cookies.get('userToken') != 'null' && cookies.get('userRefreshToken') != 'null') || cookies.get('userToken') || cookies.get('userRefreshToken'))) {
 
-      stateDispatch({ type: SET_USER_FIREBASE_UUID, data: cookies.get('firebaseUid') })
-      stateDispatch({ type: SET_USER_USERNAME, data: cookies.get('username') })
-      stateDispatch({ type: SET_USER_FIRSTNAME, data: cookies.get('firstname') })
-      stateDispatch({ type: SET_USER_LASTNAME, data: cookies.get('lastname') })
-      stateDispatch({ type: SET_USER_EXCERPT, data: cookies.get('excerpt') })
-      stateDispatch({ type: SET_USER_EMAIL, data: cookies.get('email') })
-      stateDispatch({ type: SET_USER_NUMBER, data: cookies.get('number') })
-      stateDispatch({ type: SET_USER_ROLE, data: cookies.get('role') })
-      stateDispatch({ type: SET_USER_USERIMAGE, data: cookies.get('image') ?? 'imageavatar.png' })
-      stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: cookies.get('minutesListened') })
-      stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: cookies.get('playCount') })
-      stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: (cookies.get('onlineStatus') == true || cookies.get('onlineStatus') === "true") ? true : false })
-      stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: (cookies.get('showOthersComment') == true || cookies.get('showOthersComment') === "true") ? true : false })
-      stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: (cookies.get('appDarkMode') == true || cookies.get('appDarkMode') === "true") ? true : false })
+      // stateDispatch({ type: SET_USER_FIREBASE_UUID, data: cookies.get('firebaseUid') })
+      // stateDispatch({ type: SET_USER_USERNAME, data: cookies.get('username') })
+      // stateDispatch({ type: SET_USER_FIRSTNAME, data: cookies.get('firstname') })
+      // stateDispatch({ type: SET_USER_LASTNAME, data: cookies.get('lastname') })
+      // stateDispatch({ type: SET_USER_EXCERPT, data: cookies.get('excerpt') })
+      // stateDispatch({ type: SET_USER_EMAIL, data: cookies.get('email') })
+      // stateDispatch({ type: SET_USER_NUMBER, data: cookies.get('number') })
+      // stateDispatch({ type: SET_USER_ROLE, data: cookies.get('role') })
+      // stateDispatch({ type: SET_USER_USERIMAGE, data: cookies.get('image') ?? 'imageavatar.png' })
+      // stateDispatch({ type: SET_USER_TOTALMINUTESLISTENED, data: cookies.get('minutesListened') })
+      // stateDispatch({ type: SET_USER_TOTAL_PLAYS_COUNT, data: cookies.get('playCount') })
+      // stateDispatch({ type: SET_SHOW_MY_ONLINE_STATUS, data: (cookies.get('onlineStatus') == true || cookies.get('onlineStatus') === "true") ? true : false })
+      // stateDispatch({ type: SET_SHOW_OTHERS_COMMENTS, data: (cookies.get('showOthersComment') == true || cookies.get('showOthersComment') === "true") ? true : false })
+      // stateDispatch({ type: SET_MAIN_APP_DARKMODE, data: (cookies.get('appDarkMode') == true || cookies.get('appDarkMode') === "true") ? true : false })
 
-      // musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: cookies.get('activePlaylist') })
-      musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: (cookies.get('randomPlayback') == true || cookies.get('randomPlayback') === "true") ? true : false })
-      musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: (cookies.get('repeatPlayback') == true || cookies.get('repeatPlayback') === "true") ? true : false })
+      const user = {
+        firebaseUid: cookies.get('firebaseUid'),
+        firstname: cookies.get('firstname'),
+        lastname: cookies.get('lastname'),
+        email: cookies.get('email'),
+        excerpt: cookies.get('excerpt'),
+        username: cookies.get('username'),
+        number: cookies.get('number'),
+        userImage: cookies.get('image') ?? 'imageavatar.png',
+        allowComments: (cookies.get('showOthersComment') == true || cookies.get('showOthersComment') === "true") ? true : false,
+        allowOnlineStatus: (cookies.get('onlineStatus') == true || cookies.get('onlineStatus') === "true") ? true : false,
+        totalMinutesListened: cookies.get('minutesListened'),
+        totalPlaysCount: cookies.get('playsCount'),
+        role: cookies.get('role'),
+        history: [],
+        favourite: {
+          favouriteCount: 0,
+          favouriteItems: [],
+        },
+        shazam: {
+          shazamCount: 0,
+          shazamItems: [],
+        },
+        comments: {
+          commentsCount: 0,
+          commentsItems: [],
+        },
+      }
+      dispatch(setUser(user))
+
+      const music = {
+        repeat: (cookies.get('repeatPlayback') == true || cookies.get('repeatPlayback') === "true") ? true : false,
+        random: (cookies.get('randomPlayback') == true || cookies.get('randomPlayback') === "true") ? true : false,
+        currentSong: null,
+        activePlaylist: [],
+        completePlaylist: [],
+        playing: false,
+        seekTime: 0,
+        duration: 0,
+        volume: 0.2,
+        mainAppTheme: 'default',
+        musicAppTheme: 'default',
+        likedItem: false,
+        mixList: [],
+        playOrLoading: false,
+        playingStatus: false,
+      }
+      dispatch(setMusic(music));
+
+
+      const app = {
+        appDarkMode: (cookies.get('appDarkMode') == true || cookies.get('appDarkMode') === "true") ? true : false,
+        visualizerActive: false,
+        astronomyActive: false,
+        shazamActive: false,
+        downloadActive: false,
+        anxietyVideos: false,
+        viewOtherUsers: false,
+        cumulativeMinutesListened: 0,
+        cumulativeDownloaded: 0,
+        cumulativePlays: 0,
+        cumulativeComments: 0,
+        cummulativeQuizeAttempts: 0,
+        usersCount: 0,
+        shazamCounts: 0,
+        highestFavourite: '',
+        language: 'En',
+        activeSpectrum: false,
+        musicAppDarkMode: false,
+        astronomyPicture: '',
+        notificationText: [],
+        asideNavigation: false,
+        enableApplicationTour: false,
+        thanosSnapVisible: false,
+        onlineList: []
+      }
+      dispatch(setApp(app));
+
+      // musicStateDispatch({ type: SET_TOGGLE_RANDOM, data: (cookies.get('randomPlayback') == true || cookies.get('randomPlayback') === "true") ? true : false })
+      // musicStateDispatch({ type: SET_TOGGLE_REPEAT, data: (cookies.get('repeatPlayback') == true || cookies.get('repeatPlayback') === "true") ? true : false })
     }
 
   }, [])
@@ -504,7 +596,8 @@ export default function Home() {
 
     if (data) {
 
-      stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: data.data.favourite.favouriteData })
+      dispatch(set_user_favouritelist_add(data.data.favourite.favouriteData))
+      // stateDispatch({ type: SET_USER_FAVOURITE_LIST_ADD, data: data.data.favourite.favouriteData })
     }
 
   }, [data])
@@ -546,8 +639,10 @@ export default function Home() {
 
         })
 
-        musicStateDispatch({ type: SET_ALLMUSICMIXES, data: mixArray })
-        musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: mixArray })
+        dispatch(set_allmusicmixes(mixArray))
+        dispatch(set_active_playlist_array(mixArray))
+        // musicStateDispatch({ type: SET_ALLMUSICMIXES, data: mixArray })
+        // musicStateDispatch({ type: SET_ACTIVE_PLAYLIST_ARRAY, data: mixArray })
 
       }
 
@@ -573,7 +668,7 @@ export default function Home() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     // document.body.appendChild( renderer.domElement );
     // use ref as a mount point of the Three.js scene instead of the document.body
-    refContainer.current && refContainer.current.appendChild( renderer.domElement );
+    refContainer.current && refContainer.current.appendChild(renderer.domElement);
     var geometry = new THREE.BoxGeometry(1, 1, 1);
     var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     var cube = new THREE.Mesh(geometry, material);
@@ -601,7 +696,7 @@ export default function Home() {
 
         <aside className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
 
-          <div className={thanosSnapVisible ? 'fadeOutMainNav' : 'row'} id='fadeOutMainNav'>
+          <div className={appData.thanosSnapVisible ? 'fadeOutMainNav' : 'row'} id='fadeOutMainNav'>
             <div className="sidenav-header">
               <i className="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
               <div className="navbar-brand m-0">
@@ -636,14 +731,14 @@ export default function Home() {
                     <span className="nav-link-text ms-1">{t("message")}</span>
                   </CustomLink>
                 </li>
-                <li className="nav-item" id='notificationsIntro'>
+                {/* <li className="nav-item" id='notificationsIntro'>
                   <CustomLink to="/notifications" onClick={navigationTimeOut}>
                     <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                       <i className="material-icons opacity-10">notifications</i>
                     </div>
                     <span className="nav-link-text ms-1">{t("notifications")}</span>
                   </CustomLink>
-                </li>
+                </li> */}
                 <li className="nav-item" id='aboutIntro'>
                   <CustomLink to="/about" onClick={navigationTimeOut}>
                     <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -673,7 +768,7 @@ export default function Home() {
                 </li>
 
 
-                {role === "Admin" && (
+                {userData.role === "Admin" && (
                   <>
                     <li className="nav-item mt-3">
                       <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin Pages</h6>
@@ -684,6 +779,14 @@ export default function Home() {
                           <i className="material-icons opacity-10">dashboard</i>
                         </div>
                         <span className="nav-link-text ms-1">Dashboard</span>
+                      </CustomLink>
+                    </li>
+                    <li className="nav-item" id='notificationsIntro'>
+                      <CustomLink to="/notifications" onClick={navigationTimeOut}>
+                        <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i className="material-icons opacity-10">notifications</i>
+                        </div>
+                        <span className="nav-link-text ms-1">{t("notifications")}</span>
                       </CustomLink>
                     </li>
                     <li className="nav-item">
@@ -741,7 +844,7 @@ export default function Home() {
             </div>
 
             <div className="sideNavAside">
-            {/* <div ref={refContainer}></div> */}
+              {/* <div ref={refContainer}></div> */}
               {/* <img src={animeImgSvg} className="card-img-top" alt="..." /> */}
             </div>
 
@@ -757,7 +860,7 @@ export default function Home() {
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-auto">
                   <li className="breadcrumb-item text-sm"><a className="opacity-5 text-dark" href="/#">{t("welcome")}</a></li>
-                  <li className="breadcrumb-item text-sm active modalIntro" aria-current="page">{username}</li>
+                  <li className="breadcrumb-item text-sm active modalIntro" aria-current="page">{userData.username}</li>
                 </ol>
               </nav>
               <div className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
